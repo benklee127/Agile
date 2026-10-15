@@ -71,7 +71,9 @@ The header and footer are global modules seeded by the global partials (see [ARC
 |---|---|---|---|
 | Site Header `content.logo` | Header logo | Empty: falls back to `theme.branding.logo` | None |
 | Site Header `content.logo_link`, `content.logo_alt` | Logo link and alt text (alt also shows as text when there is no logo) | `/`; alt falls back to the image's own alt, then company name, then "Home" | None |
-| Site Header `content.navigation` | Primary navigation (HubSpot menu, one dropdown level) | `default` menu | Page `header_mode_override = minimal` hides it |
+| Site Header `content.navigation_source` | Where the primary navigation comes from: `agile` (links edited in the header module) or `menu` (a HubSpot menu) | `agile` | Page `header_mode_override = minimal` hides navigation |
+| Site Header `content.nav_links` | Agile links: up to 8 items, each with up to 8 dropdown links (one level) | About, Services (3 dropdown links), Insights, Contact | — |
+| Site Header `content.navigation` | HubSpot menu used when the source is `menu` (one dropdown level) | `default` menu | — |
 | Site Header `content.cta`, `content.show_mobile_cta` | Header button and whether it shows on mobile | Empty text: no button | — |
 | Site Header `style.logo_max_height` / `logo_max_height_mobile` | Logo height (Style tab) | 48 / 36 px | None |
 | Site Footer `content.show_logo`, `content.logo` | Footer logo | Empty: falls back to `theme.branding.logo`. The logo link's name: the logo's alt, then `content.company_name`, then `site_settings.company_name`, then "Home" | None |

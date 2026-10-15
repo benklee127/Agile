@@ -4,7 +4,7 @@
 -->
 {#
   Global header. One DnD area seeded with the Site Header module, so its
-  content (logo, navigation menu, button) is edited in the global content
+  content (logo, navigation links or HubSpot menu, button) is edited in the global content
   editor. Header mode / style / sticky are resolved inside the module
   (globals/Site Header.module/module.html), not here. The skip link stays
   in templates/layouts/base.html. Module path is relative to this file:
@@ -17,13 +17,112 @@
         {% dnd_module path="../../globals/Site Header.module",
           label="Site Header",
           content={
+            "navigation_source": "agile",
+            "nav_links": [
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/about"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "sub_links": [],
+                "link_text": "About"
+              },
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/services"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "sub_links": [
+                  {
+                    "link": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/wealth-planning"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    },
+                    "link_text": "Wealth planning"
+                  },
+                  {
+                    "link": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/portfolio-management"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    },
+                    "link_text": "Portfolio management"
+                  },
+                  {
+                    "link": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/retirement-and-estate"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    },
+                    "link_text": "Retirement and estate"
+                  }
+                ],
+                "link_text": "Services"
+              },
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/insights"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "sub_links": [],
+                "link_text": "Insights"
+              },
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/contact"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "sub_links": [],
+                "link_text": "Contact"
+              }
+            ],
             "navigation": "default",
             "logo_link": {
-              "url": { "type": "EXTERNAL", "href": "/" },
+              "url": {
+                "type": "EXTERNAL",
+                "href": "/"
+              },
               "open_in_new_tab": false,
               "no_follow": false
             },
-            "cta": { "text": "" }
+            "cta": {
+              "text": "Book a call",
+              "link": {
+                "url": {
+                  "type": "EXTERNAL",
+                  "href": "/contact"
+                },
+                "open_in_new_tab": false,
+                "no_follow": false
+              },
+              "style": "inherit"
+            }
           }
         %}
         {% end_dnd_module %}

@@ -38,7 +38,15 @@
   /* invert the solid secondary button so it stays visible on secondary */
   --agile-btn-secondary-bg: var(--agile-color-on-secondary);
   --agile-btn-secondary-fg: var(--agile-color-secondary);
+  /* the dark section's call to action uses the accent pair (accent + on_accent),
+     which stands out on secondary; a primary-coloured button would barely
+     separate from a dark secondary background */
+  --agile-btn-primary-bg: var(--agile-color-accent);
+  --agile-btn-primary-fg: var(--agile-color-on-accent);
 }
+
+/* Eyebrows on secondary use the accent colour (set after the shared
+   coloured-context rule below so it wins). */
 
 .agile-bg--accent {
   --agile-section-bg: var(--agile-color-accent);
@@ -64,6 +72,10 @@
   --agile-btn-link-color: var(--agile-section-text);
   --agile-color-border: color-mix(in srgb, var(--agile-section-text) 25%, transparent);
   --agile-form-label-color: var(--agile-section-text);
+}
+
+.agile-bg--secondary {
+  --agile-eyebrow-color: var(--agile-color-accent);
 }
 
 /* Put on a light card/panel inside a coloured section to restore the

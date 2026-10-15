@@ -19,17 +19,188 @@
           content={
             "show_logo": true,
             "company_name": "Company Name",
-            "copyright": "© {year} Company Name. All rights reserved.",
+            "about_text": "<p>A short description of what your firm does and who it serves. Replace this in the global footer.</p>",
+            "columns": [
+              {
+                "column_heading": "Company",
+                "column_source": "links",
+                "column_links": [
+                  {
+                    "column_link_text": "About",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/about"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Our team",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/team"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Careers",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/careers"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Contact",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/contact"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  }
+                ]
+              },
+              {
+                "column_heading": "Services",
+                "column_source": "links",
+                "column_links": [
+                  {
+                    "column_link_text": "Wealth planning",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/wealth-planning"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Portfolio management",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/portfolio-management"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Retirement and estate",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/services/retirement-and-estate"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  }
+                ]
+              },
+              {
+                "column_heading": "Resources",
+                "column_source": "links",
+                "column_links": [
+                  {
+                    "column_link_text": "Insights",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/insights"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "FAQ",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/faq"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  },
+                  {
+                    "column_link_text": "Client login",
+                    "column_link_url": {
+                      "url": {
+                        "type": "EXTERNAL",
+                        "href": "/login"
+                      },
+                      "open_in_new_tab": false,
+                      "no_follow": false
+                    }
+                  }
+                ]
+              }
+            ],
+            "social": [
+              {
+                "network": "linkedin",
+                "social_url": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "https://www.linkedin.com/"
+                  },
+                  "open_in_new_tab": true,
+                  "no_follow": false
+                },
+                "accessible_label": "Company Name on LinkedIn"
+              }
+            ],
             "legal_links": [
               {
                 "legal_text": "Privacy Policy",
                 "legal_url": {
-                  "url": { "type": "EXTERNAL", "href": "/privacy-policy" },
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/privacy-policy"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              },
+              {
+                "legal_text": "Terms of Use",
+                "legal_url": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/terms-of-use"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              },
+              {
+                "legal_text": "Disclosures",
+                "legal_url": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/disclosures"
+                  },
                   "open_in_new_tab": false,
                   "no_follow": false
                 }
               }
-            ]
+            ],
+            "disclaimer": "<p>Placeholder disclosure: this website is for informational purposes only and is not an offer or solicitation to buy or sell any security. Investing involves risk, including possible loss of principal. Replace this text with your firm's approved disclosures.</p>",
+            "copyright": "© {year} Company Name. All rights reserved."
           }
         %}
         {% end_dnd_module %}

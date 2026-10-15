@@ -42,12 +42,210 @@
         "help_text": "Used when the logo image has no alt text of its own, and shown as text when there is no logo at all."
       },
       {
+        "name": "navigation_source",
+        "id": "content__navigation_source",
+        "label": "Navigation source",
+        "type": "choice",
+        "display": "radio",
+        "choices": [
+          [
+            "agile",
+            "Agile links (set below)"
+          ],
+          [
+            "menu",
+            "HubSpot menu"
+          ]
+        ],
+        "default": "agile",
+        "help_text": "Agile links are edited right here and work in any portal. HubSpot menu uses a menu from Settings > Website > Navigation."
+      },
+      {
+        "name": "nav_links",
+        "id": "content__nav_links",
+        "label": "Navigation links",
+        "type": "group",
+        "occurrence": {
+          "min": 0,
+          "max": 8,
+          "default": 4,
+          "sorting_label_field": "content__nav_links__link_text"
+        },
+        "visibility": {
+          "controlling_field_path": "content.navigation_source",
+          "controlling_value_regex": "agile",
+          "operator": "EQUAL"
+        },
+        "children": [
+          {
+            "name": "link_text",
+            "id": "content__nav_links__link_text",
+            "label": "Label",
+            "type": "text",
+            "default": "Link"
+          },
+          {
+            "name": "link",
+            "id": "content__nav_links__link",
+            "label": "Link",
+            "type": "link",
+            "supported_types": [
+              "EXTERNAL",
+              "CONTENT",
+              "FILE",
+              "EMAIL_ADDRESS",
+              "PHONE_NUMBER"
+            ],
+            "default": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "#"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            }
+          },
+          {
+            "name": "sub_links",
+            "id": "content__nav_links__sub_links",
+            "label": "Dropdown links",
+            "type": "group",
+            "occurrence": {
+              "min": 0,
+              "max": 8,
+              "default": 0,
+              "sorting_label_field": "content__nav_links__sub_links__link_text"
+            },
+            "help_text": "Optional. Adds a dropdown under this item.",
+            "children": [
+              {
+                "name": "link_text",
+                "id": "content__nav_links__sub_links__link_text",
+                "label": "Label",
+                "type": "text",
+                "default": "Link"
+              },
+              {
+                "name": "link",
+                "id": "content__nav_links__sub_links__link",
+                "label": "Link",
+                "type": "link",
+                "supported_types": [
+                  "EXTERNAL",
+                  "CONTENT",
+                  "FILE",
+                  "EMAIL_ADDRESS",
+                  "PHONE_NUMBER"
+                ],
+                "default": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "#"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "link": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "/about"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            },
+            "sub_links": [],
+            "link_text": "About"
+          },
+          {
+            "link": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "/services"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            },
+            "sub_links": [
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/services/wealth-planning"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "link_text": "Wealth planning"
+              },
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/services/portfolio-management"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "link_text": "Portfolio management"
+              },
+              {
+                "link": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": "/services/retirement-and-estate"
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                },
+                "link_text": "Retirement and estate"
+              }
+            ],
+            "link_text": "Services"
+          },
+          {
+            "link": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "/insights"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            },
+            "sub_links": [],
+            "link_text": "Insights"
+          },
+          {
+            "link": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "/contact"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            },
+            "sub_links": [],
+            "link_text": "Contact"
+          }
+        ]
+      },
+      {
         "name": "navigation",
         "id": "content__navigation",
         "label": "Navigation menu",
         "type": "menu",
         "default": "default",
-        "help_text": "Top-level items show in the header. One level of child items shows as a dropdown; deeper levels are not shown."
+        "help_text": "Top-level items show in the header. One level of child items shows as a dropdown; deeper levels are not shown.",
+        "visibility": {
+          "controlling_field_path": "content.navigation_source",
+          "controlling_value_regex": "menu",
+          "operator": "EQUAL"
+        }
       },
       {
         "name": "cta",
@@ -60,7 +258,7 @@
             "id": "content__cta__text",
             "label": "Button text",
             "type": "text",
-            "default": "",
+            "default": "Book a call",
             "help_text": "Leave empty to hide the button."
           },
           {
@@ -79,7 +277,7 @@
             "default": {
               "url": {
                 "type": "EXTERNAL",
-                "href": "#"
+                "href": "/contact"
               },
               "open_in_new_tab": false,
               "no_follow": false

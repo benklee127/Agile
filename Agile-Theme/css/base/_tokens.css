@@ -38,8 +38,8 @@
   --agile-text-muted:    var(--agile-color-muted);
 
   /* Typography — fonts */
-  --agile-font-heading: '{{ theme.typography.heading_font.font }}', system-ui, sans-serif;
-  --agile-font-body:    '{{ theme.typography.body_font.font }}', system-ui, sans-serif;
+  --agile-font-heading: '{{ theme.typography.heading_font.font }}', {{ theme.typography.heading_font.fallback|default('serif', true) }};
+  --agile-font-body:    '{{ theme.typography.body_font.font }}', system-ui, {{ theme.typography.body_font.fallback|default('sans-serif', true) }};
   --agile-heading-weight: {{ theme.typography.heading_weight }};
 
   /* Typography — type scale */

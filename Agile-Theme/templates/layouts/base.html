@@ -16,6 +16,22 @@
     {% endif %}
     <meta name="description" content="{{ page_meta.meta_description }}">
 
+    {#- Google Fonts for the theme's heading and body fonts, loaded explicitly
+        with weights 400-700 so theme.typography.heading_weight always has a
+        matching file. Fonts outside the Google set (DEFAULT) load nothing. -#}
+    {%- set agile_gfonts = [] -%}
+    {%- for agile_font in [theme.typography.heading_font, theme.typography.body_font] -%}
+      {%- if agile_font.font_set == "GOOGLE" and agile_font.font -%}
+        {%- set agile_family = "family=" ~ (agile_font.font|trim|replace(" ", "+")) ~ ":wght@400;500;600;700" -%}
+        {%- if agile_family not in agile_gfonts -%}{%- do agile_gfonts.append(agile_family) -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if agile_gfonts %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ agile_gfonts|join("&") }}&display=swap">
+    {%- endif %}
+
     {{ require_css(get_asset_url("../../css/main.css"), { async: false }) }}
     {{ require_js(get_asset_url("../../js/main.js"), { defer: true }) }}
 

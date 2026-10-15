@@ -54,11 +54,42 @@
 {%- set hdr_logo_href = agile.link_attrs(hdr_content.logo_link) -%}
 {%- if not hdr_logo_href|trim -%}{%- set hdr_logo_href = 'href="/"' -%}{%- endif -%}
 
-{#- ---- Navigation (one dropdown level) --------------------------------- -#}
+{#- ---- Navigation (one dropdown level) ---------------------------------
+  Two sources, one shape. "agile" (default) builds menu-like nodes from the
+  module's own nav_links repeater, so a new portal has navigation with no
+  HubSpot menu set up. "menu" reads a HubSpot menu. Both end up as nodes with
+  label / url / linkTarget / children, rendered by the same markup below. -#}
 {%- set nav_items = [] -%}
-{%- if header_mode == "native" and hdr_content.navigation -%}
-  {%- set nav_tree = menu(hdr_content.navigation, "site_root") -%}
-  {%- set nav_items = nav_tree.children if nav_tree and nav_tree.children else [] -%}
+{%- if header_mode == "native" -%}
+  {%- if hdr_content.navigation_source == "menu" -%}
+    {%- if hdr_content.navigation -%}
+      {%- set nav_tree = menu(hdr_content.navigation, "site_root") -%}
+      {%- set nav_items = nav_tree.children if nav_tree and nav_tree.children else [] -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- for hdr_item in hdr_content.nav_links|default([], true) -%}
+      {%- set hdr_kids = [] -%}
+      {%- for hdr_sub in hdr_item.sub_links|default([], true) -%}
+        {%- if hdr_sub.link_text|default("", true)|trim -%}
+          {%- do hdr_kids.append({
+            "label": hdr_sub.link_text|trim,
+            "url": hdr_sub.link.url.href|default("", true),
+            "linkTarget": "_blank" if hdr_sub.link.open_in_new_tab else "",
+            "children": []
+          }) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if hdr_item.link_text|default("", true)|trim -%}
+        {%- do nav_items.append({
+          "label": hdr_item.link_text|trim,
+          "url": hdr_item.link.url.href|default("", true),
+          "linkTarget": "_blank" if hdr_item.link.open_in_new_tab else "",
+          "children": hdr_kids,
+          "activeNode": (hdr_item.link.url.href|default("", true)) == request.path
+        }) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 {%- endif -%}
 {%- set has_nav = nav_items|length > 0 -%}
 

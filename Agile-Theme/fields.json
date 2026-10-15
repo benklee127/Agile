@@ -28,7 +28,8 @@
           }
         },
         "default": {
-          "color": "#175cd3"
+          "color": "#1F3A5F",
+          "opacity": 100
         }
       },
       {
@@ -41,7 +42,8 @@
           }
         },
         "default": {
-          "color": "#0f1728"
+          "color": "#0E1A2B",
+          "opacity": 100
         }
       },
       {
@@ -54,7 +56,8 @@
           }
         },
         "default": {
-          "color": "#d8f34f"
+          "color": "#B8955A",
+          "opacity": 100
         }
       },
       {
@@ -67,7 +70,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       },
       {
@@ -80,7 +84,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#F5F1EA",
+          "opacity": 100
         }
       },
       {
@@ -93,7 +98,8 @@
           }
         },
         "default": {
-          "color": "#0f1728"
+          "color": "#0E1A2B",
+          "opacity": 100
         }
       },
       {
@@ -106,7 +112,8 @@
           }
         },
         "default": {
-          "color": "#213047"
+          "color": "#1B2430",
+          "opacity": 100
         }
       },
       {
@@ -119,7 +126,8 @@
           }
         },
         "default": {
-          "color": "#5f6c80"
+          "color": "#5C6675",
+          "opacity": 100
         }
       },
       {
@@ -132,7 +140,8 @@
           }
         },
         "default": {
-          "color": "#f6f8fb"
+          "color": "#F6F3EE",
+          "opacity": 100
         }
       },
       {
@@ -145,7 +154,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       },
       {
@@ -158,7 +168,8 @@
           }
         },
         "default": {
-          "color": "#d7deea"
+          "color": "#E4DED4",
+          "opacity": 100
         }
       }
     ]
@@ -184,8 +195,10 @@
           }
         },
         "default": {
-          "font": "Arial",
-          "font_set": "DEFAULT"
+          "font": "Fraunces",
+          "font_set": "GOOGLE",
+          "fallback": "serif",
+          "variant": "600"
         }
       },
       {
@@ -204,8 +217,10 @@
           }
         },
         "default": {
-          "font": "Arial",
-          "font_set": "DEFAULT"
+          "font": "Inter",
+          "font_set": "GOOGLE",
+          "fallback": "sans-serif",
+          "variant": "regular"
         }
       },
       {
@@ -239,7 +254,7 @@
             "Black (900)"
           ]
         ],
-        "default": "700"
+        "default": "600"
       },
       {
         "name": "h1_size",
@@ -247,7 +262,7 @@
         "type": "number",
         "min": 24,
         "step": 1,
-        "default": 56
+        "default": 60
       },
       {
         "name": "h2_size",
@@ -255,7 +270,7 @@
         "type": "number",
         "min": 20,
         "step": 1,
-        "default": 40
+        "default": 42
       },
       {
         "name": "h3_size",
@@ -287,7 +302,7 @@
         "type": "number",
         "min": 14,
         "step": 1,
-        "default": 18
+        "default": 17
       },
       {
         "name": "line_height",
@@ -295,7 +310,7 @@
         "type": "number",
         "min": 1,
         "step": 0.1,
-        "default": 1.6
+        "default": 1.65
       }
     ]
   },
@@ -314,7 +329,8 @@
           }
         },
         "default": {
-          "color": "#175cd3"
+          "color": "#1F3A5F",
+          "opacity": 100
         }
       },
       {
@@ -327,7 +343,8 @@
           }
         },
         "default": {
-          "color": "#0f4aa8"
+          "color": "#0E1A2B",
+          "opacity": 100
         }
       },
       {
@@ -349,7 +366,7 @@
             "Never"
           ]
         ],
-        "default": "always"
+        "default": "hover"
       }
     ]
   },
@@ -385,7 +402,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 10
+        "default": 6
       },
       {
         "name": "padding_y",
@@ -401,7 +418,7 @@
         "type": "number",
         "min": 12,
         "step": 1,
-        "default": 22
+        "default": 26
       },
       {
         "name": "transition_duration_ms",
@@ -409,7 +426,7 @@
         "type": "number",
         "min": 0,
         "step": 25,
-        "default": 180
+        "default": 200
       },
       {
         "name": "hover_effect",
@@ -449,7 +466,7 @@
         "type": "number",
         "min": 0,
         "step": 2,
-        "default": 16
+        "default": 24
       },
       {
         "name": "card_opacity",
@@ -466,7 +483,7 @@
         "type": "number",
         "min": 0,
         "step": 4,
-        "default": 48
+        "default": 56
       },
       {
         "name": "elevated_opacity",
@@ -475,7 +492,7 @@
         "min": 0,
         "max": 30,
         "step": 1,
-        "default": 8
+        "default": 10
       }
     ]
   },
@@ -490,7 +507,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 6
+        "default": 4
       },
       {
         "name": "radius_md",
@@ -498,7 +515,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 12
+        "default": 8
       },
       {
         "name": "radius_lg",
@@ -506,7 +523,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 20
+        "default": 14
       },
       {
         "name": "radius_xl",
@@ -514,7 +531,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 32
+        "default": 24
       }
     ]
   },
@@ -533,7 +550,8 @@
           }
         },
         "default": {
-          "color": "#213047"
+          "color": "#1B2430",
+          "opacity": 100
         }
       },
       {
@@ -546,7 +564,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       },
       {
@@ -559,7 +578,8 @@
           }
         },
         "default": {
-          "color": "#213047"
+          "color": "#1B2430",
+          "opacity": 100
         }
       },
       {
@@ -572,7 +592,8 @@
           }
         },
         "default": {
-          "color": "#8a96a8"
+          "color": "#6B7480",
+          "opacity": 100
         }
       },
       {
@@ -585,7 +606,8 @@
           }
         },
         "default": {
-          "color": "#c3ccda"
+          "color": "#CFC7BA",
+          "opacity": 100
         }
       },
       {
@@ -598,7 +620,8 @@
           }
         },
         "default": {
-          "color": "#175cd3"
+          "color": "#1F3A5F",
+          "opacity": 100
         }
       },
       {
@@ -611,7 +634,8 @@
           }
         },
         "default": {
-          "color": "#c4320a"
+          "color": "#B42318",
+          "opacity": 100
         }
       },
       {
@@ -629,7 +653,7 @@
         "type": "number",
         "min": 0,
         "step": 1,
-        "default": 8
+        "default": 6
       },
       {
         "name": "field_gap",
@@ -689,7 +713,7 @@
             "Linear"
           ]
         ],
-        "default": "standard"
+        "default": "ease_out"
       }
     ]
   },
@@ -712,7 +736,7 @@
         "type": "number",
         "min": 0,
         "step": 4,
-        "default": 48
+        "default": 56
       },
       {
         "name": "section_md",
@@ -720,7 +744,7 @@
         "type": "number",
         "min": 0,
         "step": 4,
-        "default": 80
+        "default": 96
       },
       {
         "name": "section_lg",
@@ -728,7 +752,7 @@
         "type": "number",
         "min": 0,
         "step": 4,
-        "default": 120
+        "default": 128
       },
       {
         "name": "section_xl",
@@ -736,7 +760,7 @@
         "type": "number",
         "min": 0,
         "step": 4,
-        "default": 160
+        "default": 176
       }
     ]
   },
@@ -759,7 +783,7 @@
         "type": "number",
         "min": 8,
         "step": 2,
-        "default": 24
+        "default": 28
       }
     ]
   },
@@ -799,7 +823,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       },
       {
@@ -812,7 +837,8 @@
           }
         },
         "default": {
-          "color": "#213047"
+          "color": "#0E1A2B",
+          "opacity": 100
         }
       },
       {
@@ -821,7 +847,7 @@
         "type": "number",
         "min": 48,
         "step": 2,
-        "default": 78,
+        "default": 84,
         "max": 160
       },
       {
@@ -853,7 +879,8 @@
           }
         },
         "default": {
-          "color": "#ffffff"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       }
     ]
@@ -894,7 +921,8 @@
           }
         },
         "default": {
-          "color": "#f6f8fb"
+          "color": "#0E1A2B",
+          "opacity": 100
         }
       },
       {
@@ -907,7 +935,8 @@
           }
         },
         "default": {
-          "color": "#5f6c80"
+          "color": "#C9CFD8",
+          "opacity": 100
         }
       },
       {
@@ -920,7 +949,8 @@
           }
         },
         "default": {
-          "color": "#175cd3"
+          "color": "#FFFFFF",
+          "opacity": 100
         }
       }
     ]
