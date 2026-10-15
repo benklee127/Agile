@@ -1,0 +1,71 @@
+{
+  "name": "spacing",
+  "label": "Spacing",
+  "type": "group",
+  "children": [
+    {
+      "name": "padding_top",
+      "label": "Top padding",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["theme", "Theme default"],
+        ["none", "None"],
+        ["xs", "XS"],
+        ["sm", "Small"],
+        ["md", "Medium"],
+        ["lg", "Large"],
+        ["xl", "XL"],
+        ["custom", "Custom"]
+      ],
+      "default": "theme"
+    },
+    {
+      "name": "padding_top_custom",
+      "label": "Custom top padding",
+      "type": "number",
+      "display": "text",
+      "min": 0,
+      "step": 4,
+      "suffix": "px",
+      "default": 80,
+      "visibility": {
+        "controlling_field_path": "./padding_top",
+        "controlling_value_regex": "custom",
+        "operator": "EQUAL"
+      }
+    },
+    {
+      "name": "padding_bottom",
+      "label": "Bottom padding",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["theme", "Theme default"],
+        ["none", "None"],
+        ["xs", "XS"],
+        ["sm", "Small"],
+        ["md", "Medium"],
+        ["lg", "Large"],
+        ["xl", "XL"],
+        ["custom", "Custom"]
+      ],
+      "default": "theme"
+    },
+    {
+      "name": "padding_bottom_custom",
+      "label": "Custom bottom padding",
+      "type": "number",
+      "display": "text",
+      "min": 0,
+      "step": 4,
+      "suffix": "px",
+      "default": 80,
+      "visibility": {
+        "controlling_field_path": "./padding_bottom",
+        "controlling_value_regex": "custom",
+        "operator": "EQUAL"
+      }
+    }
+  ]
+}

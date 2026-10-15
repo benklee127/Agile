@@ -1,0 +1,66 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Hero — Section module [S]
+  Wrapper, spacing, background, text colour, width, alignment, anchor and
+  visibility all come from agile.section_attrs (shared layout/style/advanced
+  groups). Module-specific variant: layout.media_position (right | left | none).
+  Import/asset paths use "../../" = theme root from a module
+  (HUBSPOT-PLATFORM.md > Paths).
+#}
+{%- set content = module.content -%}
+{%- set media_position = module.layout.media_position|default("right", true) -%}
+{%- set has_media = media_position != "none" -%}
+
+{%- set hero_mods = "" -%}
+{%- if not has_media -%}
+  {%- set hero_mods = "agile-hero--no-media" -%}
+{%- elif media_position == "left" -%}
+  {%- set hero_mods = "agile-hero--media-left" -%}
+{%- endif -%}
+
+{#- Buttons: CTA style > module.style.button_style > theme default -#}
+{%- set primary_button = agile.button(
+      content.primary_cta.text,
+      content.primary_cta.link,
+      agile.resolve_style(content.primary_cta.style, module.style.button_style)
+    )|trim -%}
+{%- set secondary_button = agile.button(
+      content.secondary_cta.text,
+      content.secondary_cta.link,
+      agile.resolve_style(content.secondary_cta.style, module.style.button_style)
+    )|trim -%}
+
+<section {{ agile.section_attrs(module, "agile-hero", hero_mods) }}>
+  <div class="agile-container">
+    <div class="agile-hero__grid">
+
+      <div class="agile-hero__content">
+        {%- if content.eyebrow %}
+        <p class="agile-eyebrow agile-hero__eyebrow">{{ content.eyebrow|escape_html }}</p>
+        {%- endif %}
+        {{ agile.heading(content.heading, content.heading_level|default("h1", true), "agile-hero__title") }}
+        {%- if content.body_text %}
+        <div class="agile-hero__body agile-richtext">{{ content.body_text }}</div>
+        {%- endif %}
+        {%- if primary_button or secondary_button %}
+        <div class="agile-button-group agile-hero__actions">
+          {{ primary_button }}
+          {{ secondary_button }}
+        </div>
+        {%- endif %}
+      </div>
+
+      {%- if has_media %}
+      <div class="agile-hero__media">
+        {%- if content.image.src %}
+        {{ agile.image(content.image, "(min-width: 768px) 50vw, 100vw", "eager", "agile-hero__img") }}
+        {%- else %}
+        {%- set placeholder = { "src": get_asset_url("../../images/placeholders/hero-placeholder.svg"), "alt": "", "width": 1200, "height": 800 } %}
+        {{ agile.image(placeholder, "(min-width: 768px) 50vw, 100vw", "eager", "agile-hero__img agile-hero__img--placeholder") }}
+        {%- endif %}
+      </div>
+      {%- endif %}
+
+    </div>
+  </div>
+</section>

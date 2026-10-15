@@ -1,0 +1,34 @@
+{
+  "name": "layout",
+  "label": "Layout",
+  "type": "group",
+  "children": [
+    { "$use": "spacing" },
+    {
+      "name": "container_width",
+      "label": "Container width",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["inherit", "Page default"],
+        ["narrow", "Narrow"],
+        ["default", "Standard"],
+        ["wide", "Wide"],
+        ["full", "Full width"]
+      ],
+      "default": "inherit"
+    },
+    {
+      "name": "text_align",
+      "label": "Text alignment",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["inherit", "Default"],
+        ["left", "Left"],
+        ["center", "Center"]
+      ],
+      "default": "inherit"
+    }
+  ]
+}

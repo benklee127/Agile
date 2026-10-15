@@ -1,0 +1,7 @@
+/*
+  Card Item — Component module [C]
+  No section padding or background of its own: fills its DnD column.
+  All card rules (.agile-card-item and its variants) live in
+  css/components/_card.css, which main.css loads on every page, because
+  Card Grid renders its cards with the same classes.
+*/

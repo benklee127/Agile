@@ -1,0 +1,154 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Site Header [global] — globals/Site Header.module
+  Seeded by templates/partials/header.html (global partial → dnd_area
+  "header_area"), so its content is edited in the global content editor.
+
+  Settings resolved HERE (not in the partial or base.html):
+    mode   theme.header.mode (native / minimal / hidden), overridden by
+           Page Controls header_mode_override unless "theme_default".
+             native  = logo + navigation + optional button
+             minimal = logo + optional button, no navigation
+             hidden  = renders nothing (an editor-only note in the editor)
+    style  Page Controls header_style_override: "solid" or "transparent"
+           (explicit, always wins). "theme_default" follows
+           theme.header.transparent_on_hero: off = solid; on = "auto", where
+           css/components/_header.css makes the header transparent only when
+           the page's first DnD section holds a Hero with a coloured
+           background. See docs/EDITING-LEVELS.md.
+    sticky theme.header.sticky (no page override). A transparent header is
+           never sticky: it overlays the top section and scrolls away.
+
+  All header CSS lives in css/components/_header.css (global); behaviour in
+  module.js. Without JS the desktop dropdowns open on hover/focus and the
+  mobile menu is shown expanded (keyed on html.agile-js, set in base.html).
+#}
+{%- set pc = widget_data.page_controls -%}
+{%- set modes = ["native", "minimal", "hidden"] -%}
+{%- set header_mode = theme.header.mode if theme.header.mode in modes else "native" -%}
+{%- if pc and pc.header_mode_override in modes -%}
+  {%- set header_mode = pc.header_mode_override -%}
+{%- endif -%}
+
+{%- set header_style = "auto" if theme.header.transparent_on_hero else "solid" -%}
+{%- if pc and pc.header_style_override in ["solid", "transparent"] -%}
+  {%- set header_style = pc.header_style_override -%}
+{%- endif -%}
+
+{%- if header_mode == "hidden" -%}
+  {%- if is_in_editor -%}
+    <p class="agile-site-header-note">Site header hidden on this page (Header mode: No Header).</p>
+  {%- endif -%}
+{%- else -%}
+
+{#- ---- Logo ------------------------------------------------------------ -#}
+{%- set hdr_content = module.content -%}
+{%- set hdr_logo = hdr_content.logo if hdr_content.logo and hdr_content.logo.src else theme.branding.logo -%}
+{#- Locals are prefixed (hdr_*) so an undefined value never falls through to a
+    same-named HubL global such as `logo` or `content` (HUBSPOT-PLATFORM.md › HubL). -#}
+{%- set hdr_logo_name = hdr_logo.alt|default("", true)|trim -%}
+{%- if not hdr_logo_name -%}{%- set hdr_logo_name = hdr_content.logo_alt|default("", true)|trim -%}{%- endif -%}
+{%- if not hdr_logo_name -%}{%- set hdr_logo_name = site_settings.company_name|default("", true)|trim -%}{%- endif -%}
+{%- if not hdr_logo_name -%}{%- set hdr_logo_name = "Home" -%}{%- endif -%}
+{%- set hdr_logo_img = {"src": hdr_logo.src, "alt": hdr_logo_name, "width": hdr_logo.width, "height": hdr_logo.height} if hdr_logo and hdr_logo.src else {} -%}
+{%- set hdr_logo_href = agile.link_attrs(hdr_content.logo_link) -%}
+{%- if not hdr_logo_href|trim -%}{%- set hdr_logo_href = 'href="/"' -%}{%- endif -%}
+
+{#- ---- Navigation (one dropdown level) --------------------------------- -#}
+{%- set nav_items = [] -%}
+{%- if header_mode == "native" and hdr_content.navigation -%}
+  {%- set nav_tree = menu(hdr_content.navigation, "site_root") -%}
+  {%- set nav_items = nav_tree.children if nav_tree and nav_tree.children else [] -%}
+{%- endif -%}
+{%- set has_nav = nav_items|length > 0 -%}
+
+{#- Unique ids for aria-controls (one header per page, but stay unique). -#}
+{%- set uid = "agile-hdr-" ~ (name|default("site-header", true)|string|lower|regex_replace("[^a-z0-9_-]", "-")) -%}
+
+{#- ---- Button ---------------------------------------------------------- -#}
+{%- set hdr_cta = hdr_content.cta -%}
+{%- set cta_html = agile.button(hdr_cta.text, hdr_cta.link, agile.resolve_style(hdr_cta.style)) -%}
+{%- set has_cta = cta_html|trim|length > 0 -%}
+{%- set mobile_bar_cta = has_cta and has_nav and hdr_content.show_mobile_cta -%}
+
+{#- ---- Root classes and size custom properties ------------------------ -#}
+{%- set classes = "agile-site-header--" ~ header_mode -%}
+{%- if header_style == "transparent" -%}{%- set classes = classes ~ " agile-site-header--transparent" -%}
+{%- elif header_style == "auto" -%}{%- set classes = classes ~ " agile-site-header--auto-transparent" -%}{%- endif -%}
+{%- if theme.header.sticky -%}{%- set classes = classes ~ " agile-site-header--sticky" -%}{%- endif -%}
+{%- if has_nav -%}{%- set classes = classes ~ " agile-site-header--has-nav" -%}{%- endif -%}
+{%- if mobile_bar_cta -%}{%- set classes = classes ~ " agile-site-header--mobile-cta" -%}{%- endif -%}
+
+{%- set logo_max = module.style.logo_max_height if module.style.logo_max_height is number else 48 -%}
+{%- set logo_max_m = module.style.logo_max_height_mobile if module.style.logo_max_height_mobile is number else 36 -%}
+
+<header {{ agile.component_attrs(module, "agile-site-header", classes) }} style="--agile-header-logo-max:{{ logo_max }}px;--agile-header-logo-max-mobile:{{ logo_max_m }}px;" data-agile-header>
+  <div class="agile-container agile-site-header__inner">
+    <a class="agile-site-header__brand" {{ hdr_logo_href }}>
+      {%- if hdr_logo_img -%}
+        {{ agile.image(hdr_logo_img, "(max-width: 767px) 200px, 320px", "eager", "agile-site-header__logo") }}
+      {%- else -%}
+        <span class="agile-site-header__brand-text">{{ hdr_logo_name|escape_html }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- if has_nav %}
+    {% if mobile_bar_cta %}<div class="agile-site-header__mobile-cta">{{ cta_html }}</div>{% endif %}
+    <button type="button" class="agile-site-header__toggle" aria-expanded="false" aria-controls="{{ uid }}-panel">
+      <span class="agile-site-header__toggle-icon" aria-hidden="true"></span>
+      <span class="u-sr-only">Menu</span>
+    </button>
+
+    <div class="agile-site-header__panel" id="{{ uid }}-panel">
+      <nav class="agile-site-header__nav" aria-label="Primary">
+        <ul class="agile-nav">
+          {%- for node in nav_items %}
+            {%- set kids = node.children if node.children else [] -%}
+            {#- href + target/rel: same rule as the footer (only "_blank" opens a new tab) -#}
+            {%- set href = agile.menu_link_attrs(node) -%}
+            {%- set sub_id = uid ~ "-sub-" ~ loop.index %}
+          <li class="agile-nav__item{% if kids %} agile-nav__item--has-children{% endif %}{% if node.activeBranch %} is-active-branch{% endif %}">
+            {%- if href|trim %}
+            <a class="agile-nav__link" {{ href }}{% if node.activeNode %} aria-current="page"{% endif %}>{{ node.label|escape_html }}{{ agile.new_tab_sr(node.linkTarget|default("", true)|string) }}</a>
+              {%- if kids %}
+            <button type="button" class="agile-nav__toggle" aria-expanded="false" aria-controls="{{ sub_id }}">
+              <span class="u-sr-only">{{ node.label|escape_html }} submenu</span>
+              <svg class="agile-nav__chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+              {%- endif %}
+            {%- elif kids %}
+            <button type="button" class="agile-nav__link agile-nav__toggle agile-nav__toggle--label" aria-expanded="false" aria-controls="{{ sub_id }}">
+              {{ node.label|escape_html }}
+              <svg class="agile-nav__chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            {%- else %}
+            <span class="agile-nav__link">{{ node.label|escape_html }}</span>
+            {%- endif %}
+            {%- if kids %}
+            <ul class="agile-nav__submenu" id="{{ sub_id }}">
+              {%- for child in kids %}
+                {%- set child_href = agile.menu_link_attrs(child) %}
+              <li class="agile-nav__subitem">
+                {%- if child_href|trim %}
+                <a class="agile-nav__sublink" {{ child_href }}{% if child.activeNode %} aria-current="page"{% endif %}>{{ child.label|escape_html }}{{ agile.new_tab_sr(child.linkTarget|default("", true)|string) }}</a>
+                {%- else %}
+                <span class="agile-nav__sublink">{{ child.label|escape_html }}</span>
+                {%- endif %}
+              </li>
+              {%- endfor %}
+            </ul>
+            {%- endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+      </nav>
+      {%- if has_cta %}
+      <div class="agile-site-header__actions">{{ cta_html }}</div>
+      {%- endif %}
+    </div>
+    {%- elif has_cta %}
+    <div class="agile-site-header__actions">{{ cta_html }}</div>
+    {%- endif %}
+  </div>
+</header>
+{%- endif -%}

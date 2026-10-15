@@ -1,0 +1,73 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "image",
+        "label": "Card image",
+        "type": "image",
+        "responsive": true,
+        "resizable": true,
+        "help_text": "Optional. Shown at the top of the card, cropped to 16:9."
+      },
+      {
+        "name": "eyebrow",
+        "label": "Eyebrow",
+        "type": "text",
+        "default": "",
+        "help_text": "Optional short label above the heading."
+      },
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Card heading"
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h3",
+        "help_text": "Semantic level for the page outline. Choose the level below the section heading the card sits under."
+      },
+      {
+        "name": "body_text",
+        "label": "Body",
+        "type": "richtext",
+        "default": "<p>Card body text goes here. Describe the item, feature, or content.</p>"
+      },
+      {
+        "$use": "cta",
+        "name": "cta",
+        "label": "Button",
+        "$defaults": { "text": "" }
+      }
+    ]
+  },
+  {
+    "name": "style",
+    "label": "Style",
+    "type": "group",
+    "tab": "STYLE",
+    "children": [
+      {
+        "name": "card_style",
+        "label": "Card style",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          ["default", "Raised (shadow)"],
+          ["outlined", "Outlined (border)"],
+          ["flat", "Flat (no frame)"]
+        ],
+        "default": "default",
+        "help_text": "Raised and Outlined cards keep the default page colours inside coloured sections. Flat cards take the section's colours."
+      }
+    ]
+  },
+  { "$use": "advanced" }
+]

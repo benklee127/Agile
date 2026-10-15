@@ -1,0 +1,108 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Trusted by leading companies",
+        "help_text": "Short label above the logos. Leave blank to hide it."
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h2",
+        "help_text": "Semantic level only; the label keeps its small visual style."
+      },
+      {
+        "name": "logos",
+        "label": "Logos",
+        "type": "group",
+        "occurrence": {
+          "min": 1,
+          "max": 20,
+          "default": 5,
+          "sorting_label_field": "./alt_text"
+        },
+        "children": [
+          {
+            "name": "logo",
+            "label": "Logo image",
+            "type": "image",
+            "responsive": true,
+            "resizable": false,
+            "show_loading": false
+          },
+          {
+            "name": "alt_text",
+            "label": "Company name (alt text)",
+            "type": "text",
+            "default": "",
+            "help_text": "Used as the logo's alt text and the list label. Falls back to the image's own alt text."
+          },
+          {
+            "name": "link",
+            "label": "Link (optional)",
+            "type": "link",
+            "supported_types": ["EXTERNAL", "CONTENT", "BLOG", "FILE"],
+            "default": {
+              "url": { "type": "EXTERNAL", "href": "" },
+              "open_in_new_tab": true,
+              "no_follow": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "$use": "layout",
+    "$append": [
+      {
+        "name": "columns",
+        "label": "Logos per row",
+        "type": "choice",
+        "display": "select",
+        "choices": [["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]],
+        "default": "5",
+        "help_text": "Desktop only. Tablets and phones show 3 and 2 per row."
+      },
+      {
+        "name": "logo_max_height",
+        "label": "Logo max height",
+        "type": "number",
+        "display": "text",
+        "min": 20,
+        "max": 160,
+        "step": 4,
+        "suffix": "px",
+        "default": 48
+      }
+    ]
+  },
+  {
+    "$use": "style",
+    "$omit": ["button_style"],
+    "$append": [
+      {
+        "name": "logo_treatment",
+        "label": "Logo treatment",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          ["original", "Original colours"],
+          ["grayscale", "Grayscale"],
+          ["grayscale-hover", "Grayscale (colour on hover)"]
+        ],
+        "default": "grayscale-hover"
+      }
+    ]
+  },
+  { "$use": "advanced" }
+]

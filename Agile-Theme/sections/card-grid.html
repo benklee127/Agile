@@ -1,0 +1,46 @@
+<!--
+  templateType: section
+  label: Agile Card Grid
+  description: "A section header followed by a responsive grid of cards."
+  isAvailableForNewContent: true
+  screenshotPath: ../images/theme-preview.svg
+-->
+
+{% dnd_section padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 } %}
+  {% dnd_column offset=0, width=12 %}
+    {% dnd_row %}
+      {% dnd_module "agile_section_card_grid" path="../modules/Card Grid.module", label="Card Grid",
+        content={
+          "eyebrow": "Services",
+          "heading": "Everything you need to grow",
+          "heading_level": "h2",
+          "intro": "Pick the service that fits where you are today. Each one works on its own or as part of a wider plan.",
+          "card_heading_level": "h3",
+          "cards": [
+            {
+              "eyebrow": "Strategy",
+              "heading": "Planning and research",
+              "body_text": "<p>We start with your audience and goals, then build a roadmap your whole team can follow.</p>",
+              "cta": { "text": "Explore strategy", "link": { "url": { "type": "EXTERNAL", "href": "#strategy" } } }
+            },
+            {
+              "eyebrow": "Design",
+              "heading": "Websites that convert",
+              "body_text": "<p>Fast, accessible pages built from a shared design system, so every page stays on brand.</p>",
+              "cta": { "text": "Explore design", "link": { "url": { "type": "EXTERNAL", "href": "#design" } } }
+            },
+            {
+              "eyebrow": "Growth",
+              "heading": "Campaigns and reporting",
+              "body_text": "<p>Campaigns tied to clear metrics, with monthly reports that show what is working and why.</p>",
+              "cta": { "text": "Explore growth", "link": { "url": { "type": "EXTERNAL", "href": "#growth" } } }
+            }
+          ]
+        },
+        layout={ "columns": "3" },
+        style={ "background": "surface", "card_style": "default" }
+      %}
+      {% end_dnd_module %}
+    {% end_dnd_row %}
+  {% end_dnd_column %}
+{% end_dnd_section %}

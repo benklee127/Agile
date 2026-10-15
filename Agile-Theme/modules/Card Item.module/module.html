@@ -1,0 +1,44 @@
+{#
+  Card Item — Component module [C]
+  No section chrome: fills its DnD column. Use it for a one-off card placed
+  by hand; for a row or grid of cards use the Card Grid Section module, which
+  renders its cards with these same class names (the card CSS lives once, in
+  css/components/_card.css). Background and padding around
+  a hand-placed card come from HubSpot's native DnD "Section styles". Only the
+  Advanced group is standard; content + card_style variant are module-specific.
+#}
+{% import "../../macros/agile.html" as agile %}
+
+{%- set content = module.content -%}
+{%- set cta = content.cta -%}
+{%- set variant = module.style.card_style if module.style.card_style in ["default", "outlined", "flat"] else "default" -%}
+{%- set extra = "agile-card-item--" ~ variant -%}
+{#- Framed cards have their own light background, so restore the default colour
+    context as a guard in case they ever end up inside a coloured context.
+    Flat cards inherit it. -#}
+{%- if variant != "flat" -%}{%- set extra = extra ~ " agile-reset-colors" -%}{%- endif -%}
+{%- set button_html = agile.button(cta.text, cta.link, agile.resolve_style(cta.style))|trim -%}
+
+<article {{ agile.component_attrs(module, "agile-card-item", extra) }}>
+  {%- if content.image.src %}
+  <div class="agile-card-item__media">
+    {{ agile.image(content.image, "(min-width: 768px) 33vw, 100vw", "lazy", "agile-card-item__img") }}
+  </div>
+  {%- endif %}
+
+  <div class="agile-card-item__body">
+    {%- if content.eyebrow %}
+    <p class="agile-eyebrow agile-card-item__eyebrow">{{ content.eyebrow|escape_html }}</p>
+    {%- endif %}
+
+    {{ agile.heading(content.heading, content.heading_level|default("h3", true), "agile-card-item__title") }}
+
+    {%- if content.body_text %}
+    <div class="agile-card-item__text agile-richtext">{{ content.body_text }}</div>
+    {%- endif %}
+
+    {%- if button_html %}
+    <div class="agile-card-item__cta">{{ button_html }}</div>
+    {%- endif %}
+  </div>
+</article>

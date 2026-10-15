@@ -1,0 +1,65 @@
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.6em;
+  color: var(--agile-heading-color, var(--agile-color-secondary));
+  font-family: var(--agile-font-heading);
+  font-weight: var(--agile-heading-weight);
+  line-height: 1.15;
+}
+
+h1 { font-size: clamp(2rem,   5vw,  var(--agile-h1-size)); }
+h2 { font-size: clamp(1.6rem, 4vw,  var(--agile-h2-size)); }
+h3 { font-size: clamp(1.2rem, 3vw,  var(--agile-h3-size)); }
+h4 { font-size: clamp(1rem,   2vw,  var(--agile-h4-size)); }
+h5 { font-size: clamp(0.9rem, 1.5vw, var(--agile-h5-size)); }
+h6 { font-size: 1rem; }
+
+p, ul, ol {
+  margin: 0 0 1em;
+}
+
+/* Links — colour/underline from theme.links, re-pointed in coloured sections */
+a {
+  color: var(--agile-link-color);
+  text-decoration-line: var(--agile-link-decoration);
+  text-underline-offset: 0.18em;
+  transition: color var(--agile-duration-fast) var(--agile-easing);
+}
+
+a:hover {
+  color: var(--agile-link-hover-color);
+  text-decoration-line: var(--agile-link-hover-decoration);
+}
+
+/* Visible keyboard focus everywhere, using the theme focus colour */
+:focus-visible {
+  outline: 2px solid var(--agile-focus-color);
+  outline-offset: 2px;
+}
+
+.agile-eyebrow {
+  margin-bottom: 16px;
+  color: var(--agile-eyebrow-color, var(--agile-color-primary));
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Secondary/supporting copy; adapts inside coloured sections */
+.agile-muted {
+  color: var(--agile-text-muted, var(--agile-color-muted));
+}
+
+/* Rich text inherits the section text colour (body text by default) */
+.agile-richtext {
+  color: inherit;
+}
+
+.agile-richtext h1,
+.agile-richtext h2,
+.agile-richtext h3,
+.agile-richtext h4,
+.agile-richtext h5,
+.agile-richtext h6 {
+  color: var(--agile-heading-color, var(--agile-color-secondary));
+}

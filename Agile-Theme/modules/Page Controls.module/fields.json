@@ -1,0 +1,81 @@
+[
+  {
+    "name": "header_mode_override",
+    "label": "Header Mode Override",
+    "type": "choice",
+    "display": "select",
+    "choices": [
+      ["theme_default", "Theme Default"],
+      ["native", "Native Header"],
+      ["minimal", "Minimal Header"],
+      ["hidden", "No Header"]
+    ],
+    "default": "theme_default"
+  },
+  {
+    "name": "header_style_override",
+    "label": "Header Style Override",
+    "type": "choice",
+    "display": "select",
+    "choices": [
+      ["theme_default", "Theme Default"],
+      ["solid", "Solid"],
+      ["transparent", "Transparent (overlays the first section)"]
+    ],
+    "default": "theme_default",
+    "help_text": "Transparent: the header sits over the page's first section and scrolls away with it. Use it only when that section has a dark or coloured background. Theme Default is solid, unless the theme's 'Transparent Over Hero' setting is on."
+  },
+  {
+    "name": "footer_mode_override",
+    "label": "Footer Mode Override",
+    "type": "choice",
+    "display": "select",
+    "choices": [
+      ["theme_default", "Theme Default"],
+      ["native", "Native Footer"],
+      ["minimal", "Minimal Footer"],
+      ["hidden", "No Footer"]
+    ],
+    "default": "theme_default"
+  },
+  {
+    "name": "page_width",
+    "label": "Page Width",
+    "type": "choice",
+    "display": "select",
+    "choices": [
+      ["theme_default", "Theme Default"],
+      ["narrow", "Narrow"],
+      ["wide", "Wide"],
+      ["full", "Full"]
+    ],
+    "default": "theme_default"
+  },
+  {
+    "name": "spacing_density",
+    "label": "Spacing Density",
+    "type": "choice",
+    "display": "select",
+    "choices": [
+      ["theme_default", "Theme Default"],
+      ["compact", "Compact"],
+      ["relaxed", "Relaxed"]
+    ],
+    "default": "theme_default"
+  },
+  {
+    "name": "body_classes",
+    "label": "Page Wrapper Classes",
+    "type": "text",
+    "allow_new_line": false,
+    "default": "",
+    "help_text": "Extra class names added to the page wrapper (.agile-page, inside <body>), separated by spaces. Target them in CSS as .agile-page.my-class."
+  },
+  {
+    "name": "page_css",
+    "label": "Page Scoped CSS",
+    "type": "text",
+    "allow_new_line": true,
+    "default": ""
+  }
+]

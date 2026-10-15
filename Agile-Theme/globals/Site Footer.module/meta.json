@@ -1,0 +1,11 @@
+{
+  "label": "Site Footer",
+  "css_assets": [],
+  "external_js": [],
+  "global": false,
+  "host_template_types": ["PAGE", "BLOG_POST", "BLOG_LISTING"],
+  "icon": "fontawesome-5.14.0:WindowMaximize",
+  "is_available_for_new_content": false,
+  "js_assets": [],
+  "smart_type": "NOT_SMART"
+}

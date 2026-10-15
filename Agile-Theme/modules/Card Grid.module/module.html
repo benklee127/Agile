@@ -1,0 +1,71 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Card Grid [S] — a Section module that owns its own grid: an optional
+  header (eyebrow, heading, intro) and a repeater of 1–12 cards.
+  Wrapper chrome (spacing, background, text colour, width, alignment,
+  anchor, visibility, custom class) comes from agile.section_attrs().
+  Module-specific: layout.columns (2/3/4 on desktop; 2 on tablet, 1 on
+  phones), style.card_style (same variants as Card Item), content.card_heading_level.
+
+  Each card uses Card Item's class names (.agile-card-item, --default /
+  --outlined / --flat, __media, __img, __body, __eyebrow, __title, __text,
+  __cta) so both modules look the same. The card rules live once, in
+  css/components/_card.css (loaded by main.css).
+#}
+{%- set c = module.content -%}
+{%- set columns = module.layout.columns if module.layout.columns in ["2", "3", "4"] else "3" -%}
+{%- set variant = module.style.card_style if module.style.card_style in ["default", "outlined", "flat"] else "default" -%}
+{%- set card_class = "agile-card-item agile-card-item--" ~ variant ~ " agile-card-grid__card" -%}
+{#- Framed cards have their own light background, so restore the default
+    colour context inside coloured sections. Flat cards take the section's. -#}
+{%- if variant != "flat" -%}{%- set card_class = card_class ~ " agile-reset-colors" -%}{%- endif -%}
+{%- set card_level = c.card_heading_level|default("h3", true) -%}
+{%- set sizes_map = {
+  "2": "(max-width: 767px) 100vw, 50vw",
+  "3": "(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw",
+  "4": "(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"
+} -%}
+{%- set img_sizes = sizes_map[columns] -%}
+
+<section {{ agile.section_attrs(module, "agile-card-grid", "agile-card-grid--cols-" ~ columns) }}>
+  <div class="agile-container">
+    {%- if c.eyebrow or c.heading or c.intro %}
+    <header class="agile-card-grid__header">
+      {%- if c.eyebrow %}
+      <p class="agile-eyebrow agile-card-grid__eyebrow">{{ c.eyebrow|escape_html }}</p>
+      {%- endif %}
+      {{ agile.heading(c.heading, c.heading_level|default("h2", true), "agile-card-grid__heading") }}
+      {%- if c.intro %}
+      <p class="agile-card-grid__intro">{{ c.intro|escape_html|replace("\n", "<br>") }}</p>
+      {%- endif %}
+    </header>
+    {%- endif %}
+
+    <ul class="agile-card-grid__list" role="list">
+      {%- for card in c.cards %}
+        {%- set button_html = agile.button(card.cta.text, card.cta.link, agile.resolve_style(card.cta.style, module.style.button_style))|trim %}
+      <li class="agile-card-grid__item">
+        <article class="{{ card_class }}">
+          {%- if card.image.src %}
+          <div class="agile-card-item__media">
+            {{ agile.image(card.image, img_sizes, "lazy", "agile-card-item__img") }}
+          </div>
+          {%- endif %}
+          <div class="agile-card-item__body">
+            {%- if card.eyebrow %}
+            <p class="agile-eyebrow agile-card-item__eyebrow">{{ card.eyebrow|escape_html }}</p>
+            {%- endif %}
+            {{ agile.heading(card.heading, card_level, "agile-card-item__title") }}
+            {%- if card.body_text %}
+            <div class="agile-card-item__text agile-richtext">{{ card.body_text }}</div>
+            {%- endif %}
+            {%- if button_html %}
+            <div class="agile-card-item__cta">{{ button_html }}</div>
+            {%- endif %}
+          </div>
+        </article>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>

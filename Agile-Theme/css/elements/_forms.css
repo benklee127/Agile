@@ -1,0 +1,331 @@
+/* ==========================================================================
+   Forms
+   1. New HubSpot forms (embedded editor forms) — styled through HubSpot's
+      documented --hsf-* CSS variables.
+   2. Legacy HubSpot forms (.hs-form markup rendered inline on CMS pages).
+   3. Bare inputs (.agile-form or plain markup inside modules).
+   All values come from theme.forms.* tokens (see base/_tokens.css).
+   ========================================================================== */
+
+/* --- 1. New HubSpot forms ------------------------------------------------
+   Declared on :root AND on .agile-section / .agile-reset-colors: custom
+   properties resolve where they are declared, so re-declaring them inside
+   each section (and reset panel) picks up the colour tokens that coloured
+   sections re-point (base/_sections.css). Input/textarea/checkbox values
+   intentionally stay the same in every context. */
+:root,
+.agile-section,
+.agile-reset-colors {
+  --hsf-global__font-family: var(--agile-font-body);
+  --hsf-global__font-size: var(--agile-body-size);
+  --hsf-global__color: var(--agile-section-text, var(--agile-color-text));
+  --hsf-global-error__color: var(--agile-form-error-color);
+
+  --hsf-row__vertical-spacing: var(--agile-form-field-gap);
+  --hsf-row__horizontal-spacing: var(--agile-form-field-gap);
+  --hsf-module__vertical-spacing: var(--agile-form-field-gap);
+
+  --hsf-heading__font-family: var(--agile-font-heading);
+  --hsf-heading__color: var(--agile-heading-color, var(--agile-color-secondary));
+  --hsf-richtext__font-family: var(--agile-font-body);
+  --hsf-richtext__color: var(--agile-section-text, var(--agile-color-text));
+
+  --hsf-button__font-family: var(--agile-font-body);
+  --hsf-button__color: var(--agile-btn-primary-fg);
+  --hsf-button__background-color: var(--agile-btn-primary-bg);
+  --hsf-button__border-radius: var(--agile-button-radius);
+  --hsf-button__padding: var(--agile-button-padding-y) var(--agile-button-padding-x);
+
+  --hsf-erroralert__color: var(--agile-form-error-color);
+
+  --hsf-field-label__font-family: var(--agile-font-body);
+  --hsf-field-label__color: var(--agile-form-label-color);
+  --hsf-field-label-requiredindicator__color: var(--agile-form-error-color);
+  --hsf-field-description__color: var(--agile-text-muted, var(--agile-color-muted));
+  --hsf-field-footer__color: var(--agile-text-muted, var(--agile-color-muted));
+
+  --hsf-field-input__font-family: var(--agile-font-body);
+  --hsf-field-input__color: var(--agile-form-input-color);
+  --hsf-field-input__background-color: var(--agile-form-input-bg);
+  --hsf-field-input__placeholder-color: var(--agile-form-placeholder);
+  --hsf-field-input__border-color: var(--agile-form-border-color);
+  --hsf-field-input__border-width: var(--agile-form-border-width);
+  --hsf-field-input__border-style: solid;
+  --hsf-field-input__border-radius: var(--agile-form-radius);
+  --hsf-field-input__padding: 12px 14px;
+
+  --hsf-field-textarea__font-family: var(--agile-font-body);
+  --hsf-field-textarea__color: var(--agile-form-input-color);
+  --hsf-field-textarea__background-color: var(--agile-form-input-bg);
+  --hsf-field-textarea__placeholder-color: var(--agile-form-placeholder);
+  --hsf-field-textarea__border-color: var(--agile-form-border-color);
+  --hsf-field-textarea__border-width: var(--agile-form-border-width);
+  --hsf-field-textarea__border-style: solid;
+  --hsf-field-textarea__border-radius: var(--agile-form-radius);
+  --hsf-field-textarea__padding: 12px 14px;
+
+  --hsf-field-checkbox__background-color: var(--agile-form-input-bg);
+  --hsf-field-checkbox__color: var(--agile-form-input-color);
+  --hsf-field-checkbox__border-color: var(--agile-form-border-color);
+  --hsf-field-checkbox__border-width: var(--agile-form-border-width);
+  --hsf-field-checkbox__border-style: solid;
+
+  --hsf-field-radio__background-color: var(--agile-form-input-bg);
+  --hsf-field-radio__color: var(--agile-form-input-color);
+  --hsf-field-radio__border-color: var(--agile-form-border-color);
+  --hsf-field-radio__border-width: var(--agile-form-border-width);
+  --hsf-field-radio__border-style: solid;
+}
+
+/* --- 2. Legacy HubSpot forms + 3. bare Agile forms ---------------------- */
+
+.hs-form,
+.agile-form {
+  display: grid;
+  gap: var(--agile-form-field-gap);
+  font-family: var(--agile-font-body);
+}
+
+.hs-form fieldset {
+  max-width: none !important; /* HubSpot inlines max-width: 500px */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* Multi-column fieldsets */
+.hs-form fieldset.form-columns-2,
+.hs-form fieldset.form-columns-3 {
+  display: grid;
+  gap: var(--agile-form-field-gap);
+}
+.hs-form fieldset.form-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.hs-form fieldset.form-columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.hs-form fieldset .hs-form-field,
+.hs-form fieldset.form-columns-2 .hs-form-field,
+.hs-form fieldset.form-columns-3 .hs-form-field {
+  width: auto !important; /* HubSpot sets percentage widths + floats */
+  float: none !important;
+  padding: 0 !important;
+}
+
+.hs-form fieldset .input {
+  margin-right: 0 !important; /* HubSpot adds margin-right to column inputs */
+}
+
+.hs-form fieldset + fieldset {
+  margin-top: 0;
+}
+
+.hs-form .hs-form-field {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.hs-form label,
+.agile-form label {
+  color: var(--agile-form-label-color);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.hs-form .hs-form-required {
+  margin-left: 2px;
+  color: var(--agile-form-error-color);
+}
+
+.hs-form legend.hs-field-desc,
+.hs-form .hs-field-desc {
+  margin: 0;
+  color: var(--agile-text-muted, var(--agile-color-muted));
+  font-size: 0.875rem;
+}
+
+.hs-form input[type="text"],
+.hs-form input[type="email"],
+.hs-form input[type="tel"],
+.hs-form input[type="number"],
+.hs-form input[type="url"],
+.hs-form input[type="password"],
+.hs-form input[type="date"],
+.hs-form input[type="search"],
+.hs-form input[type="file"],
+.hs-form select,
+.hs-form textarea,
+.agile-form input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.agile-form select,
+.agile-form textarea {
+  display: block;
+  width: 100% !important;
+  margin: 0;
+  padding: 12px 14px;
+  border: var(--agile-form-border-width) solid var(--agile-form-border-color);
+  border-radius: var(--agile-form-radius);
+  background-color: var(--agile-form-input-bg);
+  color: var(--agile-form-input-color);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+  transition:
+    border-color var(--agile-duration-fast) var(--agile-easing),
+    box-shadow var(--agile-duration-fast) var(--agile-easing);
+  appearance: none;
+}
+
+.hs-form select,
+.agile-form select {
+  padding-right: 40px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.hs-form textarea,
+.agile-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.hs-form input::placeholder,
+.hs-form textarea::placeholder,
+.agile-form input::placeholder,
+.agile-form textarea::placeholder {
+  color: var(--agile-form-placeholder);
+  opacity: 1;
+}
+
+.hs-form input:focus,
+.hs-form select:focus,
+.hs-form textarea:focus,
+.agile-form input:focus,
+.agile-form select:focus,
+.agile-form textarea:focus {
+  border-color: var(--agile-focus-color);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--agile-focus-color) 25%, transparent);
+}
+
+.hs-form .hs-input.error,
+.hs-form .hs-input.invalid,
+.agile-form [aria-invalid="true"] {
+  border-color: var(--agile-form-error-color);
+}
+
+/* Checkbox / radio lists */
+.hs-form .inputs-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hs-form .inputs-list label,
+.hs-form .hs-form-booleancheckbox-display,
+.hs-form .hs-form-checkbox-display,
+.hs-form .hs-form-radio-display {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.hs-form input[type="checkbox"],
+.hs-form input[type="radio"],
+.agile-form input[type="checkbox"],
+.agile-form input[type="radio"] {
+  flex: 0 0 auto;
+  width: 18px !important;
+  height: 18px;
+  margin: 3px 0 0;
+  accent-color: var(--agile-color-primary);
+}
+
+/* Error messages */
+.hs-form .hs-error-msgs {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hs-form .hs-error-msgs label,
+.hs-form .hs-error-msg,
+.hs-form .hs_error_rollup .hs-main-font-element,
+.agile-form .agile-form__error {
+  color: var(--agile-form-error-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Rich text / legal consent blocks */
+.hs-form .hs-richtext,
+.hs-form .legal-consent-container {
+  color: var(--agile-text-muted, var(--agile-color-muted));
+  font-size: 0.875rem;
+}
+
+.hs-form .legal-consent-container .hs-form-booleancheckbox-display > span {
+  margin-left: 0 !important;
+}
+
+/* Submit */
+.hs-form .hs_submit,
+.hs-form .actions {
+  margin: 0;
+  padding: 0;
+}
+
+.hs-form .hs-button,
+.hs-form input[type="submit"],
+.agile-form button[type="submit"],
+.agile-form input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--agile-button-padding-y) var(--agile-button-padding-x);
+  border: 1px solid var(--agile-btn-primary-bg);
+  border-radius: var(--agile-button-radius);
+  background: var(--agile-btn-primary-bg);
+  color: var(--agile-btn-primary-fg);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    transform var(--agile-button-transition-duration) var(--agile-easing),
+    background-color var(--agile-button-transition-duration) var(--agile-easing);
+}
+
+.hs-form .hs-button:hover,
+.hs-form input[type="submit"]:hover,
+.agile-form button[type="submit"]:hover,
+.agile-form input[type="submit"]:hover {
+  transform: var(--agile-button-hover-transform);
+  background: color-mix(in srgb, var(--agile-btn-primary-bg) 86%, var(--agile-btn-primary-fg));
+}
+
+.hs-form .hs-button:focus-visible,
+.hs-form input[type="submit"]:focus-visible {
+  outline: 2px solid var(--agile-focus-color);
+  outline-offset: 3px;
+}
+
+/* Post-submit message */
+.submitted-message {
+  color: inherit;
+}
+
+@media (max-width: 767px) {
+  .hs-form fieldset.form-columns-2,
+  .hs-form fieldset.form-columns-3 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,332 @@
+[
+  {
+    "name": "content",
+    "id": "content",
+    "label": "Content",
+    "type": "group",
+    "expanded": true,
+    "children": [
+      {
+        "name": "show_logo",
+        "id": "content__show_logo",
+        "label": "Show logo",
+        "type": "boolean",
+        "display": "toggle",
+        "default": true
+      },
+      {
+        "name": "logo",
+        "id": "content__logo",
+        "label": "Logo",
+        "type": "image",
+        "responsive": true,
+        "resizable": false,
+        "help_text": "Leave empty to use the theme logo (Theme settings > Branding > Logo).",
+        "visibility": {
+          "controlling_field_path": "content.show_logo",
+          "operator": "EQUAL",
+          "controlling_value_regex": "true"
+        },
+        "default": {
+          "src": "",
+          "alt": "",
+          "loading": "lazy"
+        }
+      },
+      {
+        "name": "company_name",
+        "id": "content__company_name",
+        "label": "Company name",
+        "type": "text",
+        "default": "Company Name",
+        "help_text": "Shown under the logo. Also names the logo link when the logo has no alt text (then the site's company name, then Home)."
+      },
+      {
+        "name": "about_text",
+        "id": "content__about_text",
+        "label": "About text",
+        "type": "richtext",
+        "default": "",
+        "help_text": "Optional short description under the company name."
+      },
+      {
+        "name": "columns",
+        "id": "content__columns",
+        "label": "Link columns",
+        "type": "group",
+        "occurrence": {
+          "min": 0,
+          "max": 4,
+          "sorting_label_field": "content__columns__column_heading"
+        },
+        "default": [],
+        "children": [
+          {
+            "name": "column_heading",
+            "id": "content__columns__column_heading",
+            "label": "Column heading",
+            "type": "text",
+            "default": "Company",
+            "help_text": "Shown above the column's links. All columns share one Footer navigation region for screen readers. A column with no links is hidden on the live page."
+          },
+          {
+            "name": "column_source",
+            "id": "content__columns__column_source",
+            "label": "Links from",
+            "type": "choice",
+            "display": "select",
+            "choices": [
+              [
+                "links",
+                "Links entered here"
+              ],
+              [
+                "menu",
+                "A HubSpot menu"
+              ]
+            ],
+            "default": "links"
+          },
+          {
+            "name": "column_menu",
+            "id": "content__columns__column_menu",
+            "label": "Menu",
+            "type": "menu",
+            "default": null,
+            "help_text": "Top-level menu items only; child items are not shown in the footer.",
+            "visibility": {
+              "controlling_field_path": "content.columns.column_source",
+              "operator": "EQUAL",
+              "controlling_value_regex": "menu"
+            }
+          },
+          {
+            "name": "column_links",
+            "id": "content__columns__column_links",
+            "label": "Links",
+            "type": "group",
+            "occurrence": {
+              "min": 0,
+              "max": 10,
+              "sorting_label_field": "content__columns__column_links__column_link_text"
+            },
+            "visibility": {
+              "controlling_field_path": "content.columns.column_source",
+              "operator": "EQUAL",
+              "controlling_value_regex": "links"
+            },
+            "default": [],
+            "children": [
+              {
+                "name": "column_link_text",
+                "id": "content__columns__column_links__column_link_text",
+                "label": "Link text",
+                "type": "text",
+                "default": "Link"
+              },
+              {
+                "name": "column_link_url",
+                "id": "content__columns__column_links__column_link_url",
+                "label": "Link",
+                "type": "link",
+                "supported_types": [
+                  "EXTERNAL",
+                  "CONTENT",
+                  "FILE",
+                  "EMAIL_ADDRESS",
+                  "BLOG",
+                  "PHONE_NUMBER"
+                ],
+                "default": {
+                  "url": {
+                    "type": "EXTERNAL",
+                    "href": ""
+                  },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "social",
+        "id": "content__social",
+        "label": "Social links",
+        "type": "group",
+        "occurrence": {
+          "min": 0,
+          "max": 8,
+          "sorting_label_field": "content__social__network"
+        },
+        "default": [],
+        "children": [
+          {
+            "name": "network",
+            "id": "content__social__network",
+            "label": "Network",
+            "type": "choice",
+            "display": "select",
+            "choices": [
+              [
+                "linkedin",
+                "LinkedIn"
+              ],
+              [
+                "x",
+                "X (Twitter)"
+              ],
+              [
+                "facebook",
+                "Facebook"
+              ],
+              [
+                "instagram",
+                "Instagram"
+              ],
+              [
+                "youtube",
+                "YouTube"
+              ],
+              [
+                "other",
+                "Other (link icon)"
+              ]
+            ],
+            "default": "linkedin"
+          },
+          {
+            "name": "social_url",
+            "id": "content__social__social_url",
+            "label": "Profile link",
+            "type": "link",
+            "supported_types": [
+              "EXTERNAL"
+            ],
+            "default": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": ""
+              },
+              "open_in_new_tab": true,
+              "no_follow": false
+            }
+          },
+          {
+            "name": "accessible_label",
+            "id": "content__social__accessible_label",
+            "label": "Screen reader label",
+            "type": "text",
+            "default": "",
+            "help_text": "Read out instead of the icon, e.g. 'Company Name on LinkedIn'. Leave empty to use the network name."
+          }
+        ]
+      },
+      {
+        "name": "legal_links",
+        "id": "content__legal_links",
+        "label": "Legal links",
+        "type": "group",
+        "occurrence": {
+          "min": 0,
+          "max": 6,
+          "sorting_label_field": "content__legal_links__legal_text"
+        },
+        "default": [],
+        "children": [
+          {
+            "name": "legal_text",
+            "id": "content__legal_links__legal_text",
+            "label": "Link text",
+            "type": "text",
+            "default": "Privacy Policy"
+          },
+          {
+            "name": "legal_url",
+            "id": "content__legal_links__legal_url",
+            "label": "Link",
+            "type": "link",
+            "supported_types": [
+              "EXTERNAL",
+              "CONTENT",
+              "FILE"
+            ],
+            "default": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": ""
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "disclaimer",
+        "id": "content__disclaimer",
+        "label": "Disclaimer",
+        "type": "richtext",
+        "default": "",
+        "help_text": "Regulatory or legal disclosure text. Shown in the full footer only; the minimal footer shows copyright and legal links."
+      },
+      {
+        "name": "copyright",
+        "id": "content__copyright",
+        "label": "Copyright line",
+        "type": "text",
+        "default": "© {year} Company Name. All rights reserved.",
+        "help_text": "{year} is replaced with the current year."
+      }
+    ]
+  },
+  {
+    "name": "advanced",
+    "id": "advanced",
+    "label": "Advanced",
+    "type": "group",
+    "children": [
+      {
+        "name": "component_id",
+        "id": "advanced__component_id",
+        "label": "Anchor ID",
+        "type": "text",
+        "default": "",
+        "help_text": "Sets the id attribute so you can link to this module with #anchor. Converted to lower case; spaces become hyphens and any characters other than letters, numbers, hyphens and underscores are removed (e.g. 'Our Pricing' becomes #our-pricing). Start with a letter."
+      },
+      {
+        "name": "custom_class",
+        "id": "advanced__custom_class",
+        "label": "Custom CSS class",
+        "type": "text",
+        "default": "",
+        "help_text": "Extra class names added to the module wrapper, separated by spaces."
+      },
+      {
+        "name": "visibility",
+        "id": "advanced__visibility",
+        "label": "Visibility",
+        "type": "group",
+        "children": [
+          {
+            "name": "hide_on_mobile",
+            "id": "advanced__visibility__hide_on_mobile",
+            "label": "Hide on mobile",
+            "type": "boolean",
+            "display": "toggle",
+            "default": false
+          },
+          {
+            "name": "hide_on_desktop",
+            "id": "advanced__visibility__hide_on_desktop",
+            "label": "Hide on desktop",
+            "type": "boolean",
+            "display": "toggle",
+            "default": false
+          }
+        ]
+      }
+    ]
+  }
+]

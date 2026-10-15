@@ -1,0 +1,121 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Agile Homepage
+  screenshotPath: ../images/theme-preview.svg
+-->
+{% extends "./layouts/base.html" %}
+
+{% block body %}
+  {% dnd_area "page_sections" label="Page Sections" %}
+
+    {% dnd_section
+      padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      margin={ "top": 0, "bottom": 0, "left": 0, "right": 0 }
+    %}
+      {% dnd_column offset=0, width=12 %}
+        {% dnd_row %}
+          {% dnd_module "homepage_hero" path="../modules/Hero.module", label="Hero" %}
+          {% end_dnd_module %}
+        {% end_dnd_row %}
+      {% end_dnd_column %}
+    {% end_dnd_section %}
+
+    {% dnd_section
+      padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      margin={ "top": 0, "bottom": 0, "left": 0, "right": 0 }
+    %}
+      {% dnd_column offset=0, width=12 %}
+        {% dnd_row %}
+          {% dnd_module "homepage_intro" path="../modules/Rich Section.module", label="Intro",
+            content={
+              "eyebrow": "Agile Theme",
+              "heading": "Built for full websites and partial-site delivery.",
+              "body_text": "<p>Agile is a standalone HubSpot theme framework designed to support net-new sites, blog and landing page extensions, and client-matching infrastructure work.</p>",
+              "cta": {
+                "text": "Review the Architecture",
+                "link": {
+                  "url": { "type": "EXTERNAL", "href": "#agile-architecture" },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              }
+            }
+          %}
+          {% end_dnd_module %}
+        {% end_dnd_row %}
+      {% end_dnd_column %}
+    {% end_dnd_section %}
+
+    {% dnd_section
+      padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      margin={ "top": 0, "bottom": 0, "left": 0, "right": 0 }
+    %}
+      {% dnd_column offset=0, width=12 %}
+        {% dnd_row %}
+          {% dnd_module "homepage_card_grid" path="../modules/Card Grid.module", label="Delivery Modes",
+            content={
+              "eyebrow": "How Agile is used",
+              "heading": "One framework, three ways to deliver.",
+              "heading_level": "h2",
+              "intro": "Each mode uses the same tokens, modules and page controls.",
+              "card_heading_level": "h3",
+              "cards": [
+                {
+                  "eyebrow": "Full site",
+                  "heading": "Net-new websites",
+                  "body_text": "<p>Agile owns the header, footer, templates and modules, all driven by theme tokens.</p>",
+                  "cta": { "text": "" }
+                },
+                {
+                  "eyebrow": "Extension",
+                  "heading": "Blogs and landing pages",
+                  "body_text": "<p>Add a blog or campaign pages next to an existing site, matched through tokens and page CSS.</p>",
+                  "cta": { "text": "" }
+                },
+                {
+                  "eyebrow": "Infrastructure",
+                  "heading": "Client-matching builds",
+                  "body_text": "<p>Rebuild a client's look on a clean module contract that editors can maintain.</p>",
+                  "cta": { "text": "" }
+                }
+              ]
+            },
+            layout={ "columns": "3" },
+            style={ "card_style": "outlined" }
+          %}
+          {% end_dnd_module %}
+        {% end_dnd_row %}
+      {% end_dnd_column %}
+    {% end_dnd_section %}
+
+    {% dnd_section
+      padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      margin={ "top": 0, "bottom": 0, "left": 0, "right": 0 }
+    %}
+      {% dnd_column offset=0, width=12 %}
+        {% dnd_row %}
+          {% dnd_module "homepage_architecture" path="../modules/Rich Section.module", label="Architecture Summary",
+            content={
+              "eyebrow": "Current State",
+              "heading": "The foundation is in place.",
+              "body_text": "<p>Agile now has a token-driven theme, page controls, a global header and footer edited in the global content editor, and reference modules built on one shared field contract.</p><p>The next implementation wave is about systematizing variants, reusable field groups, and the broader module library.</p>",
+              "cta": {
+                "text": "Continue Building",
+                "link": {
+                  "url": { "type": "EXTERNAL", "href": "#maincontent" },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              }
+            },
+            style={ "background": "surface" },
+            advanced={ "component_id": "agile-architecture" }
+          %}
+          {% end_dnd_module %}
+        {% end_dnd_row %}
+      {% end_dnd_column %}
+    {% end_dnd_section %}
+
+  {% end_dnd_area %}
+{% endblock body %}

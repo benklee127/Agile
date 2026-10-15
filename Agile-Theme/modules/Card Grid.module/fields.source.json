@@ -1,0 +1,146 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "eyebrow",
+        "label": "Eyebrow",
+        "type": "text",
+        "default": "",
+        "help_text": "Optional short label above the section heading."
+      },
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "What we offer",
+        "help_text": "Section heading above the cards. Leave blank to hide it."
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h2"
+      },
+      {
+        "name": "intro",
+        "label": "Intro text",
+        "type": "text",
+        "allow_new_line": true,
+        "default": "",
+        "help_text": "Optional. One or two sentences under the section heading."
+      },
+      {
+        "name": "card_heading_level",
+        "label": "Card heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h2", "H2"], ["h3", "H3"], ["h4", "H4"], ["h5", "H5"]],
+        "default": "h3",
+        "help_text": "Semantic level for every card heading. Choose the level below the section heading."
+      },
+      {
+        "name": "cards",
+        "label": "Cards",
+        "type": "group",
+        "occurrence": {
+          "min": 1,
+          "max": 12,
+          "default": 3,
+          "sorting_label_field": "./heading"
+        },
+        "children": [
+          {
+            "name": "image",
+            "label": "Card image",
+            "type": "image",
+            "responsive": true,
+            "resizable": true,
+            "help_text": "Optional. Shown at the top of the card, cropped to 16:9."
+          },
+          {
+            "name": "eyebrow",
+            "label": "Eyebrow",
+            "type": "text",
+            "default": ""
+          },
+          {
+            "name": "heading",
+            "label": "Heading",
+            "type": "text",
+            "default": "Card heading"
+          },
+          {
+            "name": "body_text",
+            "label": "Body",
+            "type": "richtext",
+            "default": "<p>Describe the item, feature or service in a sentence or two.</p>"
+          },
+          {
+            "$use": "cta",
+            "name": "cta",
+            "label": "Button",
+            "$defaults": { "text": "" }
+          }
+        ],
+        "default": [
+          {
+            "eyebrow": "Plan",
+            "heading": "Strategy that fits",
+            "body_text": "<p>Start from your goals, not a template. We map the work to the outcomes that matter to your team.</p>",
+            "cta": { "text": "Learn more", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" }
+          },
+          {
+            "eyebrow": "Build",
+            "heading": "Built to last",
+            "body_text": "<p>Reusable building blocks keep every page consistent and quick to change as you grow.</p>",
+            "cta": { "text": "Learn more", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" }
+          },
+          {
+            "eyebrow": "Grow",
+            "heading": "Measured results",
+            "body_text": "<p>Clear reporting shows what is working, so you can invest where it counts.</p>",
+            "cta": { "text": "Learn more", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "$use": "layout",
+    "$append": [
+      {
+        "name": "columns",
+        "label": "Cards per row",
+        "type": "choice",
+        "display": "select",
+        "choices": [["2", "2"], ["3", "3"], ["4", "4"]],
+        "default": "3",
+        "help_text": "Desktop. Tablets show 2 per row and phones show 1."
+      }
+    ]
+  },
+  {
+    "$use": "style",
+    "$append": [
+      {
+        "name": "card_style",
+        "label": "Card style",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          ["default", "Raised (shadow)"],
+          ["outlined", "Outlined (border)"],
+          ["flat", "Flat (no frame)"]
+        ],
+        "default": "default",
+        "help_text": "Raised and Outlined cards keep the default page colours inside coloured sections. Flat cards take the section's colours."
+      }
+    ]
+  },
+  { "$use": "advanced" }
+]

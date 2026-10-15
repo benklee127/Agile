@@ -1,0 +1,37 @@
+.u-text-center { text-align: center; }
+.u-text-left   { text-align: left; }
+
+.u-surface {
+  background: var(--agile-color-surface);
+}
+
+.u-card {
+  padding: 24px;
+  border: 1px solid var(--agile-color-border);
+  border-radius: var(--agile-radius-md);
+  background: var(--agile-color-background);
+  box-shadow: var(--agile-shadow-card);
+}
+
+/* Screen-reader only */
+.u-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Responsive visibility — set by Advanced > Visibility module fields.
+   Breakpoint: 767px (theme-wide mobile breakpoint). */
+@media (max-width: 767px) {
+  .agile-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 768px) {
+  .agile-hide-desktop { display: none !important; }
+}

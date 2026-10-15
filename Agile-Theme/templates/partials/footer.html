@@ -1,0 +1,39 @@
+<!--
+  templateType: global_partial
+  label: Agile Footer
+-->
+{#
+  Global footer. Content is edited in HubSpot's global content editor; the
+  values below are only the seed for a new portal. Footer mode (theme
+  footer.mode + Page Controls footer_mode_override) is resolved inside the
+  Site Footer module. Paths: the theme root from templates/partials/ is ../../
+#}
+{% dnd_area "footer_area" label="Site Footer" %}
+  {% dnd_section
+    padding={ "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    margin={ "top": 0, "bottom": 0, "left": 0, "right": 0 }
+  %}
+    {% dnd_column offset=0, width=12 %}
+      {% dnd_row %}
+        {% dnd_module "site_footer" path="../../globals/Site Footer.module", label="Site Footer",
+          content={
+            "show_logo": true,
+            "company_name": "Company Name",
+            "copyright": "© {year} Company Name. All rights reserved.",
+            "legal_links": [
+              {
+                "legal_text": "Privacy Policy",
+                "legal_url": {
+                  "url": { "type": "EXTERNAL", "href": "/privacy-policy" },
+                  "open_in_new_tab": false,
+                  "no_follow": false
+                }
+              }
+            ]
+          }
+        %}
+        {% end_dnd_module %}
+      {% end_dnd_row %}
+    {% end_dnd_column %}
+  {% end_dnd_section %}
+{% end_dnd_area %}

@@ -1,0 +1,128 @@
+/* ==========================================================================
+   Buttons
+   .agile-button            theme default style (theme.buttons.primary_style)
+   .agile-button--primary   solid primary
+   .agile-button--secondary solid secondary
+   .agile-button--ghost     transparent with a subtle outline
+   .agile-button--link      text link (no box)
+   Colour roles come from --agile-btn-* tokens, which coloured sections
+   re-point (see base/_sections.css) so buttons stay readable.
+   ========================================================================== */
+
+.agile-button {
+  /* solid primary roles */
+  --_btn-bg:     var(--agile-btn-primary-bg);
+  --_btn-fg:     var(--agile-btn-primary-fg);
+  --_btn-border: var(--agile-btn-primary-bg);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: var(--agile-button-padding-y) var(--agile-button-padding-x);
+  border: 1px solid var(--_btn-border);
+  border-radius: var(--agile-button-radius);
+  background: var(--_btn-bg);
+  color: var(--_btn-fg);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--agile-button-transition-duration) var(--agile-easing),
+    background-color var(--agile-button-transition-duration) var(--agile-easing),
+    color var(--agile-button-transition-duration) var(--agile-easing),
+    border-color var(--agile-button-transition-duration) var(--agile-easing);
+}
+
+.agile-button:hover {
+  transform: var(--agile-button-hover-transform);
+  background: color-mix(in srgb, var(--_btn-bg) 86%, var(--_btn-fg));
+  color: var(--_btn-fg);
+  text-decoration: none;
+}
+
+.agile-button:focus-visible {
+  outline: 2px solid var(--agile-focus-color);
+  outline-offset: 3px;
+}
+
+{% if theme.buttons.primary_style == "outline" %}
+.agile-button {
+  --_btn-bg:     transparent;
+  --_btn-fg:     var(--agile-btn-outline-color);
+  --_btn-border: var(--agile-btn-outline-color);
+}
+.agile-button:hover {
+  background: color-mix(in srgb, var(--_btn-fg) 10%, transparent);
+}
+{% elif theme.buttons.primary_style == "ghost" %}
+.agile-button {
+  --_btn-bg:     transparent;
+  --_btn-fg:     var(--agile-btn-outline-color);
+  --_btn-border: transparent;
+}
+.agile-button:hover {
+  background: color-mix(in srgb, var(--_btn-fg) 10%, transparent);
+}
+{% endif %}
+
+/* --- Modifiers (always beat the theme default: specificity 0,2,0) ------ */
+
+.agile-button.agile-button--primary {
+  --_btn-bg:     var(--agile-btn-primary-bg);
+  --_btn-fg:     var(--agile-btn-primary-fg);
+  --_btn-border: var(--agile-btn-primary-bg);
+}
+.agile-button.agile-button--primary:hover {
+  background: color-mix(in srgb, var(--_btn-bg) 86%, var(--_btn-fg));
+}
+
+.agile-button.agile-button--secondary {
+  --_btn-bg:     var(--agile-btn-secondary-bg);
+  --_btn-fg:     var(--agile-btn-secondary-fg);
+  --_btn-border: var(--agile-btn-secondary-bg);
+}
+.agile-button.agile-button--secondary:hover {
+  background: color-mix(in srgb, var(--_btn-bg) 86%, var(--_btn-fg));
+}
+
+.agile-button.agile-button--ghost {
+  --_btn-bg:     transparent;
+  --_btn-fg:     var(--agile-btn-outline-color);
+  --_btn-border: color-mix(in srgb, var(--agile-btn-outline-color) 45%, transparent);
+}
+.agile-button.agile-button--ghost:hover {
+  background: color-mix(in srgb, var(--_btn-fg) 10%, transparent);
+}
+
+.agile-button.agile-button--link {
+  --_btn-bg:     transparent;
+  --_btn-fg:     var(--agile-btn-link-color);
+  --_btn-border: transparent;
+  padding: 0;
+  border-radius: 0;
+  text-decoration-line: underline;
+  text-underline-offset: 0.2em;
+}
+.agile-button.agile-button--link:hover {
+  background: transparent;
+  transform: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+}
+
+/* Optional row wrapper for one or more buttons */
+.agile-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.agile-align--center .agile-button-group {
+  justify-content: center;
+}

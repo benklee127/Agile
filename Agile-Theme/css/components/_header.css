@@ -1,0 +1,521 @@
+/* ==========================================================================
+   Site header — globals/Site Header.module (all header CSS lives here)
+   Tokens: --agile-header-bg / -text / -height / -border-width /
+   -transparent-text (theme.header.*, see base/_tokens.css).
+   The module resolves mode/style/sticky and sets modifier classes:
+     .agile-site-header--native | --minimal      (hidden renders nothing)
+     .agile-site-header--sticky                  theme.header.sticky
+     .agile-site-header--transparent             Page Controls: Transparent
+     .agile-site-header--auto-transparent        theme default "Transparent
+                                                 over Hero" is on (see below)
+     .agile-site-header--has-nav / --mobile-cta  layout helpers
+   State classes set by module.js: .is-open (header = mobile panel open;
+   nav item = dropdown open), .is-dismissed (hover dropdown closed by Esc).
+   Breakpoint: 767px. Progressive enhancement keys on html.agile-js.
+
+   The header sits inside HubSpot's global-partial and DnD wrappers, so the
+   "header shell" (the wrapper that is a direct child of .agile-page) is what
+   gets sticky / absolute positioning: .agile-page > :has(.agile-site-header).
+   ========================================================================== */
+
+.agile-site-header {
+  --agile-header-fg: var(--agile-header-text);
+  position: relative;
+  z-index: 20;
+  border-bottom: var(--agile-header-border-width) solid var(--agile-color-border);
+  background: var(--agile-header-bg);
+  color: var(--agile-header-fg);
+  transition:
+    background-color var(--agile-duration-base) var(--agile-easing),
+    color var(--agile-duration-base) var(--agile-easing);
+}
+
+.agile-site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  min-height: var(--agile-header-height);
+}
+
+/* --- Brand -------------------------------------------------------------- */
+
+.agile-site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: auto;
+  color: var(--agile-header-fg);
+  text-decoration: none;
+}
+
+.agile-site-header__brand:hover {
+  color: var(--agile-header-fg);
+  text-decoration: none;
+}
+
+.agile-site-header__logo {
+  width: auto;
+  max-width: 100%;
+  max-height: var(--agile-header-logo-max, 48px);
+}
+
+.agile-site-header__brand-text {
+  font-family: var(--agile-font-heading);
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+/* --- Panel (nav + button) ----------------------------------------------- */
+
+.agile-site-header__panel {
+  display: flex;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.agile-nav,
+.agile-nav__submenu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agile-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.agile-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.agile-nav__link,
+.agile-nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--agile-radius-sm);
+  background: transparent;
+  color: var(--agile-header-fg);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+span.agile-nav__link {
+  cursor: default;
+}
+
+.agile-nav__link:hover,
+.agile-nav__link[aria-current="page"],
+.agile-nav__item.is-active-branch > .agile-nav__link {
+  color: var(--agile-header-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+/* Chevron-only toggle next to a parent link */
+.agile-nav__toggle:not(.agile-nav__toggle--label) {
+  margin-left: -8px;
+  padding: 8px;
+}
+
+.agile-nav__chevron {
+  flex-shrink: 0;
+  transition: transform var(--agile-duration-fast) var(--agile-easing);
+}
+
+.agile-nav__toggle[aria-expanded="true"] .agile-nav__chevron {
+  transform: rotate(180deg);
+}
+
+.agile-nav__link:focus-visible,
+.agile-nav__toggle:focus-visible,
+.agile-nav__sublink:focus-visible,
+.agile-site-header__brand:focus-visible,
+.agile-site-header__toggle:focus-visible {
+  outline: 2px solid var(--agile-focus-color);
+  outline-offset: 2px;
+}
+
+/* Dropdown (one level). Solid surface even when the header is transparent. */
+.agile-nav__submenu {
+  --agile-header-fg: var(--agile-header-text);
+  display: none;
+  min-width: 220px;
+  padding: 8px;
+  border: 1px solid var(--agile-color-border);
+  border-radius: var(--agile-radius-md);
+  background: var(--agile-header-bg);
+  color: var(--agile-header-fg);
+}
+
+.agile-nav__sublink {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--agile-radius-sm);
+  color: var(--agile-header-fg);
+  text-decoration: none;
+}
+
+a.agile-nav__sublink:hover,
+.agile-nav__sublink[aria-current="page"] {
+  background: color-mix(in srgb, var(--agile-header-fg) 8%, transparent);
+  color: var(--agile-header-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+/* --- Button -------------------------------------------------------------- */
+
+.agile-site-header__actions,
+.agile-site-header__mobile-cta {
+  display: flex;
+  align-items: center;
+}
+
+.agile-site-header__mobile-cta {
+  display: none;
+}
+
+/* --- Mobile menu toggle (hamburger → close) ------------------------------ */
+
+.agile-site-header__toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--agile-radius-sm);
+  background: transparent;
+  color: var(--agile-header-fg);
+  cursor: pointer;
+}
+
+.agile-site-header__toggle-icon,
+.agile-site-header__toggle-icon::before,
+.agile-site-header__toggle-icon::after {
+  position: absolute;
+  left: 11px;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition:
+    transform var(--agile-duration-fast) var(--agile-easing),
+    background-color var(--agile-duration-fast) var(--agile-easing);
+}
+
+.agile-site-header__toggle-icon {
+  top: 21px;
+}
+
+.agile-site-header__toggle-icon::before,
+.agile-site-header__toggle-icon::after {
+  content: "";
+  left: 0;
+}
+
+.agile-site-header__toggle-icon::before { top: -7px; }
+.agile-site-header__toggle-icon::after  { top: 7px; }
+
+.agile-site-header__toggle[aria-expanded="true"] .agile-site-header__toggle-icon {
+  background: transparent;
+}
+
+.agile-site-header__toggle[aria-expanded="true"] .agile-site-header__toggle-icon::before {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.agile-site-header__toggle[aria-expanded="true"] .agile-site-header__toggle-icon::after {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Editor-only note when the header is hidden on a page */
+.agile-site-header-note {
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px dashed var(--agile-color-border);
+  color: var(--agile-text-muted, inherit);
+  font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   Desktop (768px and up): horizontal nav, hover/focus/click dropdowns
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .agile-site-header__panel {
+    flex: 0 1 auto;
+  }
+
+  .agile-nav__submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 30;
+    box-shadow: var(--agile-shadow-elevated, none);
+  }
+
+  /* The last top-level item sits at the header's right edge: anchor its
+     dropdown to the right so it never runs off-screen. The width cap covers
+     very narrow desktop widths. */
+  .agile-nav__submenu {
+    max-width: calc(100vw - 2 * var(--agile-gutter, 16px));
+  }
+
+  .agile-nav__item:last-child > .agile-nav__submenu {
+    left: auto;
+    right: 0;
+  }
+
+  /* JS toggles .is-open on click. */
+  .agile-nav__item.is-open > .agile-nav__submenu {
+    display: block;
+  }
+
+  /* Hover opens too (unless dismissed with Esc or a toggle click), but only
+     with a real pointer: touch tablets keep :hover "stuck" after a tap, which
+     would hold a dropdown open after its toggle closed it. */
+  @media (hover: hover) {
+    .agile-nav__item:hover:not(.is-dismissed) > .agile-nav__submenu {
+      display: block;
+    }
+  }
+
+  /* Without JS the toggle buttons do nothing, so keyboard users get the
+     dropdown on focus. With JS, focus-within is not used, so Esc can close
+     a dropdown while focus returns to its toggle. */
+  html:not(.agile-js) .agile-nav__item:focus-within > .agile-nav__submenu {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   Mobile (767px and below)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .agile-site-header__logo {
+    max-height: var(--agile-header-logo-max-mobile, 36px);
+  }
+
+  .agile-site-header--mobile-cta .agile-site-header__mobile-cta {
+    display: flex;
+  }
+
+  .agile-site-header--mobile-cta .agile-site-header__panel .agile-site-header__actions {
+    display: none;
+  }
+
+  /* The panel stacks below the bar. Without JS it is simply shown. */
+  .agile-site-header__panel {
+    --agile-header-fg: var(--agile-header-text);
+    flex: 1 0 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 8px 0 20px;
+    background: var(--agile-header-bg);
+    color: var(--agile-header-fg);
+  }
+
+  .agile-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .agile-nav__item {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--agile-color-border);
+  }
+
+  .agile-nav__link {
+    flex: 1 1 auto;
+    padding: 12px 0;
+  }
+
+  .agile-nav__toggle:not(.agile-nav__toggle--label) {
+    margin-left: 0;
+    padding: 12px;
+  }
+
+  .agile-nav__toggle--label {
+    justify-content: space-between;
+  }
+
+  .agile-nav__submenu {
+    flex: 1 0 100%;
+    min-width: 0;
+    margin: 0 0 12px;
+    padding: 0 0 0 12px;
+    border: 0;
+    border-left: 2px solid var(--agile-color-border);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  /* No JS: everything expanded. With JS: dropdowns open on toggle only. */
+  html:not(.agile-js) .agile-nav__submenu,
+  .agile-nav__item.is-open > .agile-nav__submenu {
+    display: block;
+  }
+
+  html:not(.agile-js) .agile-nav__toggle:not(.agile-nav__toggle--label) {
+    display: none;
+  }
+
+  .agile-site-header__actions .agile-button {
+    width: 100%;
+  }
+
+  .agile-site-header:not(.agile-site-header--has-nav) .agile-site-header__actions .agile-button,
+  .agile-site-header__mobile-cta .agile-button {
+    width: auto;
+    padding: 8px 14px;
+  }
+
+  /* With JS: the menu button shows and the panel is a dropdown sheet. */
+  .agile-js .agile-site-header__toggle {
+    display: inline-block;
+  }
+
+  .agile-js .agile-site-header__panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - var(--agile-header-height));
+    max-height: calc(100dvh - var(--agile-header-height));
+    overflow-y: auto;
+    padding: 8px var(--agile-gutter) 24px;
+    border-bottom: 1px solid var(--agile-color-border);
+    box-shadow: var(--agile-shadow-elevated, none);
+  }
+
+  .agile-js .agile-site-header.is-open .agile-site-header__panel {
+    display: flex;
+  }
+}
+
+/* ==========================================================================
+   Sticky (theme.header.sticky). The shell (direct child of .agile-page) is
+   made sticky, because sticky only works within the element's parent.
+   ========================================================================== */
+
+.agile-page > :has(.agile-site-header--sticky) {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.agile-site-header--sticky {
+  background: color-mix(in srgb, var(--agile-header-bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+/* Anchor targets land below a sticky header. Not for an explicit transparent
+   header (never sticky). Auto-transparent pages get scroll padding only when
+   no qualifying Hero is present (the header is then solid and sticky); with
+   one, the header overlays and scrolls away. That rule follows the
+   hdr_top_hero definition below. */
+html:has(.agile-site-header--sticky:not(.agile-site-header--transparent, .agile-site-header--auto-transparent)) {
+  scroll-padding-top: var(--agile-header-height);
+}
+
+/* ==========================================================================
+   Transparent header (overlays the first section and scrolls away; never
+   sticky).
+
+   1. Explicit: Page Controls > Header Style = Transparent
+      (.agile-site-header--transparent). Always applies. Choose it only on
+      pages whose first section has a dark/coloured background.
+   2. Auto: Page Controls = Theme default AND theme "Transparent Over Hero" on
+      (.agile-site-header--auto-transparent). Applies only when the page's
+      FIRST DnD section in <main> holds a Hero with a coloured background.
+      HubSpot marks the first section of a dnd_area as
+      `.dnd-section.row-number-1` (verified with the demo renderer,
+      2026-10-13; HUBSPOT-PLATFORM.md › DnD). row-number restarts in every
+      dnd_area, so the trigger is anchored to the FIRST area in <main>
+      (`.agile-main > .container-fluid:first-child`): blog-listing's
+      lower area never counts. A non-DnD first child (blog post) matches
+      nothing.
+   Page Controls = Solid gives neither class, so it always wins.
+   ========================================================================== */
+
+{%- set hdr_first_section = '.agile-main > .container-fluid:first-child .dnd-section.row-number-1' -%}
+{%- set hdr_top_hero = hdr_first_section ~ ' .agile-hero:is(.agile-bg--primary, .agile-bg--secondary, .agile-bg--accent, .agile-bg--custom)' -%}
+{%- set hdr_overlay_explicit = '.agile-page:has(.agile-site-header--transparent)' -%}
+{%- set hdr_overlay_auto = '.agile-page:has(.agile-site-header--auto-transparent):has(' ~ hdr_top_hero ~ ')' %}
+
+/* Sticky + auto-transparent with no qualifying Hero: the header is solid and
+   sticky, so anchors need the offset. (:not(:has()) on the subject is valid;
+   only :has() inside :has() is not.) */
+html:has(.agile-site-header--sticky.agile-site-header--auto-transparent):not(:has({{ hdr_top_hero }})) {
+  scroll-padding-top: var(--agile-header-height);
+}
+
+{{ hdr_overlay_explicit }},
+{{ hdr_overlay_auto }} {
+  position: relative;
+}
+
+{{ hdr_overlay_explicit }} > :has(.agile-site-header),
+{{ hdr_overlay_auto }} > :has(.agile-site-header) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+{{ hdr_overlay_explicit }} .agile-site-header:not(.is-open),
+{{ hdr_overlay_auto }} .agile-site-header:not(.is-open) {
+  --agile-header-fg: var(--agile-header-transparent-text);
+  border-bottom-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+{{ hdr_overlay_explicit }} .agile-site-header.is-open,
+{{ hdr_overlay_auto }} .agile-site-header.is-open {
+  background: var(--agile-header-bg);
+  backdrop-filter: none;
+}
+
+/* Keep the first section's content clear of the overlaid header: its
+   background runs under the header, its content starts below it. */
+{{ hdr_overlay_explicit }} {{ hdr_first_section }} .agile-section > .agile-container,
+{{ hdr_overlay_auto }} {{ hdr_first_section }} .agile-section > .agile-container {
+  padding-top: var(--agile-header-height);
+}
+
+/* Explicit transparent on a page whose first section is not an Agile section
+   (or a non-DnD template): offset the whole main area instead. */
+{{ hdr_overlay_explicit }}:not(:has({{ hdr_first_section }} .agile-section)) .agile-main {
+  padding-top: var(--agile-header-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agile-site-header,
+  .agile-nav__chevron,
+  .agile-site-header__toggle-icon,
+  .agile-site-header__toggle-icon::before,
+  .agile-site-header__toggle-icon::after {
+    transition: none;
+  }
+}

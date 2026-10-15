@@ -1,0 +1,68 @@
+<!--
+  templateType: blog_listing
+  isAvailableForNewContent: true
+  label: Agile Blog Listing
+  screenshotPath: ../images/theme-preview.svg
+-->
+{% extends "./layouts/base.html" %}
+
+{% block body %}
+  {% dnd_area "above_blog_listing" label="Above Blog Listing" %}
+  {% end_dnd_area %}
+
+  <section class="agile-blog-header">
+    <div class="agile-container">
+      <div class="agile-blog-header__inner agile-richtext">
+        <div class="agile-eyebrow">Blog</div>
+        <h1>{{ group.public_title|default(group.name, true)|default("Blog", true) }}</h1>
+        {% if group.description %}
+          <p>{{ group.description }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <section class="agile-container">
+    <div class="agile-blog-grid">
+      {% for content in contents %}
+        <article>
+          <a class="agile-blog-card" href="{{ content.absolute_url|escape_url }}">
+            {% if content.featured_image %}
+              <img
+                class="agile-blog-card__image"
+                src="{{ content.featured_image|escape_url }}"
+                alt="{{ content.featured_image_alt_text|escape_attr }}"
+                loading="lazy"
+              >
+            {% endif %}
+            <div class="agile-blog-card__body">
+              <div class="agile-blog-card__meta">
+                {{ content.publish_date_localized }}
+              </div>
+              <h2 class="agile-blog-card__title">{{ content.name }}</h2>
+              {% if content.post_summary %}
+                <div class="agile-blog-card__summary">
+                  {{ content.post_summary|striptags|truncatehtml(160) }}
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if next_page_num or last_page_num %}
+      <nav class="agile-blog-pagination" aria-label="Blog pagination">
+        {% if last_page_num %}
+          <a class="agile-button" href="{{ blog_page_link(last_page_num)|escape_url }}">Previous</a>
+        {% endif %}
+        {% if next_page_num %}
+          <a class="agile-button" href="{{ blog_page_link(next_page_num)|escape_url }}">Next</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  </section>
+
+  {% dnd_area "below_blog_listing" label="Below Blog Listing" %}
+  {% end_dnd_area %}
+{% endblock body %}

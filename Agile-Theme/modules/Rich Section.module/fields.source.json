@@ -1,0 +1,45 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "eyebrow",
+        "label": "Eyebrow",
+        "type": "text",
+        "default": "Agile Section",
+        "help_text": "Short label above the heading. Leave empty to hide."
+      },
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Section heading"
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h2",
+        "help_text": "Use one H1 per page. Choose the level that fits the page outline."
+      },
+      {
+        "name": "body_text",
+        "label": "Body",
+        "type": "richtext",
+        "default": "<p>Use this module for an introduction, a summary or any block of formatted copy with an optional call to action.</p>"
+      },
+      {
+        "$use": "cta",
+        "name": "cta",
+        "label": "Call to action"
+      }
+    ]
+  },
+  { "$use": "layout" },
+  { "$use": "style" },
+  { "$use": "advanced" }
+]

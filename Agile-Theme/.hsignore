@@ -1,0 +1,26 @@
+# HubSpot CLI ignore rules for the Agile theme (gitignore syntax).
+#
+# The CLI (@hubspot/local-dev-lib ignoreRules.js) looks for the NEAREST .hsignore
+# by walking UP from the current working directory, and matches patterns against
+# paths relative to the folder containing that .hsignore. So this file only
+# applies when `hs cms upload` / `hs cms watch` is run with the working directory
+# set to this theme folder (or a folder inside it), e.g.:
+#
+#   cd "c:/workspace/Hubspot Themes/Agile/Agile-Theme"
+#   hs cms upload . Agile --account <portal>
+#
+# Running from c:/workspace/Hubspot Themes does NOT pick this file up.
+
+# Local-only field sources: Automation/compose-fields.js expands these into
+# the sibling fields.json, which is what gets uploaded.
+**/fields.source.json
+
+# Shared field-group definitions used only by the composer.
+/field-groups/
+
+# Internal documentation (not theme assets). `md` is an allowed upload
+# extension in the CLI (local-dev-lib constants/extensions.js), so without
+# these rules docs/*.md, manifesto.md, TODO.md and macros/README.md would
+# upload into the Design Manager.
+/docs/
+*.md

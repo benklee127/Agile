@@ -1,0 +1,29 @@
+{#
+  Rich Section [S] — eyebrow, heading, rich text body and an optional CTA.
+  Section chrome (spacing, background, text colour, alignment, width,
+  visibility, anchor, custom class) comes from agile.section_attrs.
+#}
+{%- import "../../macros/agile.html" as agile -%}
+{%- set c = module.content -%}
+{%- set cta_style = agile.resolve_style(c.cta.style, module.style.button_style)|trim -%}
+{%- set cta_html = agile.button(c.cta.text, c.cta.link, cta_style)|trim -%}
+<section {{ agile.section_attrs(module, "agile-rich-section") }}>
+  <div class="agile-container">
+    <div class="agile-rich-section__inner">
+      {%- if c.eyebrow and c.eyebrow|trim %}
+      <p class="agile-eyebrow agile-rich-section__eyebrow">{{ c.eyebrow|escape_html }}</p>
+      {%- endif %}
+      {{ agile.heading(c.heading, c.heading_level|default("h2", true), "agile-rich-section__heading") }}
+      {%- if c.body_text and c.body_text|trim %}
+      <div class="agile-rich-section__body agile-richtext">
+        {{ c.body_text }}
+      </div>
+      {%- endif %}
+      {%- if cta_html %}
+      <div class="agile-rich-section__actions agile-button-group">
+        {{ cta_html }}
+      </div>
+      {%- endif %}
+    </div>
+  </div>
+</section>

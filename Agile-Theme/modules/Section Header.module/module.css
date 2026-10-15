@@ -1,0 +1,47 @@
+/* Section Header [S] — section chrome comes from .agile-section (css/base/_sections.css). */
+
+.agile-section-header {
+  position: relative;
+  --agile-section-header-max: 720px;
+}
+
+/* Centred by default (module design); .agile-align--left opts out. */
+.agile-section-header__inner {
+  max-width: var(--agile-section-header-max);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.agile-section-header.agile-align--left .agile-section-header__inner {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+
+.agile-section-header__heading:last-child,
+.agile-section-header__eyebrow:last-child {
+  margin-bottom: 0;
+}
+
+.agile-section-header__intro {
+  margin: 0.75rem 0 0;
+  color: var(--agile-text-muted, var(--agile-color-muted));
+  font-size: 1.125rem;
+  line-height: var(--agile-line-height);
+}
+
+.agile-section-header__cta {
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.agile-section-header.agile-align--left .agile-section-header__cta {
+  justify-content: flex-start;
+}
+
+@media (max-width: 767px) {
+  .agile-section-header__intro {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "Logo Bar",
+  "global": false,
+  "content_types": ["LANDING_PAGE", "SITE_PAGE"],
+  "host_template_types": ["PAGE"],
+  "icon": "fontawesome-5.14.0:Images",
+  "tags": ["agile", "section", "logos"],
+  "is_available_for_new_content": true
+}

@@ -1,0 +1,13 @@
+{
+  "label": "Rich Section",
+  "css_assets": [],
+  "external_js": [],
+  "global": false,
+  "inline_help_text": "Section with eyebrow, heading, rich text and an optional button.",
+  "host_template_types": ["PAGE", "BLOG_POST", "BLOG_LISTING"],
+  "icon": "fontawesome-5.14.0:Paragraph",
+  "is_available_for_new_content": true,
+  "js_assets": [],
+  "smart_type": "NOT_SMART",
+  "tags": ["agile", "content", "section"]
+}

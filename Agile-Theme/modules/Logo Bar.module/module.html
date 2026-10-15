@@ -1,0 +1,32 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Logo Bar — Section module.
+  Wrapper chrome (spacing, background, text colour, alignment, width,
+  visibility, anchor, custom class) comes from agile.section_attrs.
+  Module-specific: columns, logo max height, logo treatment.
+#}
+{%- set columns = module.layout.columns if module.layout.columns in ["3", "4", "5", "6"] else "5" -%}
+{%- set treatment = module.style.logo_treatment if module.style.logo_treatment in ["original", "grayscale", "grayscale-hover"] else "original" -%}
+{%- set max_h = module.layout.logo_max_height|default(48, true)|int -%}
+
+<section {{ agile.section_attrs(module, "agile-logo-bar") }}>
+  <div class="agile-container">
+    {{ agile.heading(module.content.heading, module.content.heading_level|default("h2", true), "agile-logo-bar__heading") }}
+
+    <ul class="agile-logo-bar__list agile-logo-bar__list--cols-{{ columns }} agile-logo-bar__list--{{ treatment }}" role="list" style="--agile-logo-max-h: {{ max_h }}px;">
+      {%- for item in module.content.logos %}
+        {%- if item.logo.src %}
+          {%- set logo = {"src": item.logo.src, "alt": item.alt_text|default(item.logo.alt, true)|default("", true), "width": item.logo.width, "height": item.logo.height} -%}
+          {%- set link = agile.link_attrs(item.link)|trim %}
+      <li class="agile-logo-bar__item">
+        {%- if link %}
+        <a class="agile-logo-bar__link" {{ link }}>{{ agile.image(logo, "(max-width: 767px) 45vw, 240px", "lazy", "agile-logo-bar__logo") }}</a>
+        {%- else %}
+        {{ agile.image(logo, "(max-width: 767px) 45vw, 240px", "lazy", "agile-logo-bar__logo") }}
+        {%- endif %}
+      </li>
+        {%- endif %}
+      {%- endfor %}
+    </ul>
+  </div>
+</section>

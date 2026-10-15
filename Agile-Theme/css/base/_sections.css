@@ -1,0 +1,133 @@
+/* ==========================================================================
+   Section contract
+   Markup (from agile.section_attrs):
+     <section class="agile-section <base> agile-pt--X agile-pb--Y agile-bg--B
+                     agile-align--A agile-section-width--W ..."
+              style="--agile-module-pt:..px; --agile-section-bg:..; --agile-section-text:..">
+   Inline custom properties beat class-set ones on the same element, so a
+   module text-colour override wins over the background preset text colour.
+   ========================================================================== */
+
+.agile-section {
+  /* Headings follow --agile-section-text when it is set (by an
+     .agile-bg--* class or the inline text-colour override). */
+  --agile-heading-color: var(--agile-section-text, var(--agile-color-secondary));
+  position: relative;
+  padding: calc(var(--agile-section-md) * var(--agile-density, 1)) 0;
+  background: var(--agile-section-bg, transparent);
+  color: var(--agile-section-text, inherit);
+}
+
+/* --- Background presets ------------------------------------------------- */
+
+.agile-bg--surface {
+  --agile-section-bg: var(--agile-color-surface);
+}
+
+.agile-bg--primary {
+  --agile-section-bg: var(--agile-color-primary);
+  --agile-section-text: var(--agile-color-on-primary);
+  /* invert the solid primary button so it stays visible on primary */
+  --agile-btn-primary-bg: var(--agile-color-on-primary);
+  --agile-btn-primary-fg: var(--agile-color-primary);
+}
+
+.agile-bg--secondary {
+  --agile-section-bg: var(--agile-color-secondary);
+  --agile-section-text: var(--agile-color-on-secondary);
+  /* invert the solid secondary button so it stays visible on secondary */
+  --agile-btn-secondary-bg: var(--agile-color-on-secondary);
+  --agile-btn-secondary-fg: var(--agile-color-secondary);
+}
+
+.agile-bg--accent {
+  --agile-section-bg: var(--agile-color-accent);
+  --agile-section-text: var(--agile-color-on-accent);
+}
+
+/* .agile-bg--custom: background comes from the inline --agile-section-bg.
+   Text stays inherited unless the module also sets --agile-section-text. */
+
+/* Coloured contexts: eyebrows, muted text, links, borders and the
+   outline/ghost/link buttons follow the section text colour. */
+.agile-bg--primary,
+.agile-bg--secondary,
+.agile-bg--accent,
+.agile-section[style*="--agile-section-text"] {
+  --agile-eyebrow-color: var(--agile-section-text);
+  --agile-text-muted: color-mix(in srgb, var(--agile-section-text) 78%, transparent);
+  --agile-link-color: var(--agile-section-text);
+  --agile-link-hover-color: var(--agile-section-text);
+  --agile-link-decoration: underline;
+  --agile-link-hover-decoration: underline;
+  --agile-btn-outline-color: var(--agile-section-text);
+  --agile-btn-link-color: var(--agile-section-text);
+  --agile-color-border: color-mix(in srgb, var(--agile-section-text) 25%, transparent);
+  --agile-form-label-color: var(--agile-section-text);
+}
+
+/* Put on a light card/panel inside a coloured section to restore the
+   default page colour context for its contents. */
+.agile-reset-colors {
+  --agile-section-text: var(--agile-color-text);
+  --agile-heading-color: var(--agile-color-secondary);
+  --agile-eyebrow-color: var(--agile-color-primary);
+  --agile-text-muted: var(--agile-color-muted);
+  --agile-link-color: var(--agile-link-color-base);
+  --agile-link-hover-color: var(--agile-link-hover-color-base);
+  --agile-link-decoration: var(--agile-link-decoration-base);
+  --agile-link-hover-decoration: var(--agile-link-hover-decoration-base);
+  --agile-btn-primary-bg: var(--agile-color-primary);
+  --agile-btn-primary-fg: var(--agile-color-on-primary);
+  --agile-btn-secondary-bg: var(--agile-color-secondary);
+  --agile-btn-secondary-fg: var(--agile-color-on-secondary);
+  --agile-btn-outline-color: var(--agile-color-primary);
+  --agile-btn-link-color: var(--agile-link-color-base);
+  --agile-color-border: var(--agile-color-border-base);
+  --agile-form-label-color: var(--agile-form-label-color-base);
+  color: var(--agile-color-text);
+}
+
+/* --- Padding utilities -------------------------------------------------
+   "theme" adds no class: the .agile-section default applies.
+   The doubled form (.agile-section.agile-pt--*) beats single-class module
+   rules such as `.agile-hero { padding: ... }` regardless of order. */
+
+.agile-pt--none,   .agile-section.agile-pt--none   { padding-top: 0; }
+.agile-pt--xs,     .agile-section.agile-pt--xs     { padding-top: calc(var(--agile-section-xs) * var(--agile-density, 1)); }
+.agile-pt--sm,     .agile-section.agile-pt--sm     { padding-top: calc(var(--agile-section-sm) * var(--agile-density, 1)); }
+.agile-pt--md,     .agile-section.agile-pt--md     { padding-top: calc(var(--agile-section-md) * var(--agile-density, 1)); }
+.agile-pt--lg,     .agile-section.agile-pt--lg     { padding-top: calc(var(--agile-section-lg) * var(--agile-density, 1)); }
+.agile-pt--xl,     .agile-section.agile-pt--xl     { padding-top: calc(var(--agile-section-xl) * var(--agile-density, 1)); }
+.agile-pt--custom, .agile-section.agile-pt--custom { padding-top: var(--agile-module-pt, var(--agile-section-md)); }
+
+.agile-pb--none,   .agile-section.agile-pb--none   { padding-bottom: 0; }
+.agile-pb--xs,     .agile-section.agile-pb--xs     { padding-bottom: calc(var(--agile-section-xs) * var(--agile-density, 1)); }
+.agile-pb--sm,     .agile-section.agile-pb--sm     { padding-bottom: calc(var(--agile-section-sm) * var(--agile-density, 1)); }
+.agile-pb--md,     .agile-section.agile-pb--md     { padding-bottom: calc(var(--agile-section-md) * var(--agile-density, 1)); }
+.agile-pb--lg,     .agile-section.agile-pb--lg     { padding-bottom: calc(var(--agile-section-lg) * var(--agile-density, 1)); }
+.agile-pb--xl,     .agile-section.agile-pb--xl     { padding-bottom: calc(var(--agile-section-xl) * var(--agile-density, 1)); }
+.agile-pb--custom, .agile-section.agile-pb--custom { padding-bottom: var(--agile-module-pb, var(--agile-section-md)); }
+
+/* --- Alignment ---------------------------------------------------------- */
+
+.agile-align--left   { text-align: left; }
+.agile-align--center { text-align: center; }
+
+/* --- Section width ------------------------------------------------------
+   Specificity (0,3,0) beats the page-level `.agile-width--* .agile-container`
+   (0,2,0) and module rules like `.agile-hero--wide .agile-container`,
+   regardless of source order. */
+
+.agile-section.agile-section-width--narrow .agile-container {
+  width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-narrow));
+}
+.agile-section.agile-section-width--default .agile-container {
+  width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-width));
+}
+.agile-section.agile-section-width--wide .agile-container {
+  width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-wide));
+}
+.agile-section.agile-section-width--full .agile-container {
+  width: calc(100% - 2 * var(--agile-gutter));
+}

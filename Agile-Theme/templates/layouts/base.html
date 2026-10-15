@@ -1,0 +1,62 @@
+<!--
+  templateType: none
+-->
+<!doctype html>
+<html lang="{{ html_lang }}" {{ html_lang_dir }}>
+  <head>
+    <meta charset="utf-8">
+    {#- Set before first paint so JS-enhanced components (the header's mobile
+        menu) don't flash their no-JS state. main.js sets it too. -#}
+    <script>document.documentElement.classList.add("agile-js");</script>
+    {% if page_meta.html_title || pageTitle %}
+      <title>{{ page_meta.html_title || pageTitle }}</title>
+    {% endif %}
+    {% if brand_settings.favicon.src %}
+      <link rel="shortcut icon" href="{{ brand_settings.favicon.src }}" />
+    {% endif %}
+    <meta name="description" content="{{ page_meta.meta_description }}">
+
+    {{ require_css(get_asset_url("../../css/main.css"), { async: false }) }}
+    {{ require_js(get_asset_url("../../js/main.js"), { defer: true }) }}
+
+    {% if template_css %}
+      {{ require_css(get_asset_url(template_css), { async: true }) }}
+    {% endif %}
+
+    {{ standard_header_includes }}
+  </head>
+  <body class="agile-body">
+    {% module "page_controls" path="../../modules/Page Controls.module", label="Page Controls", no_wrapper=True, export_to_template_context=True %}
+    {% set controls = widget_data.page_controls %}
+    {#- "theme_default" (or any unknown value) adds a modifier class with no CSS rule, so the theme setting applies. -#}
+    {% set page_width = controls.page_width if controls.page_width in ["narrow", "wide", "full"] else "theme_default" %}
+    {% set spacing_density = controls.spacing_density if controls.spacing_density in ["compact", "relaxed"] else "theme_default" %}
+    {% set page_body_classes = controls.body_classes|default("", true) %}
+    {% if controls.page_css %}
+      {% require_css %}
+        <style>
+          .agile-page {
+            {{ controls.page_css }}
+          }
+        </style>
+      {% end_require_css %}
+    {% endif %}
+    <a class="agile-skip-link" href="#maincontent">Skip to main content</a>
+    <div class="agile-page agile-width--{{ page_width }} agile-density--{{ spacing_density }} {{ page_body_classes|escape_attr }} {{ builtin_body_classes|escape_attr }}">
+      {% block header %}
+        {% global_partial path="../partials/header.html" %}
+      {% endblock header %}
+
+      <main id="maincontent" class="agile-main">
+        {% block body %}
+        {% endblock body %}
+      </main>
+
+      {% block footer %}
+        {% global_partial path="../partials/footer.html" %}
+      {% endblock footer %}
+    </div>
+
+    {{ standard_footer_includes }}
+  </body>
+</html>

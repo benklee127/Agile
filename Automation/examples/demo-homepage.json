@@ -1,0 +1,77 @@
+{
+  "dndArea": "page_sections",
+  "label": "Page Sections",
+  "page": {
+    "name": "Agile API demo - Northwind Capital (draft)",
+    "htmlTitle": "Northwind Capital | Disciplined investing for long-term wealth",
+    "metaDescription": "Northwind Capital is a fictional advisory firm used to demo the Agile HubSpot theme.",
+    "slug": "agile-api-probe",
+    "templatePath": "Agile/templates/homepage.html"
+  },
+  "sections": [
+    {
+      "module": "Hero",
+      "params": {
+        "content": {
+          "eyebrow": "Northwind Capital",
+          "heading": "Disciplined investing for long-term wealth",
+          "heading_level": "h1",
+          "body_text": "<p>We help families and institutions build portfolios around clear goals, careful research and an honest view of risk.</p>",
+          "primary_cta": { "text": "Schedule a conversation", "link": { "url": { "type": "EXTERNAL", "href": "#contact" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" },
+          "secondary_cta": { "text": "Our approach", "link": { "url": { "type": "EXTERNAL", "href": "#approach" }, "open_in_new_tab": false, "no_follow": false }, "style": "ghost" }
+        },
+        "layout": { "media_position": "none", "spacing": { "padding_top": "xl", "padding_bottom": "xl" } },
+        "style": { "background": "secondary" }
+      }
+    },
+    {
+      "module": "Card Grid",
+      "params": {
+        "content": {
+          "eyebrow": "What we do",
+          "heading": "Services built around your goals",
+          "heading_level": "h2",
+          "intro": "Three ways we work with clients, each starting with a conversation about what you want your money to do.",
+          "card_heading_level": "h3",
+          "cards": [
+            { "heading": "Wealth planning", "body_text": "<p>A written plan that connects your investments to cash flow, taxes and the milestones that matter to you.</p>", "cta": { "text": "", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" } },
+            { "heading": "Portfolio management", "body_text": "<p>Diversified portfolios built from research, reviewed regularly and rebalanced with discipline.</p>", "cta": { "text": "", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" } },
+            { "heading": "Retirement and estate", "body_text": "<p>Income planning for retirement and coordination with your attorney and accountant on estate matters.</p>", "cta": { "text": "", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" } }
+          ]
+        },
+        "layout": { "columns": "3", "text_align": "inherit" },
+        "style": { "card_style": "outlined" }
+      }
+    },
+    {
+      "module": "Rich Section",
+      "params": {
+        "content": {
+          "eyebrow": "Our approach",
+          "heading": "Research first. Risk always.",
+          "heading_level": "h2",
+          "body_text": "<p>Every recommendation starts with independent research and a clear statement of the risks involved. We favour diversification, low costs and patience over short-term predictions.</p><p>We report plainly on what we own, why we own it and how it has behaved, in good markets and bad.</p>",
+          "cta": { "text": "Read our investment philosophy", "link": { "url": { "type": "EXTERNAL", "href": "#" }, "open_in_new_tab": false, "no_follow": false }, "style": "link" }
+        },
+        "style": { "background": "surface" },
+        "advanced": { "component_id": "approach" }
+      }
+    },
+    {
+      "module": "Section Header",
+      "params": {
+        "content": {
+          "eyebrow": "Get in touch",
+          "heading": "Ready to talk about your plan?",
+          "heading_level": "h2",
+          "intro": "Book a short introductory call. There is no obligation, and we will tell you honestly whether we are a good fit.",
+          "cta": { "text": "Schedule a conversation", "link": { "url": { "type": "EXTERNAL", "href": "mailto:hello@example.com" }, "open_in_new_tab": false, "no_follow": false }, "style": "inherit" }
+        },
+        "layout": { "text_align": "center", "container_width": "narrow" },
+        "style": { "background": "primary" },
+        "advanced": { "component_id": "contact" }
+      }
+    }
+  ],
+  "disclaimer": "Northwind Capital is fictional. Content is placeholder copy for theme testing only."
+}

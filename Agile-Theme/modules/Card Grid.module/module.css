@@ -1,0 +1,89 @@
+/*
+  Card Grid — Section module [S]
+  Section chrome (padding, background, text colour, width, alignment) comes
+  from .agile-section and its modifier classes. This file adds the header,
+  and the grid. Card styles come from css/components/_card.css. Tokens only.
+*/
+
+.agile-card-grid {
+  --agile-card-grid-cols: 3;
+  --agile-card-grid-gap: var(--agile-content-gap, 24px);
+  --agile-card-grid-header-max: 720px;
+}
+
+.agile-card-grid--cols-2 { --agile-card-grid-cols: 2; }
+.agile-card-grid--cols-3 { --agile-card-grid-cols: 3; }
+.agile-card-grid--cols-4 { --agile-card-grid-cols: 4; }
+
+/* --- Header: centred by default; .agile-align--left opts out ------------ */
+.agile-card-grid__header {
+  max-width: var(--agile-card-grid-header-max);
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.agile-card-grid.agile-align--left .agile-card-grid__header {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+
+.agile-card-grid__heading:last-child,
+.agile-card-grid__eyebrow:last-child {
+  margin-bottom: 0;
+}
+
+.agile-card-grid__intro {
+  margin: 0.75rem 0 0;
+  color: var(--agile-text-muted, var(--agile-color-muted));
+  font-size: 1.125rem;
+  line-height: var(--agile-line-height);
+}
+
+/* --- Grid: equal-height cards ------------------------------------------- */
+.agile-card-grid__list {
+  display: grid;
+  grid-template-columns: repeat(var(--agile-card-grid-cols), minmax(0, 1fr));
+  gap: var(--agile-card-grid-gap);
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agile-card-grid__item {
+  display: flex;
+  min-width: 0;
+  margin: 0;
+}
+
+.agile-card-grid__item > .agile-card-grid__card {
+  flex: 1 1 auto;
+  height: auto;
+}
+
+/* Tablet: 3 and 4 columns drop to 2 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .agile-card-grid--cols-3,
+  .agile-card-grid--cols-4 {
+    --agile-card-grid-cols: 2;
+  }
+}
+
+/* Phone: 1 column */
+@media (max-width: 767px) {
+  .agile-card-grid {
+    --agile-card-grid-cols: 1;
+  }
+
+  .agile-card-grid__header {
+    margin-bottom: 32px;
+  }
+
+  .agile-card-grid__intro {
+    font-size: 1rem;
+  }
+}
+
+/* Card rules (.agile-card-item…) live in css/components/_card.css. */

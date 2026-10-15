@@ -1,0 +1,42 @@
+{
+  "name": "advanced",
+  "label": "Advanced",
+  "type": "group",
+  "children": [
+    {
+      "name": "component_id",
+      "label": "Anchor ID",
+      "type": "text",
+      "default": "",
+      "help_text": "Sets the id attribute so you can link to this module with #anchor. Converted to lower case; spaces become hyphens and any characters other than letters, numbers, hyphens and underscores are removed (e.g. 'Our Pricing' becomes #our-pricing). Start with a letter."
+    },
+    {
+      "name": "custom_class",
+      "label": "Custom CSS class",
+      "type": "text",
+      "default": "",
+      "help_text": "Extra class names added to the module wrapper, separated by spaces."
+    },
+    {
+      "name": "visibility",
+      "label": "Visibility",
+      "type": "group",
+      "children": [
+        {
+          "name": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "type": "boolean",
+          "display": "toggle",
+          "default": false
+        },
+        {
+          "name": "hide_on_desktop",
+          "label": "Hide on desktop",
+          "type": "boolean",
+          "display": "toggle",
+          "default": false
+        }
+      ]
+    }
+  ]
+}

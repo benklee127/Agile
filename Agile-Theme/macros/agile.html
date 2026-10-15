@@ -1,0 +1,411 @@
+<!--
+  templateType: none
+  isAvailableForNewContent: false
+-->
+{#
+================================================================================
+  AGILE — shared HubL macro library                       macros/agile.html
+================================================================================
+
+  This file contains ONLY macro definitions. Importing it emits nothing.
+  (The HTML comment above is HubSpot's template annotation: it stops the file
+  from being offered as a page template. {% import %} discards file output.)
+
+  IMPORT LINE  (confirmed on demo -- HUBSPOT-PLATFORM.md > Paths)
+  ------------------------------------------------------------------
+  Relative paths resolve from the importing file's own folder.
+  Modules (modules/<Name>.module/module.html) -- theme root is "../../":
+      {% import "../../macros/agile.html" as agile %}
+      get_asset_url("../../images/...")
+  Templates:
+      templates/<x>.html                         {% import "../macros/agile.html" as agile %}
+      templates/layouts/*.html, templates/partials/*.html
+                                                 {% import "../../macros/agile.html" as agile %}
+      sections/*.html                            {% import "../macros/agile.html" as agile %}
+
+  CONVENTIONS
+  - Every macro is whitespace-controlled. Output is a single line with no
+    leading or trailing whitespace, so a macro can sit inside a tag:
+        <section {{ agile.section_attrs(module, "agile-hero") }}>
+  - Every value that reaches markup is escaped (escape_attr / escape_url /
+    escape_html). Pass raw field values in, not pre-escaped ones.
+  - "inherit", "theme" and "" all mean "no override": the macro adds nothing
+    and the next level up (Page, then Theme) applies.
+  - Macros take field objects as they come from fields.json (link field, image
+    field, color field). Missing nested fields are safe: they read as empty.
+
+  MACROS
+  ------------------------------------------------------------------------------
+  section_attrs(module, base_class, extra_classes="")
+      For a SECTION module's outer <section>. Returns an ATTRIBUTE STRING:
+        id="…"                  only when module.advanced.component_id is set
+                                (lower-cased, spaces -> "-", other invalid
+                                characters stripped)
+        class="agile-section <base_class>
+               agile-pt--X agile-pb--Y        layout.spacing.padding_top/_bottom
+                                              (none|xs|sm|md|lg|xl|custom; theme -> nothing)
+               agile-bg--B                    style.background (surface|primary|
+                                              secondary|accent|custom; custom only
+                                              when a colour is set)
+               agile-align--A                 layout.text_align (left|center)
+               agile-section-width--W         layout.container_width
+                                              (narrow|default|wide|full)
+               agile-hide-mobile / agile-hide-desktop   advanced.visibility.*
+               <advanced.custom_class> <extra_classes>"
+        data-agile-module="<base_class>"
+        style="…"               only when needed, CSS custom properties only:
+                                --agile-module-pt / --agile-module-pb (px, when
+                                padding is "custom"), --agile-section-bg (custom
+                                background), --agile-section-text (text colour
+                                override; honours style.override_text_color when
+                                that toggle exists)
+
+  component_attrs(module, base_class, extra_classes="")
+      For a COMPONENT module's outer element (no section chrome). Returns:
+        id="…" (if set)  class="<base_class> <hide classes> <custom_class>
+        <extra_classes>"  data-agile-module="<base_class>"
+
+  link_attrs(link)
+      Returns href="…" plus target/rel as needed. Emits NOTHING when there is
+      no href. Accepts a link field (link.url.href), a url field (link.href) or
+      a plain string.
+        open_in_new_tab        -> target="_blank" rel="noopener noreferrer"
+        no_follow              -> rel adds "nofollow"
+        sponsored / user_generated_content (advanced rel options) -> "sponsored" / "ugc"
+      All rel tokens are combined into ONE rel attribute.
+      EMAIL_ADDRESS / PHONE_NUMBER links get mailto: / tel: when missing.
+      Scheme-less hosts ("www.x.com", "x.com/path") get "https://". Anything
+      escape_url rejects (javascript:, data:, "page.html") emits NOTHING.
+
+  new_tab_sr(link)
+      The screen-reader new-tab cue: <span class="u-sr-only"> (opens in a new
+      tab)</span>, emitted when the link opens a new tab, else NOTHING. Takes a
+      link field (open_in_new_tab) or a menu node's linkTarget string (only
+      "_blank" counts). Put it inside the <a>, after the link text. Every text
+      link that opens a new tab gets it (button() adds it itself).
+
+  menu_link_attrs(node)
+      link_attrs for a menu() node: href from node.url (through link_attrs, so
+      the same escaping), plus target="_blank" rel="noopener noreferrer" only
+      when node.linkTarget == "_blank". Emits NOTHING when the node has no URL.
+      Used by both Site Header and Site Footer so menu links behave the same.
+
+  button(text, link, style="")
+      <a class="agile-button[ agile-button--STYLE]" + link_attrs>text</a>
+      (+ new_tab_sr(link) when the link opens a new tab)
+      STYLE: primary | secondary | ghost | link. "" or "inherit" -> no modifier
+      (the theme default style from theme.buttons.primary_style applies).
+      Renders NOTHING if text is empty or the link has no href.
+
+  resolve_style(local, fallback="")
+      Precedence helper. Returns `local` unless it is empty/"inherit"/"theme",
+      else `fallback` under the same rule, else "" (= theme default).
+      Usage (CTA style > module button_style > theme):
+        {{ agile.button(cta.text, cta.link,
+             agile.resolve_style(cta.style, module.style.button_style)) }}
+
+  image(img, sizes="100vw", loading="lazy", class="")
+      Responsive <img> from an image field. src, srcset (480/768/1024/1440/1920
+      w, never above the original width) built with resize_image_url for
+      HubSpot-hosted raster images; width/height attributes when known; alt is
+      always present (escaped, may be empty). loading: "lazy" | "eager"
+      (anything else omits the attribute). Renders NOTHING if img.src is empty.
+      SVG/GIF and non-HubSpot URLs get a plain <img> (no srcset).
+
+  heading(text, level="h2", class="")
+      <hN class="…">text</hN>. level is whitelisted to h1–h6 (anything else
+      -> h2). Text is HTML-escaped. Renders NOTHING if text is empty.
+
+  color_value(c)
+      Helper. Turns a color field into a CSS colour string: "#rrggbb", or
+      "rgba(r, g, b, a)" when opacity < 100. Accepts a plain string too.
+      Emits nothing for an unset colour.
+================================================================================
+#}
+
+
+{#- ---------------------------------------------------------------------------
+  color_value(c) -> "#rrggbb" | "rgba(r, g, b, a)" | ""
+--------------------------------------------------------------------------- -#}
+{%- macro color_value(c) -%}
+  {%- set out = "" -%}
+  {%- if c is string -%}
+    {%- set out = c|trim -%}
+  {%- elif c and c.color -%}
+    {%- set out = c.color|trim -%}
+    {%- if out and c.opacity is defined and c.opacity is not none and (c.opacity is number or (c.opacity|string|trim) != "") and (c.opacity|float) < 100 -%}
+      {%- set out = "rgba(" ~ (c.color|convert_rgb) ~ ", " ~ ((c.opacity|float) / 100)|round(2) ~ ")" -%}
+    {%- endif -%}
+  {%- endif -%}
+  {{- out -}}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  section_attrs(module, base_class, extra_classes="")
+--------------------------------------------------------------------------- -#}
+{%- macro section_attrs(module, base_class, extra_classes="") -%}
+  {%- set layout   = module.layout -%}
+  {%- set spacing  = module.layout.spacing -%}
+  {%- set style    = module.style -%}
+  {%- set advanced = module.advanced -%}
+  {%- set pad_values = ["none", "xs", "sm", "md", "lg", "xl", "custom"] -%}
+
+  {%- set cls = "agile-section" -%}
+  {%- if base_class -%}{%- set cls = cls ~ " " ~ base_class -%}{%- endif -%}
+  {%- set css = "" -%}
+
+  {#- Spacing -#}
+  {%- set pt = spacing.padding_top -%}
+  {%- set pb = spacing.padding_bottom -%}
+  {%- if pt in pad_values -%}
+    {%- set cls = cls ~ " agile-pt--" ~ pt -%}
+    {%- if pt == "custom" -%}
+      {%- set css = css ~ "--agile-module-pt:" ~ (spacing.padding_top_custom|default(80)|int) ~ "px;" -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if pb in pad_values -%}
+    {%- set cls = cls ~ " agile-pb--" ~ pb -%}
+    {%- if pb == "custom" -%}
+      {%- set css = css ~ "--agile-module-pb:" ~ (spacing.padding_bottom_custom|default(80)|int) ~ "px;" -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {#- Background -#}
+  {%- set bg = style.background -%}
+  {%- if bg in ["surface", "primary", "secondary", "accent"] -%}
+    {%- set cls = cls ~ " agile-bg--" ~ bg -%}
+  {%- elif bg == "custom" -%}
+    {%- set bg_color = color_value(style.background_color)|trim -%}
+    {%- if bg_color -%}
+      {%- set cls = cls ~ " agile-bg--custom" -%}
+      {%- set css = css ~ "--agile-section-bg:" ~ bg_color ~ ";" -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {#- Text colour override (honours an optional override_text_color toggle) -#}
+  {%- if style.override_text_color is not defined or style.override_text_color -%}
+    {%- set text_color = color_value(style.text_color)|trim -%}
+    {%- if text_color -%}
+      {%- set css = css ~ "--agile-section-text:" ~ text_color ~ ";" -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {#- Alignment and section width -#}
+  {%- if layout.text_align in ["left", "center"] -%}
+    {%- set cls = cls ~ " agile-align--" ~ layout.text_align -%}
+  {%- endif -%}
+  {%- if layout.container_width in ["narrow", "default", "wide", "full"] -%}
+    {%- set cls = cls ~ " agile-section-width--" ~ layout.container_width -%}
+  {%- endif -%}
+
+  {#- Visibility -#}
+  {%- if advanced.visibility.hide_on_mobile -%}{%- set cls = cls ~ " agile-hide-mobile" -%}{%- endif -%}
+  {%- if advanced.visibility.hide_on_desktop -%}{%- set cls = cls ~ " agile-hide-desktop" -%}{%- endif -%}
+
+  {#- Author classes -#}
+  {%- if advanced.custom_class and advanced.custom_class|trim -%}{%- set cls = cls ~ " " ~ advanced.custom_class|trim -%}{%- endif -%}
+  {%- if extra_classes and extra_classes|trim -%}{%- set cls = cls ~ " " ~ extra_classes|trim -%}{%- endif -%}
+
+  {#- Anchor id -#}
+  {%- set anchor = "" -%}
+  {%- if advanced.component_id and advanced.component_id|trim -%}
+    {%- set anchor = advanced.component_id|trim|lower|replace(" ", "-")|regex_replace("[^a-z0-9_-]", "") -%}
+  {%- endif -%}
+
+  {%- set out = "" -%}
+  {%- if anchor -%}{%- set out = 'id="' ~ (anchor|escape_attr) ~ '" ' -%}{%- endif -%}
+  {%- set out = out ~ 'class="' ~ (cls|escape_attr) ~ '" data-agile-module="' ~ (base_class|escape_attr) ~ '"' -%}
+  {%- if css -%}{%- set out = out ~ ' style="' ~ (css|escape_attr) ~ '"' -%}{%- endif -%}
+  {{- out -}}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  component_attrs(module, base_class, extra_classes="")
+--------------------------------------------------------------------------- -#}
+{%- macro component_attrs(module, base_class, extra_classes="") -%}
+  {%- set advanced = module.advanced -%}
+  {%- set cls = base_class|default("", true) -%}
+  {%- if advanced.visibility.hide_on_mobile -%}{%- set cls = cls ~ " agile-hide-mobile" -%}{%- endif -%}
+  {%- if advanced.visibility.hide_on_desktop -%}{%- set cls = cls ~ " agile-hide-desktop" -%}{%- endif -%}
+  {%- if advanced.custom_class and advanced.custom_class|trim -%}{%- set cls = cls ~ " " ~ advanced.custom_class|trim -%}{%- endif -%}
+  {%- if extra_classes and extra_classes|trim -%}{%- set cls = cls ~ " " ~ extra_classes|trim -%}{%- endif -%}
+
+  {%- set anchor = "" -%}
+  {%- if advanced.component_id and advanced.component_id|trim -%}
+    {%- set anchor = advanced.component_id|trim|lower|replace(" ", "-")|regex_replace("[^a-z0-9_-]", "") -%}
+  {%- endif -%}
+
+  {%- set out = "" -%}
+  {%- if anchor -%}{%- set out = 'id="' ~ (anchor|escape_attr) ~ '" ' -%}{%- endif -%}
+  {%- set out = out ~ 'class="' ~ (cls|trim|escape_attr) ~ '" data-agile-module="' ~ (base_class|escape_attr) ~ '"' -%}
+  {{- out -}}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  link_attrs(link) -> 'href="…"[ target="_blank"][ rel="…"]' | ""
+--------------------------------------------------------------------------- -#}
+{%- macro link_attrs(link) -%}
+  {%- set href = "" -%}
+  {%- set link_type = "" -%}
+  {%- if link is string -%}
+    {%- set href = link -%}
+  {%- elif link and link.url -%}
+    {%- set href = link.url.href -%}
+    {%- set link_type = link.url.type -%}
+  {%- elif link and link.href -%}
+    {%- set href = link.href -%}
+    {%- set link_type = link.type -%}
+  {%- endif -%}
+  {%- set href = href|default("", true)|trim -%}
+
+  {%- if href -%}
+    {#- mailto:/tel: are escaped as attributes (escape_url may not keep the scheme) -#}
+    {%- set scheme_free = href|lower|regex_replace("^(mailto|tel):.*$", "") -%}
+    {%- if link_type == "EMAIL_ADDRESS" and scheme_free -%}
+      {%- set href = "mailto:" ~ href -%}{%- set scheme_free = "" -%}
+    {%- elif link_type == "PHONE_NUMBER" and scheme_free -%}
+      {%- set href = "tel:" ~ href -%}{%- set scheme_free = "" -%}
+    {%- endif -%}
+
+    {%- set rel = "" -%}
+    {%- set new_tab = link is not string and link and link.open_in_new_tab -%}
+    {%- if new_tab -%}{%- set rel = "noopener noreferrer" -%}{%- endif -%}
+    {%- if link is not string and link and link.no_follow -%}{%- set rel = (rel ~ " nofollow")|trim -%}{%- endif -%}
+    {%- if link is not string and link and link.sponsored -%}{%- set rel = (rel ~ " sponsored")|trim -%}{%- endif -%}
+    {%- if link is not string and link and link.user_generated_content -%}{%- set rel = (rel ~ " ugc")|trim -%}{%- endif -%}
+
+    {%- set out = "" -%}
+    {%- if scheme_free -%}
+      {#- Scheme-less hosts ("www.x.com", "x.com/path") get https://; escape_url
+          rejects them otherwise. escape_url returns "" for anything it rejects
+          (javascript:, data:, "page.html"); then emit nothing so button() hides. -#}
+      {%- set host = href|lower|regex_replace("[/?#].*$", "") -%}
+      {%- set looks_like_host = not (host|regex_replace("^(www[.].+|[a-z0-9-]+([.][a-z0-9-]+)*[.][a-z]{2,})$", "")) -%}
+      {%- set looks_like_file = not (host|regex_replace("^.*[.](html?|php|aspx?|jsp|pdf)$", "")) -%}
+      {%- if looks_like_host and not looks_like_file -%}
+        {%- set href = "https://" ~ href -%}
+      {%- endif -%}
+      {%- set esc = href|escape_url -%}
+      {%- if esc -%}{%- set out = 'href="' ~ esc ~ '"' -%}{%- endif -%}
+    {%- else -%}
+      {%- set out = 'href="' ~ (href|escape_attr) ~ '"' -%}
+    {%- endif -%}
+    {%- if out -%}
+      {%- if new_tab -%}{%- set out = out ~ ' target="_blank"' -%}{%- endif -%}
+      {%- if rel -%}{%- set out = out ~ ' rel="' ~ rel ~ '"' -%}{%- endif -%}
+      {{- out -}}
+    {%- endif -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  new_tab_sr(link) -> '<span class="u-sr-only"> (opens in a new tab)</span>' | ""
+--------------------------------------------------------------------------- -#}
+{%- macro new_tab_sr(link) -%}
+  {%- set nt = false -%}
+  {%- if link is string -%}
+    {%- set nt = link == "_blank" -%}
+  {%- elif link and link.open_in_new_tab -%}
+    {%- set nt = true -%}
+  {%- endif -%}
+  {%- if nt -%}<span class="u-sr-only"> (opens in a new tab)</span>{%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  menu_link_attrs(node) -> 'href="…"[ target="_blank" rel="noopener noreferrer"]' | ""
+--------------------------------------------------------------------------- -#}
+{%- macro menu_link_attrs(node) -%}
+  {%- set out = "" -%}
+  {%- if node and node.url -%}
+    {%- set out = link_attrs(node.url|string)|trim -%}
+  {%- endif -%}
+  {%- if out and node.linkTarget == "_blank" -%}
+    {%- set out = out ~ ' target="_blank" rel="noopener noreferrer"' -%}
+  {%- endif -%}
+  {{- out -}}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  resolve_style(local, fallback="") -> first non-inherit value, or ""
+--------------------------------------------------------------------------- -#}
+{%- macro resolve_style(local, fallback="") -%}
+  {%- set skip = ["", "inherit", "theme"] -%}
+  {%- set a = local|default("", true)|string|trim -%}
+  {%- set b = fallback|default("", true)|string|trim -%}
+  {%- if a and a not in skip -%}
+    {{- a -}}
+  {%- elif b and b not in skip -%}
+    {{- b -}}
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  button(text, link, style="")
+--------------------------------------------------------------------------- -#}
+{%- macro button(text, link, style="") -%}
+  {%- set attrs = link_attrs(link)|trim -%}
+  {%- set label = text|default("", true)|string|trim -%}
+  {%- if label and attrs -%}
+    {%- set s = style|default("", true)|string|trim -%}
+    {%- set cls = "agile-button" -%}
+    {%- if s in ["primary", "secondary", "ghost", "link"] -%}
+      {%- set cls = cls ~ " agile-button--" ~ s -%}
+    {%- endif -%}
+    <a class="{{ cls }}" {{ attrs }}>{{ label|escape_html }}{{ new_tab_sr(link) }}</a>
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  image(img, sizes="100vw", loading="lazy", class="")
+--------------------------------------------------------------------------- -#}
+{%- macro image(img, sizes="100vw", loading="lazy", class="") -%}
+  {%- set src = "" -%}
+  {%- if img and img.src -%}{%- set src = img.src|trim -%}{%- endif -%}
+  {%- if src -%}
+    {%- set ow = img.width|default(0, true)|int -%}
+    {%- set oh = img.height|default(0, true)|int -%}
+    {%- set lsrc = src|lower -%}
+    {%- set hosted = ("/hubfs/" in lsrc or "hubspotusercontent" in lsrc or "hubspot.net" in lsrc) -%}
+    {%- set raster = not (".svg" in lsrc or ".gif" in lsrc) -%}
+    {%- set responsive = hosted and raster and ow > 0 -%}
+    {%- set max_w = 1920 -%}
+    {%- set main_src = src -%}
+    {%- if responsive and ow > max_w -%}
+      {%- set main_src = resize_image_url(src, max_w, 0, 0) -%}
+    {%- endif -%}
+    <img src="{{ main_src|escape_url }}"
+    {%- if responsive %} srcset="
+      {#- widths below max_w; the final entry (max_w or the original width) is added after the loop -#}
+      {%- for w in [480, 768, 1024, 1440] -%}
+        {%- if w < ow -%}{{ resize_image_url(src, w, 0, 0)|escape_url }} {{ w }}w, {% endif -%}
+      {%- endfor -%}
+      {%- if ow > max_w -%}{{ main_src|escape_url }} {{ max_w }}w{%- else -%}{{ src|escape_url }} {{ ow }}w{%- endif -%}
+    " sizes="{{ sizes|default('100vw', true)|escape_attr }}"
+    {%- endif -%}
+    {%- if ow > 0 and oh > 0 %} width="{{ ow }}" height="{{ oh }}"{% endif -%}
+    {%- if loading in ["lazy", "eager"] %} loading="{{ loading }}"{% endif -%}
+    {%- if loading == "lazy" %} decoding="async"{% endif -%}
+    {%- if class and class|trim %} class="{{ class|trim|escape_attr }}"{% endif %} alt="{{ img.alt|default('', true)|escape_attr }}">
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---------------------------------------------------------------------------
+  heading(text, level="h2", class="")
+--------------------------------------------------------------------------- -#}
+{%- macro heading(text, level="h2", class="") -%}
+  {%- set label = text|default("", true)|string|trim -%}
+  {%- if label -%}
+    {%- set tag = level|default("h2", true)|string|lower|trim -%}
+    {%- if tag not in ["h1", "h2", "h3", "h4", "h5", "h6"] -%}{%- set tag = "h2" -%}{%- endif -%}
+    <{{ tag }}{% if class and class|trim %} class="{{ class|trim|escape_attr }}"{% endif %}>{{ label|escape_html }}</{{ tag }}>
+  {%- endif -%}
+{%- endmacro -%}

@@ -1,0 +1,8 @@
+{
+  "label": "Card Grid",
+  "global": false,
+  "inline_help_text": "Section with an optional header and a grid of 1 to 12 cards (image, eyebrow, heading, text, button).",
+  "host_template_types": ["PAGE", "BLOG_POST", "BLOG_LISTING"],
+  "icon": "fontawesome-5.14.0:ThLarge",
+  "is_available_for_new_content": true
+}

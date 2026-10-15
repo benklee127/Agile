@@ -1,0 +1,77 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "eyebrow",
+        "label": "Eyebrow",
+        "type": "text",
+        "default": "Agile Hero",
+        "help_text": "Short label above the heading. Leave empty to hide it."
+      },
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "A flexible hero built on the Agile module contract"
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h1",
+        "help_text": "Use H1 only once per page, normally for the first hero."
+      },
+      {
+        "name": "body_text",
+        "label": "Body text",
+        "type": "richtext",
+        "default": "<p>This starter hero shows the Agile module contract: content first, then the shared layout, style and advanced settings every module uses.</p>"
+      },
+      {
+        "$use": "cta",
+        "name": "primary_cta",
+        "label": "Primary button",
+        "$defaults": { "text": "Get started" }
+      },
+      {
+        "$use": "cta",
+        "name": "secondary_cta",
+        "label": "Secondary button",
+        "$defaults": { "text": "" }
+      },
+      {
+        "name": "image",
+        "label": "Image",
+        "type": "image",
+        "responsive": true,
+        "resizable": true,
+        "help_text": "Leave empty to show the placeholder image. Choose \"No image\" under Layout > Media position for a text-only hero."
+      }
+    ]
+  },
+  {
+    "$use": "layout",
+    "$append": [
+      {
+        "name": "media_position",
+        "label": "Media position",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          ["right", "Right"],
+          ["left", "Left"],
+          ["none", "No image (text only)"]
+        ],
+        "default": "right",
+        "help_text": "Where the image sits next to the text. On mobile the image always follows the text."
+      }
+    ]
+  },
+  { "$use": "style" },
+  { "$use": "advanced" }
+]

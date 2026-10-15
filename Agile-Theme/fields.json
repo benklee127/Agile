@@ -1,0 +1,928 @@
+[
+  {
+    "name": "branding",
+    "label": "Branding",
+    "type": "group",
+    "children": [
+      {
+        "name": "logo",
+        "label": "Site Logo",
+        "type": "image",
+        "responsive": true,
+        "resizable": true
+      }
+    ]
+  },
+  {
+    "name": "colors",
+    "label": "Colors",
+    "type": "group",
+    "children": [
+      {
+        "name": "primary",
+        "label": "Primary",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#175cd3"
+        }
+      },
+      {
+        "name": "secondary",
+        "label": "Secondary",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#0f1728"
+        }
+      },
+      {
+        "name": "accent",
+        "label": "Accent",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#d8f34f"
+        }
+      },
+      {
+        "name": "on_primary",
+        "label": "Text on Primary",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "on_secondary",
+        "label": "Text on Secondary",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "on_accent",
+        "label": "Text on Accent",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#0f1728"
+        }
+      },
+      {
+        "name": "text",
+        "label": "Text",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#213047"
+        }
+      },
+      {
+        "name": "muted_text",
+        "label": "Muted Text",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#5f6c80"
+        }
+      },
+      {
+        "name": "surface",
+        "label": "Surface",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#f6f8fb"
+        }
+      },
+      {
+        "name": "background",
+        "label": "Background",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#d7deea"
+        }
+      }
+    ]
+  },
+  {
+    "name": "typography",
+    "label": "Typography",
+    "type": "group",
+    "children": [
+      {
+        "name": "heading_font",
+        "label": "Heading Font",
+        "type": "font",
+        "load_external_fonts": true,
+        "visibility": {
+          "hidden_subfields": {
+            "color": true,
+            "size": true,
+            "bold": true,
+            "italic": true,
+            "underline": true,
+            "variant": true
+          }
+        },
+        "default": {
+          "font": "Arial",
+          "font_set": "DEFAULT"
+        }
+      },
+      {
+        "name": "body_font",
+        "label": "Body Font",
+        "type": "font",
+        "load_external_fonts": true,
+        "visibility": {
+          "hidden_subfields": {
+            "color": true,
+            "size": true,
+            "bold": true,
+            "italic": true,
+            "underline": true,
+            "variant": true
+          }
+        },
+        "default": {
+          "font": "Arial",
+          "font_set": "DEFAULT"
+        }
+      },
+      {
+        "name": "heading_weight",
+        "label": "Heading Weight",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "400",
+            "Regular (400)"
+          ],
+          [
+            "500",
+            "Medium (500)"
+          ],
+          [
+            "600",
+            "SemiBold (600)"
+          ],
+          [
+            "700",
+            "Bold (700)"
+          ],
+          [
+            "800",
+            "ExtraBold (800)"
+          ],
+          [
+            "900",
+            "Black (900)"
+          ]
+        ],
+        "default": "700"
+      },
+      {
+        "name": "h1_size",
+        "label": "H1 Size (px)",
+        "type": "number",
+        "min": 24,
+        "step": 1,
+        "default": 56
+      },
+      {
+        "name": "h2_size",
+        "label": "H2 Size (px)",
+        "type": "number",
+        "min": 20,
+        "step": 1,
+        "default": 40
+      },
+      {
+        "name": "h3_size",
+        "label": "H3 Size (px)",
+        "type": "number",
+        "min": 16,
+        "step": 1,
+        "default": 28
+      },
+      {
+        "name": "h4_size",
+        "label": "H4 Size (px)",
+        "type": "number",
+        "min": 14,
+        "step": 1,
+        "default": 22
+      },
+      {
+        "name": "h5_size",
+        "label": "H5 Size (px)",
+        "type": "number",
+        "min": 12,
+        "step": 1,
+        "default": 18
+      },
+      {
+        "name": "body_size",
+        "label": "Body Size (px)",
+        "type": "number",
+        "min": 14,
+        "step": 1,
+        "default": 18
+      },
+      {
+        "name": "line_height",
+        "label": "Base Line Height",
+        "type": "number",
+        "min": 1,
+        "step": 0.1,
+        "default": 1.6
+      }
+    ]
+  },
+  {
+    "name": "links",
+    "label": "Links",
+    "type": "group",
+    "children": [
+      {
+        "name": "color",
+        "label": "Link Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#175cd3"
+        }
+      },
+      {
+        "name": "hover_color",
+        "label": "Link Hover Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#0f4aa8"
+        }
+      },
+      {
+        "name": "underline",
+        "label": "Underline",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "always",
+            "Always"
+          ],
+          [
+            "hover",
+            "On hover"
+          ],
+          [
+            "none",
+            "Never"
+          ]
+        ],
+        "default": "always"
+      }
+    ]
+  },
+  {
+    "name": "buttons",
+    "label": "Buttons",
+    "type": "group",
+    "children": [
+      {
+        "name": "primary_style",
+        "label": "Primary Button Style",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "solid",
+            "Solid"
+          ],
+          [
+            "outline",
+            "Outline"
+          ],
+          [
+            "ghost",
+            "Ghost"
+          ]
+        ],
+        "default": "solid"
+      },
+      {
+        "name": "border_radius",
+        "label": "Button Radius (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "name": "padding_y",
+        "label": "Vertical Padding (px)",
+        "type": "number",
+        "min": 8,
+        "step": 1,
+        "default": 14
+      },
+      {
+        "name": "padding_x",
+        "label": "Horizontal Padding (px)",
+        "type": "number",
+        "min": 12,
+        "step": 1,
+        "default": 22
+      },
+      {
+        "name": "transition_duration_ms",
+        "label": "Transition Duration (ms)",
+        "type": "number",
+        "min": 0,
+        "step": 25,
+        "default": 180
+      },
+      {
+        "name": "hover_effect",
+        "label": "Hover Effect",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "lift",
+            "Lift (up)"
+          ],
+          [
+            "sink",
+            "Sink (down)"
+          ],
+          [
+            "grow",
+            "Grow"
+          ],
+          [
+            "none",
+            "None"
+          ]
+        ],
+        "default": "lift"
+      }
+    ]
+  },
+  {
+    "name": "shadows",
+    "label": "Shadows",
+    "type": "group",
+    "children": [
+      {
+        "name": "card_blur",
+        "label": "Card Shadow Blur (px)",
+        "type": "number",
+        "min": 0,
+        "step": 2,
+        "default": 16
+      },
+      {
+        "name": "card_opacity",
+        "label": "Card Shadow Opacity (%)",
+        "type": "number",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "default": 6
+      },
+      {
+        "name": "elevated_blur",
+        "label": "Elevated Shadow Blur (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 48
+      },
+      {
+        "name": "elevated_opacity",
+        "label": "Elevated Shadow Opacity (%)",
+        "type": "number",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "default": 8
+      }
+    ]
+  },
+  {
+    "name": "shape",
+    "label": "Shape",
+    "type": "group",
+    "children": [
+      {
+        "name": "radius_sm",
+        "label": "Radius Small (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 6
+      },
+      {
+        "name": "radius_md",
+        "label": "Radius Medium (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "name": "radius_lg",
+        "label": "Radius Large (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 20
+      },
+      {
+        "name": "radius_xl",
+        "label": "Radius XL (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 32
+      }
+    ]
+  },
+  {
+    "name": "forms",
+    "label": "Forms",
+    "type": "group",
+    "children": [
+      {
+        "name": "label_color",
+        "label": "Label Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#213047"
+        }
+      },
+      {
+        "name": "input_background",
+        "label": "Input Background",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "input_text_color",
+        "label": "Input Text Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#213047"
+        }
+      },
+      {
+        "name": "placeholder_color",
+        "label": "Placeholder Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#8a96a8"
+        }
+      },
+      {
+        "name": "input_border_color",
+        "label": "Input Border Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#c3ccda"
+        }
+      },
+      {
+        "name": "focus_color",
+        "label": "Focus Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#175cd3"
+        }
+      },
+      {
+        "name": "error_color",
+        "label": "Error Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#c4320a"
+        }
+      },
+      {
+        "name": "border_width",
+        "label": "Input Border Width (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 1,
+        "max": 4
+      },
+      {
+        "name": "radius",
+        "label": "Input Radius (px)",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "name": "field_gap",
+        "label": "Field Gap (px)",
+        "type": "number",
+        "min": 0,
+        "step": 2,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "motion",
+    "label": "Motion",
+    "type": "group",
+    "children": [
+      {
+        "name": "duration_fast_ms",
+        "label": "Fast Duration (ms)",
+        "type": "number",
+        "min": 0,
+        "step": 25,
+        "default": 150
+      },
+      {
+        "name": "duration_base_ms",
+        "label": "Base Duration (ms)",
+        "type": "number",
+        "min": 0,
+        "step": 25,
+        "default": 250
+      },
+      {
+        "name": "easing",
+        "label": "Easing",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "standard",
+            "Standard"
+          ],
+          [
+            "ease",
+            "Ease"
+          ],
+          [
+            "ease_out",
+            "Ease out"
+          ],
+          [
+            "ease_in_out",
+            "Ease in-out"
+          ],
+          [
+            "linear",
+            "Linear"
+          ]
+        ],
+        "default": "standard"
+      }
+    ]
+  },
+  {
+    "name": "spacing",
+    "label": "Spacing",
+    "type": "group",
+    "children": [
+      {
+        "name": "section_xs",
+        "label": "Section Padding XS (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 24
+      },
+      {
+        "name": "section_sm",
+        "label": "Section Padding SM (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 48
+      },
+      {
+        "name": "section_md",
+        "label": "Section Padding MD (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 80
+      },
+      {
+        "name": "section_lg",
+        "label": "Section Padding LG (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 120
+      },
+      {
+        "name": "section_xl",
+        "label": "Section Padding XL (px)",
+        "type": "number",
+        "min": 0,
+        "step": 4,
+        "default": 160
+      }
+    ]
+  },
+  {
+    "name": "layout",
+    "label": "Layout",
+    "type": "group",
+    "children": [
+      {
+        "name": "container_width",
+        "label": "Container Width (px)",
+        "type": "number",
+        "min": 960,
+        "step": 10,
+        "default": 1200
+      },
+      {
+        "name": "content_gap",
+        "label": "Content Gap (px)",
+        "type": "number",
+        "min": 8,
+        "step": 2,
+        "default": 24
+      }
+    ]
+  },
+  {
+    "name": "header",
+    "label": "Header",
+    "type": "group",
+    "children": [
+      {
+        "name": "mode",
+        "label": "Header Mode",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "native",
+            "Native Header"
+          ],
+          [
+            "minimal",
+            "Minimal Header"
+          ],
+          [
+            "hidden",
+            "No Header"
+          ]
+        ],
+        "default": "native"
+      },
+      {
+        "name": "background_color",
+        "label": "Background Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "text_color",
+        "label": "Text Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#213047"
+        }
+      },
+      {
+        "name": "height",
+        "label": "Height (px)",
+        "type": "number",
+        "min": 48,
+        "step": 2,
+        "default": 78,
+        "max": 160
+      },
+      {
+        "name": "sticky",
+        "label": "Sticky Header",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "show_border",
+        "label": "Bottom Border",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "transparent_on_hero",
+        "label": "Transparent Over Hero",
+        "type": "boolean",
+        "help_text": "The header overlays a Hero only when that Hero is in the page's first section AND has a coloured background (Primary, Secondary, Accent or Custom). Other pages keep the solid header.",
+        "default": false
+      },
+      {
+        "name": "transparent_text_color",
+        "label": "Text Color Over Hero",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#ffffff"
+        }
+      }
+    ]
+  },
+  {
+    "name": "footer",
+    "label": "Footer",
+    "type": "group",
+    "children": [
+      {
+        "name": "mode",
+        "label": "Footer Mode",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "native",
+            "Native Footer"
+          ],
+          [
+            "minimal",
+            "Minimal Footer"
+          ],
+          [
+            "hidden",
+            "No Footer"
+          ]
+        ],
+        "default": "native"
+      },
+      {
+        "name": "background_color",
+        "label": "Background Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#f6f8fb"
+        }
+      },
+      {
+        "name": "text_color",
+        "label": "Text Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#5f6c80"
+        }
+      },
+      {
+        "name": "link_color",
+        "label": "Link Color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "default": {
+          "color": "#175cd3"
+        }
+      }
+    ]
+  }
+]

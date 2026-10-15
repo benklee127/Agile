@@ -1,0 +1,22 @@
+{
+  "label": "Agile",
+  "version": "0.1.0",
+  "preview_path": "./templates/homepage.html",
+  "screenshot_path": "./images/theme-preview.svg",
+  "enable_domain_stylesheets": false,
+  "is_available_for_new_content": true,
+  "responsive_breakpoints": [
+    {
+      "name": "mobile",
+      "previewWidth": {
+        "value": 767,
+        "units": "px"
+      },
+      "mediaQuery": "@media (max-width: 767px)"
+    }
+  ],
+  "author": {
+    "name": "Agile Theme Project",
+    "email": ""
+  }
+}

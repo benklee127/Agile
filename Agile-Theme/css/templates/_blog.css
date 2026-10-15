@@ -1,0 +1,104 @@
+.agile-blog-header {
+  padding: var(--agile-section-lg) 0 var(--agile-section-md);
+  background: var(--agile-color-surface);
+}
+
+.agile-blog-header__inner {
+  max-width: 780px;
+}
+
+.agile-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--agile-content-gap);
+  padding: var(--agile-section-md) 0;
+}
+
+.agile-blog-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--agile-color-border);
+  border-radius: var(--agile-radius-md);
+  background: var(--agile-color-background);
+  box-shadow: var(--agile-shadow-card);
+  color: var(--agile-color-text);
+  text-decoration: none;
+}
+
+/* The card is an <a>: keep the global a / a:hover link colour and underline
+   (typography.css, specificity 0,1,1) off the card text. 0,2,0 wins. */
+.agile-blog-card:hover,
+.agile-blog-card:focus-visible {
+  color: var(--agile-color-text);
+  text-decoration: none;
+}
+
+.agile-blog-card:hover .agile-blog-card__title {
+  text-decoration-line: var(--agile-link-hover-decoration);
+}
+
+.agile-blog-card__image {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  object-fit: cover;
+  background: var(--agile-color-surface);
+}
+
+.agile-blog-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.agile-blog-card__meta,
+.agile-blog-post__meta {
+  color: var(--agile-color-muted);
+  font-size: 0.875rem;
+}
+
+.agile-blog-card__title {
+  margin: 0.5rem 0;
+  color: var(--agile-heading-color, var(--agile-color-secondary));
+  font-size: 1.25rem;
+}
+
+.agile-blog-card__summary {
+  color: inherit;
+}
+
+.agile-blog-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: var(--agile-section-md);
+}
+
+.agile-blog-post {
+  padding: var(--agile-section-lg) 0;
+}
+
+.agile-blog-post__inner {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.agile-blog-post__featured-image {
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: var(--agile-radius-lg);
+}
+
+@media (max-width: 960px) {
+  .agile-blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .agile-blog-grid {
+    grid-template-columns: 1fr;
+  }
+}

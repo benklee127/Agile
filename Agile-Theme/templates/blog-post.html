@@ -1,0 +1,34 @@
+<!--
+  templateType: blog_post
+  isAvailableForNewContent: true
+  label: Agile Blog Post
+  screenshotPath: ../images/theme-preview.svg
+-->
+{% extends "./layouts/base.html" %}
+
+{% block body %}
+  <article class="agile-blog-post">
+    <div class="agile-container">
+      <div class="agile-blog-post__inner agile-richtext">
+        <div class="agile-blog-post__meta">
+          {{ content.publish_date_localized }}
+          {% if content.blog_author.display_name %}
+            <span> by {{ content.blog_author.display_name }}</span>
+          {% endif %}
+        </div>
+        <h1>{{ content.name }}</h1>
+
+        {% if content.featured_image %}
+          <img
+            class="agile-blog-post__featured-image"
+            src="{{ content.featured_image|escape_url }}"
+            alt="{{ content.featured_image_alt_text|escape_attr }}"
+            loading="eager"
+          >
+        {% endif %}
+
+        {{ content.post_body }}
+      </div>
+    </div>
+  </article>
+{% endblock body %}

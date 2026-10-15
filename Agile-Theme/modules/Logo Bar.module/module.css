@@ -1,0 +1,129 @@
+/* ==========================================================================
+   Logo Bar — .agile-logo-bar
+   Section chrome (padding, background, text colour, width, alignment) comes
+   from .agile-section and its modifier classes. Logos centre by default;
+   .agile-align--left (layout.text_align) left-aligns them.
+   ========================================================================== */
+
+.agile-logo-bar {
+  --agile-logo-bar-gap-y: 32px;
+  --agile-logo-bar-gap-x: 48px;
+  text-align: center;
+}
+
+.agile-logo-bar.agile-align--left {
+  text-align: left;
+}
+
+/* Small label-style heading, whatever its semantic level */
+.agile-logo-bar__heading {
+  margin: 0 0 32px;
+  color: var(--agile-text-muted);
+  font-family: var(--agile-font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* --- Logo list ---------------------------------------------------------- */
+.agile-logo-bar__list {
+  --agile-logo-cols: 5;
+  display: grid;
+  grid-template-columns: repeat(var(--agile-logo-cols), minmax(0, 1fr));
+  gap: var(--agile-logo-bar-gap-y) var(--agile-logo-bar-gap-x);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agile-logo-bar__list--cols-3 { --agile-logo-cols: 3; }
+.agile-logo-bar__list--cols-4 { --agile-logo-cols: 4; }
+.agile-logo-bar__list--cols-5 { --agile-logo-cols: 5; }
+.agile-logo-bar__list--cols-6 { --agile-logo-cols: 6; }
+
+.agile-logo-bar__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+}
+
+.agile-logo-bar.agile-align--left .agile-logo-bar__item {
+  justify-content: flex-start;
+}
+
+.agile-logo-bar__link {
+  display: inline-flex;
+  max-width: 100%;
+  text-decoration: none;
+}
+
+.agile-logo-bar__logo {
+  display: block;
+  width: auto;
+  height: var(--agile-logo-max-h, 48px);
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* --- Logo treatments ---------------------------------------------------- */
+.agile-logo-bar__list--grayscale .agile-logo-bar__logo {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+
+.agile-logo-bar__list--grayscale-hover .agile-logo-bar__logo {
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition:
+    filter var(--agile-duration-base) var(--agile-easing),
+    opacity var(--agile-duration-base) var(--agile-easing);
+}
+
+.agile-logo-bar__list--grayscale-hover .agile-logo-bar__item:hover .agile-logo-bar__logo,
+.agile-logo-bar__list--grayscale-hover .agile-logo-bar__link:focus-visible .agile-logo-bar__logo {
+  filter: none;
+  opacity: 1;
+}
+
+/* --- Responsive --------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .agile-logo-bar__list--cols-5,
+  .agile-logo-bar__list--cols-6 {
+    --agile-logo-cols: 4;
+  }
+}
+
+@media (max-width: 767px) {
+  .agile-logo-bar {
+    --agile-logo-bar-gap-y: 24px;
+    --agile-logo-bar-gap-x: 32px;
+  }
+
+  .agile-logo-bar__heading {
+    margin-bottom: 24px;
+  }
+
+  .agile-logo-bar__list[class*="--cols-"] {
+    --agile-logo-cols: 3;
+  }
+
+  .agile-logo-bar__logo {
+    height: min(var(--agile-logo-max-h, 48px), 40px);
+  }
+}
+
+@media (max-width: 479px) {
+  .agile-logo-bar {
+    --agile-logo-bar-gap-y: 20px;
+    --agile-logo-bar-gap-x: 24px;
+  }
+
+  .agile-logo-bar__list[class*="--cols-"] {
+    --agile-logo-cols: 2;
+  }
+}

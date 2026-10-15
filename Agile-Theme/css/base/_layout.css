@@ -1,0 +1,84 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--agile-color-background);
+  color: var(--agile-color-text);
+  font-family: var(--agile-font-body);
+  font-size: var(--agile-body-size);
+  line-height: var(--agile-line-height);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.agile-skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 100;
+  padding: 12px 16px;
+  border-radius: var(--agile-radius-sm);
+  background: var(--agile-color-secondary);
+  color: var(--agile-color-on-secondary);
+  text-decoration: none;
+}
+
+.agile-skip-link:focus {
+  top: 16px;
+}
+
+.agile-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.agile-container {
+  width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-width));
+  margin: 0 auto;
+}
+
+/* Page-level width (Page Controls > page_width). `theme_default` has no rule,
+   so the theme container width applies. Section-level
+   .agile-section-width--* (see _sections.css) has higher specificity and wins. */
+.agile-width--narrow .agile-container { width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-narrow)); }
+.agile-width--wide   .agile-container { width: min(calc(100% - 2 * var(--agile-gutter)), var(--agile-container-wide)); }
+.agile-width--full   .agile-container { width: calc(100% - 2 * var(--agile-gutter)); }
+
+/* Page-level spacing density (Page Controls > spacing_density).
+   Scales the theme section padding scale; custom px padding is not scaled.
+   `theme_default` has no rule, so --agile-density keeps its theme value. */
+.agile-density--compact { --agile-density: 0.7; }
+.agile-density--relaxed { --agile-density: 1.25; }
+
+.agile-main {
+  flex: 1 0 auto;
+}
+
+.agile-grid {
+  display: grid;
+  gap: var(--agile-content-gap);
+}
+
+.agile-grid--hero {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+  .agile-grid--hero {
+    grid-template-columns: 1fr;
+  }
+}

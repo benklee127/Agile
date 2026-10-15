@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Hero — Section module [S]                        modules/Hero.module
+   Section chrome (background, text colour, padding utilities, width,
+   alignment, visibility) comes from the theme CSS via agile.section_attrs.
+   This file only lays out the hero's own content and media.
+   ========================================================================== */
+
+.agile-hero {
+  --agile-hero-measure: 46rem;   /* max text width when there is no media */
+  --agile-hero-media-radius: var(--agile-radius-lg);
+  position: relative;
+}
+
+/* Hero default padding is larger than a normal section. Applies only when the
+   editor left padding on "Theme default" (no agile-pt--/agile-pb-- class),
+   so the padding utilities always win. */
+.agile-section.agile-hero:not([class*="agile-pt--"]) {
+  padding-top: calc(var(--agile-section-lg) * var(--agile-density, 1));
+}
+
+.agile-section.agile-hero:not([class*="agile-pb--"]) {
+  padding-bottom: calc(var(--agile-section-lg) * var(--agile-density, 1));
+}
+
+/* --- Grid ---------------------------------------------------------------- */
+
+.agile-hero__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--agile-content-gap);
+  align-items: center;
+}
+
+.agile-hero--media-left .agile-hero__content {
+  order: 2;
+}
+
+.agile-hero--media-left .agile-hero__media {
+  order: 1;
+}
+
+.agile-hero--no-media .agile-hero__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.agile-hero--no-media .agile-hero__content {
+  max-width: var(--agile-hero-measure);
+}
+
+.agile-hero--no-media.agile-align--center .agile-hero__content {
+  margin-inline: auto;
+}
+
+/* --- Content ------------------------------------------------------------- */
+
+.agile-hero__content > :first-child {
+  margin-top: 0;
+}
+
+.agile-hero__content > :last-child {
+  margin-bottom: 0;
+}
+
+.agile-hero__title {
+  margin: 0 0 20px;
+  color: var(--agile-heading-color, inherit);
+}
+
+.agile-hero__body {
+  color: inherit;
+}
+
+.agile-hero__body > :last-child {
+  margin-bottom: 0;
+}
+
+.agile-hero__actions {
+  margin-top: 32px;
+}
+
+/* Secondary CTA: when neither the CTA's own style nor the module's
+   Style > Button style is set (both "inherit"), the second button gets a
+   ghost look so the pair still reads as primary + secondary. Any explicit
+   style adds an .agile-button--* modifier and is excluded here, so it wins. */
+.agile-hero__actions .agile-button + .agile-button:not([class*="agile-button--"]) {
+  --_btn-bg:     transparent;
+  --_btn-fg:     var(--agile-btn-outline-color);
+  --_btn-border: color-mix(in srgb, var(--agile-btn-outline-color) 45%, transparent);
+}
+.agile-hero__actions .agile-button + .agile-button:not([class*="agile-button--"]):hover {
+  background: color-mix(in srgb, var(--_btn-fg) 10%, transparent);
+}
+
+/* --- Media --------------------------------------------------------------- */
+
+.agile-hero__media {
+  overflow: hidden;
+  border: 1px solid var(--agile-color-border);
+  border-radius: var(--agile-hero-media-radius);
+  background: var(--agile-color-surface);
+}
+
+.agile-hero__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --- Mobile -------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .agile-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On mobile the text comes first and the media follows, whichever side
+     the media sits on at desktop. */
+  .agile-hero--media-left .agile-hero__content,
+  .agile-hero--media-left .agile-hero__media {
+    order: initial;
+  }
+
+  .agile-hero__actions {
+    margin-top: 24px;
+  }
+}

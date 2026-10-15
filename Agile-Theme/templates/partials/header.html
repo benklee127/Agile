@@ -1,0 +1,33 @@
+<!--
+  templateType: global_partial
+  label: Agile Site Header
+-->
+{#
+  Global header. One DnD area seeded with the Site Header module, so its
+  content (logo, navigation menu, button) is edited in the global content
+  editor. Header mode / style / sticky are resolved inside the module
+  (globals/Site Header.module/module.html), not here. The skip link stays
+  in templates/layouts/base.html. Module path is relative to this file:
+  templates/partials/ → theme root is "../../".
+#}
+{% dnd_area "header_area" label="Site Header" %}
+  {% dnd_section %}
+    {% dnd_column %}
+      {% dnd_row %}
+        {% dnd_module path="../../globals/Site Header.module",
+          label="Site Header",
+          content={
+            "navigation": "default",
+            "logo_link": {
+              "url": { "type": "EXTERNAL", "href": "/" },
+              "open_in_new_tab": false,
+              "no_follow": false
+            },
+            "cta": { "text": "" }
+          }
+        %}
+        {% end_dnd_module %}
+      {% end_dnd_row %}
+    {% end_dnd_column %}
+  {% end_dnd_section %}
+{% end_dnd_area %}

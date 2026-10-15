@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Motion
+   Tokens: --agile-duration-fast, --agile-duration-base, --agile-easing
+   (theme.motion.*). Module CSS should use these for transitions/animations
+   so the reduced-motion block below can switch them off in one place.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --agile-duration-fast: 0ms;
+    --agile-duration-base: 0ms;
+    --agile-button-transition-duration: 0ms;
+    --agile-button-hover-transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

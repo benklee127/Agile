@@ -1,0 +1,168 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Site Footer -- global module (Agile Milestone 2)
+  Seeded by templates/partials/footer.html (global_partial > dnd_area "footer_area")
+  and edited in HubSpot's global content editor.
+
+  Mode: theme.footer.mode (native | minimal | hidden), overridden per page by
+  Page Controls footer_mode_override unless that is "theme_default".
+    native  -> brand, link columns, social, disclaimer, copyright, legal links
+    minimal -> copyright + legal links only
+    hidden  -> renders nothing (an editor-only note in the editor, as the header)
+  Link columns share ONE <nav aria-label="Footer">; a column renders only when
+  it has links (an editor-only placeholder otherwise). Legal links are their
+  own <nav aria-label="Legal">. New-tab text links carry agile.new_tab_sr();
+  menu links go through agile.menu_link_attrs() (same rule as the header).
+  Styles live in css/components/_footer.css (part of main.css), token-driven
+  by theme.footer.* (--agile-footer-bg / -text / -link).
+#}
+
+{#- Inline SVG icons (decorative: the link carries the accessible name) -#}
+{%- macro social_icon(network) -%}
+  {%- if network == "linkedin" -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.03-3.06-1.86-3.06-1.87 0-2.15 1.46-2.15 2.96V21H9z"/></svg>
+  {%- elif network == "x" -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.9 2H22l-7.5 8.6L23.3 22h-6.9l-5.4-7.1L4.8 22H1.7l8-9.2L1.3 2h7.1l4.9 6.5zm-1.2 18.1h1.9L7.4 3.8H5.4z"/></svg>
+  {%- elif network == "facebook" -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+  {%- elif network == "instagram" -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+  {%- elif network == "youtube" -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6z"/></svg>
+  {%- else -%}
+<svg class="agile-site-footer__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{#- ---- Mode: Theme default, Page Controls override (Page > Theme) ---- -#}
+{#- Locals are prefixed (ftr_*) so an undefined value never falls through to a
+    same-named HubL global such as `content` (HUBSPOT-PLATFORM.md › HubL). -#}
+{%- set ftr_modes = ["native", "minimal", "hidden"] -%}
+{%- set footer_mode = theme.footer.mode if theme.footer.mode in ftr_modes else "native" -%}
+{%- set ftr_override = widget_data.page_controls.footer_mode_override -%}
+{%- if ftr_override in ftr_modes -%}{%- set footer_mode = ftr_override -%}{%- endif -%}
+
+{%- if footer_mode == "hidden" -%}
+  {%- if is_in_editor -%}
+    <p class="agile-site-footer-note">Site footer hidden on this page (Footer mode: No Footer).</p>
+  {%- endif -%}
+{%- else -%}
+{%- set ftr_content = module.content -%}
+{%- set network_names = {"linkedin": "LinkedIn", "x": "X", "facebook": "Facebook", "instagram": "Instagram", "youtube": "YouTube", "other": "Website"} -%}
+{%- set ftr_company = ftr_content.company_name|default("", true)|string|trim -%}
+
+{#- Copyright: {year} -> current year -#}
+{%- set copyright_text = ftr_content.copyright|default("", true)|string|trim -%}
+{%- set copyright_text = copyright_text|replace("{year}", year|default(local_dt|format_datetime("yyyy"), true)|string) -%}
+
+{#- Legal links (shared by both modes) -#}
+{%- set legal_items = [] -%}
+{%- for ftr_item in ftr_content.legal_links -%}
+  {%- set ftr_attrs = agile.link_attrs(ftr_item.legal_url)|trim -%}
+  {%- set ftr_text = ftr_item.legal_text|default("", true)|string|trim -%}
+  {%- if ftr_attrs and ftr_text -%}
+    {%- do legal_items.append('<li><a ' ~ ftr_attrs ~ '>' ~ (ftr_text|escape_html) ~ agile.new_tab_sr(ftr_item.legal_url) ~ '</a></li>') -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<footer {{ agile.component_attrs(module, "agile-site-footer", "agile-site-footer--" ~ footer_mode) }}>
+  <div class="agile-container agile-site-footer__inner">
+  {%- if footer_mode == "native" %}
+    {#- Logo: module image, else theme logo. The logo link's accessible name:
+        logo alt > Company name > site company name > "Home" (as the header). -#}
+    {%- set footer_logo = ftr_content.logo if ftr_content.logo and ftr_content.logo.src else theme.branding.logo -%}
+    {%- set show_logo = (ftr_content.show_logo is not defined or ftr_content.show_logo) and footer_logo and footer_logo.src -%}
+    {%- set ftr_logo_name = "" -%}
+    {%- if footer_logo -%}{%- set ftr_logo_name = footer_logo.alt|default("", true)|string|trim -%}{%- endif -%}
+    {%- if not ftr_logo_name -%}{%- set ftr_logo_name = ftr_company -%}{%- endif -%}
+    {%- if not ftr_logo_name -%}{%- set ftr_logo_name = site_settings.company_name|default("", true)|string|trim -%}{%- endif -%}
+    {%- if not ftr_logo_name -%}{%- set ftr_logo_name = "Home" -%}{%- endif -%}
+    {%- set logo_img = {"src": footer_logo.src, "alt": ftr_logo_name, "width": footer_logo.width, "height": footer_logo.height} if show_logo else {} -%}
+
+    {#- Link columns -> HTML strings first, so the wrapper <nav> only renders
+        when at least one column has output. -#}
+    {%- set ftr_cols = [] -%}
+    {%- for col in ftr_content.columns -%}
+      {%- set heading_text = col.column_heading|default("", true)|string|trim -%}
+      {%- set ftr_items = [] -%}
+      {%- if col.column_source == "menu" -%}
+        {%- if col.column_menu -%}
+          {%- set menu_root = menu(col.column_menu, "site_root") -%}
+          {%- for node in menu_root.children -%}
+            {%- set ftr_attrs = agile.menu_link_attrs(node)|trim -%}
+            {%- if ftr_attrs and node.label -%}
+              {%- do ftr_items.append('<li><a ' ~ ftr_attrs ~ '>' ~ (node.label|escape_html) ~ agile.new_tab_sr(node.linkTarget|default("", true)|string) ~ '</a></li>') -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- for ftr_link in col.column_links -%}
+          {%- set ftr_attrs = agile.link_attrs(ftr_link.column_link_url)|trim -%}
+          {%- set ftr_text = ftr_link.column_link_text|default("", true)|string|trim -%}
+          {%- if ftr_attrs and ftr_text -%}
+            {%- do ftr_items.append('<li><a ' ~ ftr_attrs ~ '>' ~ (ftr_text|escape_html) ~ agile.new_tab_sr(ftr_link.column_link_url) ~ '</a></li>') -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- set heading_html = "" -%}
+      {%- if heading_text -%}{%- set heading_html = '<h2 class="agile-site-footer__heading">' ~ (heading_text|escape_html) ~ '</h2>' -%}{%- endif -%}
+      {%- if ftr_items|length > 0 -%}
+        {%- do ftr_cols.append('<div class="agile-site-footer__col">' ~ heading_html ~ '<ul class="agile-site-footer__links">' ~ ftr_items|join("") ~ '</ul></div>') -%}
+      {%- elif is_in_editor -%}
+        {%- do ftr_cols.append('<div class="agile-site-footer__col agile-site-footer__col--empty">' ~ heading_html ~ '<p>Add links or choose a menu. This column stays hidden on the live page until it has links.</p></div>') -%}
+      {%- endif -%}
+    {%- endfor %}
+
+    <div class="agile-site-footer__top">
+      <div class="agile-site-footer__brand">
+        {%- if show_logo %}
+        <a class="agile-site-footer__logo" href="/">{{ agile.image(logo_img, "200px", "lazy", "agile-site-footer__logo-img") }}</a>
+        {%- endif %}
+        {%- if ftr_company %}
+        <p class="agile-site-footer__company">{{ ftr_company|escape_html }}</p>
+        {%- endif %}
+        {%- if ftr_content.about_text %}
+        <div class="agile-site-footer__about agile-richtext">{{ ftr_content.about_text }}</div>
+        {%- endif %}
+
+        {%- if ftr_content.social and ftr_content.social|length > 0 %}
+        <ul class="agile-site-footer__social" aria-label="Social media">
+          {%- for ftr_item in ftr_content.social %}
+            {%- set ftr_attrs = agile.link_attrs(ftr_item.social_url)|trim -%}
+            {%- if ftr_attrs -%}
+              {%- set net = ftr_item.network if ftr_item.network in network_names else "other" -%}
+              {%- set sr = ftr_item.accessible_label|default(network_names[net], true)|string|trim -%}
+              {%- if ftr_item.social_url.open_in_new_tab -%}{%- set sr = sr ~ " (opens in a new tab)" -%}{%- endif %}
+          <li><a class="agile-site-footer__social-link" {{ ftr_attrs }} aria-label="{{ sr|escape_attr }}">{{ social_icon(net) }}</a></li>
+            {%- endif -%}
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+      </div>
+
+      {%- if ftr_cols|length > 0 %}
+      <nav class="agile-site-footer__columns" aria-label="Footer">{{ ftr_cols|join("") }}</nav>
+      {%- endif %}
+    </div>
+
+    {%- if ftr_content.disclaimer %}
+    <div class="agile-site-footer__disclaimer agile-richtext">{{ ftr_content.disclaimer }}</div>
+    {%- endif %}
+  {%- endif %}
+
+    {%- if copyright_text or legal_items|length > 0 %}
+    <div class="agile-site-footer__bottom">
+      {%- if copyright_text %}
+      <p class="agile-site-footer__copyright">{{ copyright_text|escape_html }}</p>
+      {%- endif %}
+      {%- if legal_items|length > 0 %}
+      <nav class="agile-site-footer__legal" aria-label="Legal">
+        <ul class="agile-site-footer__legal-links">{{ legal_items|join("") }}</ul>
+      </nav>
+      {%- endif %}
+    </div>
+    {%- endif %}
+  </div>
+</footer>
+{%- endif -%}

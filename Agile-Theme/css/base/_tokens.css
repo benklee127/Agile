@@ -1,0 +1,140 @@
+:root {
+  /* Colors */
+  --agile-color-primary:      {{ theme.colors.primary.color }};
+  --agile-color-secondary:    {{ theme.colors.secondary.color }};
+  --agile-color-accent:       {{ theme.colors.accent.color }};
+  --agile-color-on-primary:   {{ theme.colors.on_primary.color }};
+  --agile-color-on-secondary: {{ theme.colors.on_secondary.color }};
+  --agile-color-on-accent:    {{ theme.colors.on_accent.color }};
+  --agile-color-text:         {{ theme.colors.text.color }};
+  --agile-color-muted:        {{ theme.colors.muted_text.color }};
+  --agile-color-surface:      {{ theme.colors.surface.color }};
+  --agile-color-background:   {{ theme.colors.background.color }};
+  --agile-color-border-base:  {{ theme.colors.border.color }};
+  --agile-color-border:       var(--agile-color-border-base); /* re-pointed in coloured sections */
+
+  /* Links — *-base values are the theme settings; the unsuffixed
+     properties are what CSS uses and are re-pointed in coloured sections. */
+  --agile-link-color-base:       {{ theme.links.color.color }};
+  --agile-link-hover-color-base: {{ theme.links.hover_color.color }};
+  {% if theme.links.underline == "none" %}
+  --agile-link-decoration-base:       none;
+  --agile-link-hover-decoration-base: none;
+  {% elif theme.links.underline == "hover" %}
+  --agile-link-decoration-base:       none;
+  --agile-link-hover-decoration-base: underline;
+  {% else %}
+  --agile-link-decoration-base:       underline;
+  --agile-link-hover-decoration-base: underline;
+  {% endif %}
+  --agile-link-color:            var(--agile-link-color-base);
+  --agile-link-hover-color:      var(--agile-link-hover-color-base);
+  --agile-link-decoration:       var(--agile-link-decoration-base);
+  --agile-link-hover-decoration: var(--agile-link-hover-decoration-base);
+
+  /* Contextual colours — re-pointed inside coloured sections (see _sections.css) */
+  --agile-heading-color: var(--agile-color-secondary);
+  --agile-eyebrow-color: var(--agile-color-primary);
+  --agile-text-muted:    var(--agile-color-muted);
+
+  /* Typography — fonts */
+  --agile-font-heading: '{{ theme.typography.heading_font.font }}', system-ui, sans-serif;
+  --agile-font-body:    '{{ theme.typography.body_font.font }}', system-ui, sans-serif;
+  --agile-heading-weight: {{ theme.typography.heading_weight }};
+
+  /* Typography — type scale */
+  --agile-h1-size:     {{ theme.typography.h1_size }}px;
+  --agile-h2-size:     {{ theme.typography.h2_size }}px;
+  --agile-h3-size:     {{ theme.typography.h3_size }}px;
+  --agile-h4-size:     {{ theme.typography.h4_size }}px;
+  --agile-h5-size:     {{ theme.typography.h5_size }}px;
+  --agile-body-size:   {{ theme.typography.body_size }}px;
+  --agile-line-height: {{ theme.typography.line_height }};
+
+  /* Buttons */
+  --agile-button-radius:              {{ theme.buttons.border_radius }}px;
+  --agile-button-padding-y:           {{ theme.buttons.padding_y }}px;
+  --agile-button-padding-x:           {{ theme.buttons.padding_x }}px;
+  --agile-button-transition-duration: {{ theme.buttons.transition_duration_ms }}ms;
+  {% if theme.buttons.hover_effect == "lift" %}
+  --agile-button-hover-transform: translateY(-2px);
+  {% elif theme.buttons.hover_effect == "sink" %}
+  --agile-button-hover-transform: translateY(1px);
+  {% elif theme.buttons.hover_effect == "grow" %}
+  --agile-button-hover-transform: scale(1.02);
+  {% else %}
+  --agile-button-hover-transform: none;
+  {% endif %}
+
+  /* Button colour roles (re-pointed inside coloured sections) */
+  --agile-btn-primary-bg:    var(--agile-color-primary);
+  --agile-btn-primary-fg:    var(--agile-color-on-primary);
+  --agile-btn-secondary-bg:  var(--agile-color-secondary);
+  --agile-btn-secondary-fg:  var(--agile-color-on-secondary);
+  --agile-btn-outline-color: var(--agile-color-primary);
+  --agile-btn-link-color:    var(--agile-link-color);
+
+  /* Shape */
+  --agile-radius-sm: {{ theme.shape.radius_sm }}px;
+  --agile-radius-md: {{ theme.shape.radius_md }}px;
+  --agile-radius-lg: {{ theme.shape.radius_lg }}px;
+  --agile-radius-xl: {{ theme.shape.radius_xl }}px;
+
+  /* Shadows — composed from theme number fields */
+  --agile-shadow-card:     0 1px 3px rgba(0,0,0,{{ theme.shadows.card_opacity / 100 }}), 0 4px {{ theme.shadows.card_blur }}px rgba(0,0,0,{{ theme.shadows.card_opacity / 100 }});
+  --agile-shadow-elevated: 0 4px 12px rgba(0,0,0,{{ theme.shadows.elevated_opacity / 100 }}), 0 16px {{ theme.shadows.elevated_blur }}px rgba(0,0,0,{{ theme.shadows.elevated_opacity / 100 }});
+
+  /* Forms */
+  --agile-form-label-color-base: {{ theme.forms.label_color.color }};
+  --agile-form-label-color:    var(--agile-form-label-color-base);
+  --agile-form-input-bg:       {{ theme.forms.input_background.color }};
+  --agile-form-input-color:    {{ theme.forms.input_text_color.color }};
+  --agile-form-placeholder:    {{ theme.forms.placeholder_color.color }};
+  --agile-form-border-color:   {{ theme.forms.input_border_color.color }};
+  --agile-form-border-width:   {{ theme.forms.border_width }}px;
+  --agile-form-radius:         {{ theme.forms.radius }}px;
+  --agile-form-field-gap:      {{ theme.forms.field_gap }}px;
+  --agile-form-error-color:    {{ theme.forms.error_color.color }};
+  --agile-focus-color:         {{ theme.forms.focus_color.color }};
+
+  /* Motion */
+  --agile-duration-fast: {{ theme.motion.duration_fast_ms }}ms;
+  --agile-duration-base: {{ theme.motion.duration_base_ms }}ms;
+  {% if theme.motion.easing == "ease" %}
+  --agile-easing: ease;
+  {% elif theme.motion.easing == "ease_out" %}
+  --agile-easing: ease-out;
+  {% elif theme.motion.easing == "ease_in_out" %}
+  --agile-easing: ease-in-out;
+  {% elif theme.motion.easing == "linear" %}
+  --agile-easing: linear;
+  {% else %}
+  --agile-easing: cubic-bezier(0.2, 0, 0, 1);
+  {% endif %}
+
+  /* Spacing scale (multiplied by --agile-density in _layout.css) */
+  --agile-section-xs: {{ theme.spacing.section_xs }}px;
+  --agile-section-sm: {{ theme.spacing.section_sm }}px;
+  --agile-section-md: {{ theme.spacing.section_md }}px;
+  --agile-section-lg: {{ theme.spacing.section_lg }}px;
+  --agile-section-xl: {{ theme.spacing.section_xl }}px;
+  --agile-density: 1;
+
+  /* Layout */
+  --agile-container-width:  {{ theme.layout.container_width }}px;
+  --agile-container-narrow: 960px;
+  --agile-container-wide:   1320px;
+  --agile-gutter:           16px;
+  --agile-content-gap:      {{ theme.layout.content_gap }}px;
+  --agile-breakpoint-mobile: 767px; /* reference only — media queries cannot read custom properties */
+
+  /* Header / footer */
+  --agile-header-bg:          {{ theme.header.background_color.color }};
+  --agile-header-text:        {{ theme.header.text_color.color }};
+  --agile-header-height:      {{ theme.header.height }}px;
+  --agile-header-border-width: {% if theme.header.show_border %}1px{% else %}0px{% endif %};
+  --agile-header-transparent-text: {{ theme.header.transparent_text_color.color }};
+  --agile-footer-bg:          {{ theme.footer.background_color.color }};
+  --agile-footer-text:        {{ theme.footer.text_color.color }};
+  --agile-footer-link:        {{ theme.footer.link_color.color }};
+}

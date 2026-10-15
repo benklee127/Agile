@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Card (shared)
+   .agile-card-item and its elements, used by the Card Item component module
+   and by every card a Section module renders (Card Grid). Kept here, in
+   main.css, so the rules exist once. Variants: --default (raised),
+   --outlined, --flat. Tokens only; local custom properties: --card-item-*.
+   ========================================================================== */
+
+.agile-card-item {
+  --card-item-padding: 24px;
+  --card-item-gap: 12px;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--agile-radius-md);
+  background: var(--agile-color-background);
+}
+
+/* Raised (default) */
+.agile-card-item--default {
+  box-shadow: var(--agile-shadow-card);
+}
+
+/* Outlined */
+.agile-card-item--outlined {
+  border: 1px solid var(--agile-color-border);
+}
+
+/* Flat: no frame, takes the surrounding section's colours */
+.agile-card-item--flat {
+  --card-item-padding: 0px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.agile-card-item__media {
+  overflow: hidden;
+  background: var(--agile-color-surface);
+}
+
+.agile-card-item--flat .agile-card-item__media {
+  margin-bottom: 20px;
+  border-radius: var(--agile-radius-md);
+}
+
+.agile-card-item__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.agile-card-item__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--card-item-gap);
+  padding: var(--card-item-padding);
+}
+
+.agile-card-item__eyebrow {
+  margin: 0;
+}
+
+.agile-card-item__title {
+  margin: 0;
+}
+
+.agile-card-item__text > :first-child {
+  margin-top: 0;
+}
+
+.agile-card-item__text > :last-child {
+  margin-bottom: 0;
+}
+
+/* Push the button to the bottom so CTAs line up across a row of cards */
+.agile-card-item__cta {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+@media (max-width: 767px) {
+  .agile-card-item {
+    --card-item-padding: 20px;
+    height: auto;
+  }
+
+  .agile-card-item--flat {
+    --card-item-padding: 0px;
+  }
+}

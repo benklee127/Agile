@@ -1,0 +1,62 @@
+{
+  "name": "style",
+  "label": "Style",
+  "type": "group",
+  "tab": "STYLE",
+  "children": [
+    {
+      "name": "background",
+      "label": "Background",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["inherit", "None (page background)"],
+        ["surface", "Surface"],
+        ["primary", "Primary"],
+        ["secondary", "Secondary"],
+        ["accent", "Accent"],
+        ["custom", "Custom colour"]
+      ],
+      "default": "inherit"
+    },
+    {
+      "name": "background_color",
+      "label": "Custom background colour",
+      "type": "color",
+      "default": {
+        "color": null,
+        "opacity": null
+      },
+      "visibility": {
+        "controlling_field_path": "./background",
+        "controlling_value_regex": "custom",
+        "operator": "EQUAL"
+      }
+    },
+    {
+      "name": "text_color",
+      "label": "Text colour",
+      "type": "color",
+      "help_text": "Leave empty to inherit the text colour from the background choice or the page.",
+      "show_opacity": false,
+      "default": {
+        "color": null,
+        "opacity": null
+      }
+    },
+    {
+      "name": "button_style",
+      "label": "Button style",
+      "type": "choice",
+      "display": "select",
+      "choices": [
+        ["inherit", "Theme default"],
+        ["primary", "Primary"],
+        ["secondary", "Secondary"],
+        ["ghost", "Ghost"],
+        ["link", "Text link"]
+      ],
+      "default": "inherit"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{% import "../../macros/agile.html" as agile %}
+{#
+  Section Header [S] — a styled section band with an eyebrow, heading, intro
+  and an optional button. It is an ordinary DnD module that renders a closed
+  <section>: its background, text colour and padding style only this band.
+  It does not wrap other modules (DnD siblings never sit inside a module).
+  Repeated layouts such as cards are Section modules with a repeater
+  (Card Grid). Wrapper classes, spacing, background, text colour, width,
+  alignment, anchor and visibility come from agile.section_attrs(). The
+  header is centred by default; Layout > Text alignment switches it to left.
+#}
+{%- set c = module.content -%}
+{%- set button_html = agile.button(c.cta.text, c.cta.link, agile.resolve_style(c.cta.style, module.style.button_style))|trim -%}
+<section {{ agile.section_attrs(module, "agile-section-header") }}>
+  <div class="agile-container">
+    {%- if c.eyebrow or c.heading or c.intro or button_html %}
+    <header class="agile-section-header__inner">
+      {%- if c.eyebrow %}
+      <p class="agile-eyebrow agile-section-header__eyebrow">{{ c.eyebrow|escape_html }}</p>
+      {%- endif %}
+      {{ agile.heading(c.heading, c.heading_level|default("h2", true), "agile-section-header__heading") }}
+      {%- if c.intro %}
+      <p class="agile-section-header__intro">{{ c.intro|escape_html|replace("\n", "<br>") }}</p>
+      {%- endif %}
+      {%- if button_html %}
+      <div class="agile-button-group agile-section-header__cta">{{ button_html }}</div>
+      {%- endif %}
+    </header>
+    {%- endif %}
+  </div>
+</section>

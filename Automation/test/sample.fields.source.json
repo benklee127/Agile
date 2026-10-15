@@ -1,0 +1,68 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Sample heading"
+      },
+      {
+        "name": "heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [["h1", "H1"], ["h2", "H2"], ["h3", "H3"], ["h4", "H4"]],
+        "default": "h2"
+      },
+      {
+        "name": "body_text",
+        "label": "Body text",
+        "type": "richtext",
+        "default": "<p>Sample body.</p>"
+      },
+      {
+        "name": "show_cta",
+        "label": "Show button",
+        "type": "boolean",
+        "display": "toggle",
+        "default": true
+      },
+      {
+        "$use": "cta",
+        "name": "primary_cta",
+        "label": "Primary button",
+        "$defaults": { "text": "Get started" },
+        "visibility": {
+          "controlling_field_path": "./show_cta",
+          "controlling_value_regex": "true",
+          "operator": "EQUAL"
+        }
+      }
+    ]
+  },
+  {
+    "$use": "layout",
+    "$defaults": { "spacing.padding_top": "lg", "container_width": "wide" },
+    "$append": [
+      {
+        "name": "media_position",
+        "label": "Media position",
+        "type": "choice",
+        "display": "select",
+        "choices": [["left", "Left"], ["right", "Right"]],
+        "default": "right",
+        "visibility": {
+          "controlling_field_path": "./container_width",
+          "controlling_value_regex": "full",
+          "operator": "NOT_EQUAL"
+        }
+      }
+    ]
+  },
+  { "$use": "style", "$omit": ["button_style"] },
+  { "$use": "advanced" }
+]

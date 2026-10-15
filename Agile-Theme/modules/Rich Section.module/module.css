@@ -1,0 +1,46 @@
+/* Rich Section [S] — section chrome lives in css/base/_sections.css */
+
+.agile-rich-section {
+  --agile-rich-section-measure: 780px;
+  --agile-rich-section-gap: 24px;
+}
+
+.agile-rich-section__inner {
+  max-width: var(--agile-rich-section-measure);
+}
+
+/* Centred sections centre the text column, not just its text */
+.agile-rich-section.agile-align--center .agile-rich-section__inner {
+  margin-inline: auto;
+}
+
+/* Full-width sections let the copy use the full container */
+.agile-rich-section.agile-section-width--full .agile-rich-section__inner {
+  max-width: none;
+}
+
+.agile-rich-section__heading {
+  margin-top: 0;
+}
+
+.agile-rich-section__body > :first-child {
+  margin-top: 0;
+}
+
+.agile-rich-section__body > :last-child {
+  margin-bottom: 0;
+}
+
+.agile-rich-section__heading + .agile-rich-section__body {
+  margin-top: calc(var(--agile-rich-section-gap) * 0.75);
+}
+
+.agile-rich-section__actions {
+  margin-top: var(--agile-rich-section-gap);
+}
+
+@media (max-width: 767px) {
+  .agile-rich-section {
+    --agile-rich-section-gap: 20px;
+  }
+}

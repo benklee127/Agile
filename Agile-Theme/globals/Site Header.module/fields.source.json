@@ -1,0 +1,89 @@
+[
+  {
+    "name": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "logo",
+        "label": "Logo",
+        "type": "image",
+        "responsive": true,
+        "resizable": false,
+        "show_loading": false,
+        "help_text": "Leave empty to use the theme logo (Theme settings > Branding > Site Logo)."
+      },
+      {
+        "name": "logo_link",
+        "label": "Logo link",
+        "type": "link",
+        "supported_types": ["EXTERNAL", "CONTENT"],
+        "default": {
+          "url": { "type": "EXTERNAL", "href": "/" },
+          "open_in_new_tab": false,
+          "no_follow": false
+        }
+      },
+      {
+        "name": "logo_alt",
+        "label": "Company name (logo alt text)",
+        "type": "text",
+        "default": "",
+        "help_text": "Used when the logo image has no alt text of its own, and shown as text when there is no logo at all."
+      },
+      {
+        "name": "navigation",
+        "label": "Navigation menu",
+        "type": "menu",
+        "default": "default",
+        "help_text": "Top-level items show in the header. One level of child items shows as a dropdown; deeper levels are not shown."
+      },
+      {
+        "$use": "cta",
+        "name": "cta",
+        "label": "Header button",
+        "$defaults": { "text": "" }
+      },
+      {
+        "name": "show_mobile_cta",
+        "label": "Show button in the mobile header bar",
+        "type": "boolean",
+        "display": "toggle",
+        "default": false,
+        "help_text": "On: the button stays visible next to the menu toggle on phones. Off: on phones it appears at the bottom of the opened menu. The minimal header always shows it."
+      }
+    ]
+  },
+  {
+    "name": "style",
+    "label": "Style",
+    "type": "group",
+    "tab": "STYLE",
+    "children": [
+      {
+        "name": "logo_max_height",
+        "label": "Logo max height (desktop)",
+        "type": "number",
+        "display": "text",
+        "suffix": "px",
+        "min": 16,
+        "max": 160,
+        "step": 2,
+        "default": 48
+      },
+      {
+        "name": "logo_max_height_mobile",
+        "label": "Logo max height (mobile)",
+        "type": "number",
+        "display": "text",
+        "suffix": "px",
+        "min": 16,
+        "max": 120,
+        "step": 2,
+        "default": 36,
+        "help_text": "767px and below."
+      }
+    ]
+  },
+  { "$use": "advanced" }
+]

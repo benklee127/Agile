@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Site footer -- globals/Site Footer.module (markup) + theme.footer.* tokens
+   (--agile-footer-bg / -text / -link, see base/_tokens.css).
+   Modes: .agile-site-footer--native | --minimal ("hidden" renders nothing).
+   Breakpoint: 767px.
+   ========================================================================== */
+
+.agile-site-footer {
+  --agile-link-color: var(--agile-footer-link);
+  --agile-link-hover-color: var(--agile-footer-link);
+  --agile-heading-color: var(--agile-footer-text);
+  --agile-text-muted: color-mix(in srgb, var(--agile-footer-text) 85%, transparent);
+  --agile-color-border: color-mix(in srgb, var(--agile-footer-text) 22%, transparent);
+  --agile-site-footer-logo-height: 40px;
+  --agile-site-footer-gap: calc(var(--agile-content-gap) * 2);
+  flex-shrink: 0;
+  border-top: 1px solid var(--agile-color-border-base);
+  background: var(--agile-footer-bg);
+  color: var(--agile-footer-text);
+  font-size: 0.95rem;
+}
+
+.agile-site-footer a {
+  color: var(--agile-link-color);
+  text-decoration: var(--agile-link-decoration);
+}
+
+.agile-site-footer a:hover {
+  color: var(--agile-link-hover-color);
+  text-decoration: var(--agile-link-hover-decoration);
+}
+
+.agile-site-footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agile-site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--agile-site-footer-gap);
+  padding: calc(var(--agile-section-sm) * var(--agile-density, 1)) 0;
+}
+
+.agile-site-footer--minimal .agile-site-footer__inner {
+  padding: 24px 0;
+}
+
+/* --- Top: brand + link columns ----------------------------------------- */
+
+.agile-site-footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 3fr);
+  gap: var(--agile-site-footer-gap);
+  align-items: start;
+}
+
+/* No columns: the brand block takes the full width. */
+.agile-site-footer__top:not(:has(.agile-site-footer__columns)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.agile-site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.agile-site-footer__logo {
+  display: inline-block;
+  line-height: 0;
+}
+
+.agile-site-footer__logo-img {
+  display: block;
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: var(--agile-site-footer-logo-height);
+}
+
+.agile-site-footer__company {
+  margin: 0;
+  color: var(--agile-heading-color);
+  font-family: var(--agile-font-heading);
+  font-weight: var(--agile-heading-weight);
+}
+
+.agile-site-footer__about {
+  color: var(--agile-text-muted);
+}
+
+.agile-site-footer__about > :last-child,
+.agile-site-footer__disclaimer > :last-child {
+  margin-bottom: 0;
+}
+
+.agile-site-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--agile-site-footer-gap);
+}
+
+/* Editor-only placeholder for a column with no links (never on the live page) */
+.agile-site-footer__col--empty {
+  padding: 8px 12px;
+  border: 1px dashed currentColor;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.agile-site-footer__col--empty p {
+  margin: 0;
+}
+
+/* h2 for the outline, styled as a small label */
+.agile-site-footer__heading {
+  margin: 0 0 12px;
+  color: var(--agile-heading-color);
+  font-family: var(--agile-font-heading);
+  font-size: 0.8rem;
+  font-weight: var(--agile-heading-weight);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.agile-site-footer__links {
+  display: grid;
+  gap: 8px;
+}
+
+/* --- Social ------------------------------------------------------------- */
+
+.agile-site-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.agile-site-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--agile-color-border);
+  border-radius: var(--agile-radius-sm);
+  transition: background-color var(--agile-duration-fast) var(--agile-easing),
+              color var(--agile-duration-fast) var(--agile-easing);
+}
+
+.agile-site-footer .agile-site-footer__social-link,
+.agile-site-footer .agile-site-footer__social-link:hover {
+  text-decoration: none;
+}
+
+.agile-site-footer__social-link:hover {
+  background: color-mix(in srgb, var(--agile-footer-text) 10%, transparent);
+}
+
+.agile-site-footer__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Disclaimer + bottom bar ------------------------------------------- */
+
+.agile-site-footer__disclaimer {
+  padding-top: var(--agile-site-footer-gap);
+  border-top: 1px solid var(--agile-color-border);
+  color: var(--agile-text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.agile-site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  color: var(--agile-text-muted);
+  font-size: 0.875rem;
+}
+
+.agile-site-footer--native .agile-site-footer__bottom {
+  padding-top: 24px;
+  border-top: 1px solid var(--agile-color-border);
+}
+
+.agile-site-footer--minimal .agile-site-footer__bottom {
+  justify-content: center;
+  text-align: center;
+}
+
+.agile-site-footer__copyright {
+  margin: 0;
+}
+
+.agile-site-footer__legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+/* --- Mobile ------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .agile-site-footer__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .agile-site-footer__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .agile-site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .agile-site-footer--minimal .agile-site-footer__bottom {
+    align-items: center;
+  }
+}
+
+/* Editor-only note when the footer is hidden on a page (matches
+   .agile-site-header-note in _header.css) */
+.agile-site-footer-note {
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px dashed var(--agile-color-border);
+  color: var(--agile-text-muted, inherit);
+  font-size: 0.875rem;
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Section Header",
+  "global": false,
+  "inline_help_text": "Section intro band: eyebrow, heading, intro text and an optional button.",
+  "host_template_types": ["PAGE", "BLOG_POST", "BLOG_LISTING"],
+  "icon": "fontawesome-5.14.0:Heading",
+  "is_available_for_new_content": true
+}

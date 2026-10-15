@@ -1,0 +1,13 @@
+# Per-portal secrets for Automation scripts
+.env
+.env.*
+!.env.example
+
+# Third-party reference themes (licensed marketplace code; kept locally only)
+References/
+
+# Local tooling noise
+node_modules/
+*.log
+.DS_Store
+Thumbs.db

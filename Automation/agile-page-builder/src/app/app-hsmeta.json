@@ -1,0 +1,31 @@
+{
+  "uid": "agile_page_builder_app",
+  "type": "app",
+  "config": {
+    "description": "Creates and updates draft CMS pages for testing the Agile theme on the demo sandbox (51425289).",
+    "name": "Agile page builder",
+    "distribution": "private",
+    "auth": {
+      "type": "static",
+      "requiredScopes": [
+        "oauth",
+        "content"
+      ],
+      "optionalScopes": [],
+      "conditionallyRequiredScopes": []
+    },
+    "permittedUrls": {
+      "fetch": [
+        "https://api.hubapi.com"
+      ],
+      "iframe": [],
+      "img": []
+    },
+    "support": {
+      "supportEmail": "benlee@gk3capital.com",
+      "documentationUrl": "https://example.com/docs",
+      "supportUrl": "https://example.com/support",
+      "supportPhone": "+18005555555"
+    }
+  }
+}

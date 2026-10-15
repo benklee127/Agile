@@ -1,0 +1,456 @@
+[
+  {
+    "name": "content",
+    "id": "content",
+    "label": "Content",
+    "type": "group",
+    "children": [
+      {
+        "name": "heading",
+        "id": "content__heading",
+        "label": "Heading",
+        "type": "text",
+        "default": "Sample heading"
+      },
+      {
+        "name": "heading_level",
+        "id": "content__heading_level",
+        "label": "Heading level",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "h1",
+            "H1"
+          ],
+          [
+            "h2",
+            "H2"
+          ],
+          [
+            "h3",
+            "H3"
+          ],
+          [
+            "h4",
+            "H4"
+          ]
+        ],
+        "default": "h2"
+      },
+      {
+        "name": "body_text",
+        "id": "content__body_text",
+        "label": "Body text",
+        "type": "richtext",
+        "default": "<p>Sample body.</p>"
+      },
+      {
+        "name": "show_cta",
+        "id": "content__show_cta",
+        "label": "Show button",
+        "type": "boolean",
+        "display": "toggle",
+        "default": true
+      },
+      {
+        "name": "primary_cta",
+        "id": "content__primary_cta",
+        "label": "Primary button",
+        "type": "group",
+        "children": [
+          {
+            "name": "text",
+            "id": "content__primary_cta__text",
+            "label": "Button text",
+            "type": "text",
+            "default": "Get started",
+            "help_text": "Leave empty to hide the button."
+          },
+          {
+            "name": "link",
+            "id": "content__primary_cta__link",
+            "label": "Button link",
+            "type": "link",
+            "supported_types": [
+              "EXTERNAL",
+              "CONTENT",
+              "FILE",
+              "EMAIL_ADDRESS",
+              "BLOG",
+              "PHONE_NUMBER"
+            ],
+            "default": {
+              "url": {
+                "type": "EXTERNAL",
+                "href": "#"
+              },
+              "open_in_new_tab": false,
+              "no_follow": false
+            }
+          },
+          {
+            "name": "style",
+            "id": "content__primary_cta__style",
+            "label": "Button style",
+            "type": "choice",
+            "display": "select",
+            "choices": [
+              [
+                "inherit",
+                "Inherit"
+              ],
+              [
+                "primary",
+                "Primary"
+              ],
+              [
+                "secondary",
+                "Secondary"
+              ],
+              [
+                "ghost",
+                "Ghost"
+              ],
+              [
+                "link",
+                "Text link"
+              ]
+            ],
+            "default": "inherit"
+          }
+        ],
+        "visibility": {
+          "controlling_field_path": "content.show_cta",
+          "controlling_value_regex": "true",
+          "operator": "EQUAL"
+        }
+      }
+    ]
+  },
+  {
+    "name": "layout",
+    "id": "layout",
+    "label": "Layout",
+    "type": "group",
+    "children": [
+      {
+        "name": "spacing",
+        "id": "layout__spacing",
+        "label": "Spacing",
+        "type": "group",
+        "children": [
+          {
+            "name": "padding_top",
+            "id": "layout__spacing__padding_top",
+            "label": "Top padding",
+            "type": "choice",
+            "display": "select",
+            "choices": [
+              [
+                "theme",
+                "Theme default"
+              ],
+              [
+                "none",
+                "None"
+              ],
+              [
+                "xs",
+                "XS"
+              ],
+              [
+                "sm",
+                "Small"
+              ],
+              [
+                "md",
+                "Medium"
+              ],
+              [
+                "lg",
+                "Large"
+              ],
+              [
+                "xl",
+                "XL"
+              ],
+              [
+                "custom",
+                "Custom"
+              ]
+            ],
+            "default": "lg"
+          },
+          {
+            "name": "padding_top_custom",
+            "id": "layout__spacing__padding_top_custom",
+            "label": "Custom top padding",
+            "type": "number",
+            "display": "text",
+            "min": 0,
+            "step": 4,
+            "suffix": "px",
+            "default": 80,
+            "visibility": {
+              "controlling_field_path": "layout.spacing.padding_top",
+              "controlling_value_regex": "custom",
+              "operator": "EQUAL"
+            }
+          },
+          {
+            "name": "padding_bottom",
+            "id": "layout__spacing__padding_bottom",
+            "label": "Bottom padding",
+            "type": "choice",
+            "display": "select",
+            "choices": [
+              [
+                "theme",
+                "Theme default"
+              ],
+              [
+                "none",
+                "None"
+              ],
+              [
+                "xs",
+                "XS"
+              ],
+              [
+                "sm",
+                "Small"
+              ],
+              [
+                "md",
+                "Medium"
+              ],
+              [
+                "lg",
+                "Large"
+              ],
+              [
+                "xl",
+                "XL"
+              ],
+              [
+                "custom",
+                "Custom"
+              ]
+            ],
+            "default": "theme"
+          },
+          {
+            "name": "padding_bottom_custom",
+            "id": "layout__spacing__padding_bottom_custom",
+            "label": "Custom bottom padding",
+            "type": "number",
+            "display": "text",
+            "min": 0,
+            "step": 4,
+            "suffix": "px",
+            "default": 80,
+            "visibility": {
+              "controlling_field_path": "layout.spacing.padding_bottom",
+              "controlling_value_regex": "custom",
+              "operator": "EQUAL"
+            }
+          }
+        ]
+      },
+      {
+        "name": "container_width",
+        "id": "layout__container_width",
+        "label": "Container width",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "inherit",
+            "Page default"
+          ],
+          [
+            "narrow",
+            "Narrow"
+          ],
+          [
+            "default",
+            "Standard"
+          ],
+          [
+            "wide",
+            "Wide"
+          ],
+          [
+            "full",
+            "Full width"
+          ]
+        ],
+        "default": "wide"
+      },
+      {
+        "name": "text_align",
+        "id": "layout__text_align",
+        "label": "Text alignment",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "inherit",
+            "Default"
+          ],
+          [
+            "left",
+            "Left"
+          ],
+          [
+            "center",
+            "Center"
+          ]
+        ],
+        "default": "inherit"
+      },
+      {
+        "name": "media_position",
+        "id": "layout__media_position",
+        "label": "Media position",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "left",
+            "Left"
+          ],
+          [
+            "right",
+            "Right"
+          ]
+        ],
+        "default": "right",
+        "visibility": {
+          "controlling_field_path": "layout.container_width",
+          "controlling_value_regex": "full",
+          "operator": "NOT_EQUAL"
+        }
+      }
+    ]
+  },
+  {
+    "name": "style",
+    "id": "style",
+    "label": "Style",
+    "type": "group",
+    "tab": "STYLE",
+    "children": [
+      {
+        "name": "background",
+        "id": "style__background",
+        "label": "Background",
+        "type": "choice",
+        "display": "select",
+        "choices": [
+          [
+            "inherit",
+            "None (page background)"
+          ],
+          [
+            "surface",
+            "Surface"
+          ],
+          [
+            "primary",
+            "Primary"
+          ],
+          [
+            "secondary",
+            "Secondary"
+          ],
+          [
+            "accent",
+            "Accent"
+          ],
+          [
+            "custom",
+            "Custom colour"
+          ]
+        ],
+        "default": "inherit"
+      },
+      {
+        "name": "background_color",
+        "id": "style__background_color",
+        "label": "Custom background colour",
+        "type": "color",
+        "default": {
+          "color": null,
+          "opacity": null
+        },
+        "visibility": {
+          "controlling_field_path": "style.background",
+          "controlling_value_regex": "custom",
+          "operator": "EQUAL"
+        }
+      },
+      {
+        "name": "text_color",
+        "id": "style__text_color",
+        "label": "Text colour",
+        "type": "color",
+        "help_text": "Leave empty to inherit the text colour from the background choice or the page.",
+        "show_opacity": false,
+        "default": {
+          "color": null,
+          "opacity": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "advanced",
+    "id": "advanced",
+    "label": "Advanced",
+    "type": "group",
+    "children": [
+      {
+        "name": "component_id",
+        "id": "advanced__component_id",
+        "label": "Anchor ID",
+        "type": "text",
+        "default": "",
+        "help_text": "Sets the id attribute so you can link to this module with #anchor. Converted to lower case; spaces become hyphens and any characters other than letters, numbers, hyphens and underscores are removed (e.g. 'Our Pricing' becomes #our-pricing). Start with a letter."
+      },
+      {
+        "name": "custom_class",
+        "id": "advanced__custom_class",
+        "label": "Custom CSS class",
+        "type": "text",
+        "default": "",
+        "help_text": "Extra class names added to the module wrapper, separated by spaces."
+      },
+      {
+        "name": "visibility",
+        "id": "advanced__visibility",
+        "label": "Visibility",
+        "type": "group",
+        "children": [
+          {
+            "name": "hide_on_mobile",
+            "id": "advanced__visibility__hide_on_mobile",
+            "label": "Hide on mobile",
+            "type": "boolean",
+            "display": "toggle",
+            "default": false
+          },
+          {
+            "name": "hide_on_desktop",
+            "id": "advanced__visibility__hide_on_desktop",
+            "label": "Hide on desktop",
+            "type": "boolean",
+            "display": "toggle",
+            "default": false
+          }
+        ]
+      }
+    ]
+  }
+]
