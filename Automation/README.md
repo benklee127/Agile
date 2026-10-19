@@ -135,7 +135,11 @@ If you run from `c:/workspace/Hubspot Themes`, as the other themes do, this `.hs
 
 ## HubSpot API access (pages and other content)
 
-Scripts that create or edit pages need an access token with the `content` scope. CLI personal access keys can't get that scope, so each portal installs the **Agile page builder** app instead.
+Scripts that create or edit pages need an access token with the `content` scope. CLI personal access keys can't get that scope, so each portal installs the **GK3 Agile Page Builder** app instead (project `gk3-agile-page-builder`; it was called "Agile page builder" / `agile-page-builder` before, and older installs such as the demo sandbox may still show that name until re-uploaded). Deploying and installing it is a Phase 0 step: see [the playbook's Phase 0](../../HUBSPOT-SITE-BUILD-PLAYBOOK.md#phase-0-portal-prep-do-the-manual-steps-first) and [HUMAN-TODO.md](../../HUMAN-TODO.md) A.3.
+
+**For page builds and uploads, use the utilities** (index: [`utilities/utils.md`](../../utilities/utils.md)), which call `hubspot-api.js` for you:
+- [`utilities/page-build.js`](../../utilities/page-build.js): page spec → draft page (dry run by default; `--apply` with `--allow-prefix` and `--registry`), with read-back and `--compare-page` drift checks. It replaces the `build-layout.js` → `hubspot-api.js` chain for new builds.
+- [`utilities/hs-upload.js`](../../utilities/hs-upload.js): guarded `hs cms upload` (dry run, `--allow-prefix`, manifest, fetch-back compare).
 
 **One app source, one install per portal.** `agile-page-builder/` is a project-based private app (platform 2026.03, static auth, scopes `oauth` + `content`). Don't copy it per client. Upload the same source to each portal; every portal gets its own app and token:
 
@@ -145,7 +149,7 @@ hs project validate --account <portal>
 hs project upload --account <portal> --force-create
 ```
 
-Then, in that portal: **Development → Projects → agile-page-builder → Agile page builder → Distribution → Install now**, then **Show** and copy the access token.
+Then, in that portal: **Development → Projects → gk3-agile-page-builder → GK3 Agile Page Builder → Distribution → Install now**, then **Show** and copy the access token into `.env.<portal>` yourself (never paste it in chat).
 
 **Per-portal settings live in `Automation/.env.<portal>`.** Copy `.env.example` to `.env.demo`, `.env.<client>` and so on, and fill in the portal ID and token. These files are git-ignored and are never uploaded: theme uploads run from inside `Agile-Theme/`, and project uploads only send `src/`.
 

@@ -45,15 +45,19 @@ function createClient(portal) {
     return { status: res.status, data: body };
   }
 
-  let verified = false;
-  async function verifyPortal() {
-    if (verified) return;
-    const r = await raw('get', 'account-info/v3/details');
-    const actual = r.data && Number(r.data.portalId);
-    if (r.status !== 200 || actual !== portalId || FORBIDDEN_PORTALS.has(actual)) {
-      throw new Error(`Token check failed: expected portal ${portalId}, got ${actual ?? 'unknown'} (HTTP ${r.status}).`);
+  // One token check per client. Concurrent calls share the same in-flight promise; a failed check is not cached.
+  let verifying = null;
+  function verifyPortal() {
+    if (!verifying) {
+      verifying = (async () => {
+        const r = await raw('get', 'account-info/v3/details');
+        const actual = r.data && Number(r.data.portalId);
+        if (r.status !== 200 || actual !== portalId || FORBIDDEN_PORTALS.has(actual)) {
+          throw new Error(`Token check failed: expected portal ${portalId}, got ${actual ?? 'unknown'} (HTTP ${r.status}).`);
+        }
+      })().catch(e => { verifying = null; throw e; });
     }
-    verified = true;
+    return verifying;
   }
 
   async function call(method, url, data) {

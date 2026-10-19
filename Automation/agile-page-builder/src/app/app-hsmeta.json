@@ -2,8 +2,8 @@
   "uid": "agile_page_builder_app",
   "type": "app",
   "config": {
-    "description": "Creates and updates draft CMS pages for testing the Agile theme on the demo sandbox (51425289).",
-    "name": "Agile page builder",
+    "description": "GK3 page builder: creates and updates draft CMS pages through the Pages API (content scope) for theme builds such as Agile and Trust child themes.",
+    "name": "GK3 Agile Page Builder",
     "distribution": "private",
     "auth": {
       "type": "static",
