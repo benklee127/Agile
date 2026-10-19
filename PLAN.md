@@ -207,6 +207,50 @@ Most modules get their comp-specific layout locally (overlaps, glass cards, rail
 - per-module CSS fields;
 - a leaving-site interstitial, the `positive`/`negative` colours, a divider choice and `mobile_img` (no comp has needed them yet).
 
+### Test result: the Madison comp built on Agile (2026-10-19)
+
+The Madison homepage comp was rebuilt on a client copy of Agile. That copy is uploaded to demo as `Agile-Madison`, with draft page `224845212223` built through `page-build.js`. The base theme was not changed. Every gap was solved in the client copy as a recorded extension shaped like the matching R-item. The full report is `Examples/madison/AGILE-GAPS.md`, which is local only: `Examples/` is git-ignored because it holds client material.
+
+- **Verdict: the structure held up.** No module needed a cascade guard, a recolouring rule or a copy of a parent `fields.json`. Module CSS was about the same size as on Trust (1,408 lines against 1,424). The configuration saving is large: 6 new theme fields and an 83-line `fields.json` diff, against a 7,182-line full copy on Trust. The shared CSS/JS layer is bigger on Agile (about 616 lines against 294), because it is built as reusable mechanisms that map onto R2–R6, R9 and R16. Only 111 lines (`_site.css`) hold Madison-specific values.
+- **R-items:**
+  - 14 confirmed; R8 supported but not built; R13 still open.
+  - 8 amended:
+    - **R2:** tracking defaults to `normal`. Plain min/fluid tokens in `clamp()` were enough.
+    - **R3:** the font loop needs a skip list for families that head-extra loads. Context-dependent site aliases are declared on `:where(.agile-section)`.
+    - **R4:** gate hidden states inside `prefers-reduced-motion: no-preference`. Count-ups outside a reveal need their own observer. The Page Controls override wasn't needed.
+    - **R5:** a stacked-overlay angle token. `image()` gains `attrs` and `responsive=false`.
+    - **R6:** add button line-height and a separate background transition duration.
+    - **R10:** this grows. It needs a solid sticky option, a scroll-padding token, one collapse breakpoint shared by CSS and JS, and nav metric tokens. The logo crossfade is part of the scroll state, not a "second client" item.
+    - **R12:** ship the empty default and the stock `$defaults` in one change.
+    - **R14:** footer text opacity is lower priority.
+  - 4 extended:
+    - **R1:** add the footer `ul` reset.
+    - **R7:** move the footer ground off the root so a disclosure band can have its own.
+    - **R11:** add the root-scoping rule and gate.
+    - **R15:** add a heading font/transform token.
+- **New gaps:**
+  - **N1:** `heading()` has no id or attrs, and `section_attrs` can't emit `aria-labelledby`. Proposed as a new R-item: heading ids.
+  - **N2:** `layout.text_align` reaches split layouts that can't use it.
+  - **N3:** the header collapse breakpoint is three literals across CSS and JS.
+  - **N4:** the sticky header is always translucent.
+  - **N5:** nav metrics are literals, and there is no per-item style.
+  - **N6:** a link click doesn't close the mobile panel.
+  - **N7:** Site Header uses about 18 unprefixed HubL locals.
+  - **N8:** footer: legal items without a URL are dropped, there's no brand-logo fallback, and the `ul` reset hits richtext lists.
+  - **N9:** `new_tab_sr()` runs even when the link has no usable href.
+  - **N10:** there's no list-of-text field group.
+  - **N11 (tooling):** `module-check` can't see a root class printed by `section_attrs`.
+  - **N12 (tooling):** `lint-check` can't render a theme before its first upload. It needs `--inline-imports` and `--stub-assets`.
+  - **N13 (tooling):** `render-check` reports box sizes only. `--styles` is proposed.
+  - **N14:** theme-asset images have no safe srcset.
+- **Recommended order for base Agile:**
+  1. R1, R2, R3, R6 and R12, with the amendments; every section needed them.
+  2. R4, R5 and R16, plus the Card Grid rail layout.
+  3. R10 rewritten to cover N3–N6 and the crossfade, plus N7. R7 + R15 + N8 as one footer change.
+  4. N1 and N2.
+  5. The tooling gaps N11 and N12, before the next client build.
+  6. The R13 checks on demo, using the Agile-Madison draft.
+
 **Open decision:** see the table at the end. R2/R3 put exact comp values in git-versioned tokens that only Claude sets, not in editor fields. That conflicts with `manifesto.md:41` ("Never hardcode what should be configurable") and `:102` ("a token-rich theme editor").
 
 ---

@@ -81,6 +81,14 @@ Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4,
 - [ ] R14 Colour slots `surface_alt`/`on_surface_alt`, `ink`, `accent_hover`; shadow colour; footer text opacity
 - [ ] R16 Scroll tokens and `:where(.agile-scroll)`; shared `[data-agile-rail]` (snap, prev/next, progress, focusable track); Card Grid `rail` layout; contract rule "no hidden scrollbar without controls"
 - [ ] R15 (P3) Footer grid and heading tokens
+- [ ] Apply the amendments from the Madison test (PLAN Milestone 1.5 › Test result) to R1–R7, R10–R12, R14 and R15 before implementing them
+- [ ] N1 Heading ids: `heading()` id/attrs, a `heading_id()` helper, `aria-labelledby` on `section_attrs`
+- [ ] N2 Keep `layout.text_align` out of split layouts (or document `$omit`)
+- [ ] N6 Close the mobile panel when a link inside it is clicked; N7 prefix the Site Header HubL locals (`hdr_`)
+- [ ] N8 Footer: keep legal items without a URL, add a brand-logo fallback, scope the `ul` reset; N9 guard `new_tab_sr()` on a usable href
+- [ ] N10 List-of-text field group
+- [ ] N11 `module-check` detects the root printed by `section_attrs`/`component_attrs`; N12 `lint-check --inline-imports --stub-assets` for themes that aren't uploaded yet; N13 `render-check --styles`
+- [ ] N14 Safe srcset for theme-asset images (check `resize_image_url` on theme asset URLs)
 
 ## Milestone 2: Global header and footer
 
@@ -126,12 +134,12 @@ Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4,
 - [ ] Validator: add Agile rules to `utilities/module-check.js`, plus the Madison checks (repeater `default` length matches `occurrence.default`, no `href=""` / `aria-label=""`, no HubL tokens in JS, two renders with different `name`s); lint and render with `utilities/lint-check.js`
 - [x] Page push script: `utilities/page-build.js` (built 2026-10-16; checked read-only against the Madison draft)
 - [ ] Validator passes on the reference modules
-- [ ] First real `page-build.js --apply` run: a throwaway Agile draft on demo (app token in `Automation/.env.demo`), read back and rendered
+- [x] First real `page-build.js --apply` run: draft `224845212223` on demo (Agile-Madison), read-back OK (2026-10-19). Its rendering is still to be checked under Example 1
 
 ## Milestone 6: Worked examples
 
 - [ ] Choose the two example designs (recommended: the Madison homepage comp rebuilt on Agile, compared with the Trust build, then a contrasting design)
-- [ ] Example 1 built end to end and checked into `Agile/Examples/`
+- [ ] Example 1 built end to end and checked into `Agile/Examples/`. **In progress (2026-10-19):** the Madison comp is built in `Examples/madison/` (git-ignored, client material), uploaded to demo as `Agile-Madison`, and draft page `224845212223` exists. Still to do: the render check against the comp, which needs an editor preview saved as HTML or approval to publish on demo, and the design calls listed in its README
 - [ ] Fix the issues Example 1 uncovered
 - [ ] Example 2 built from the updated kit
 - [ ] Examples added as validator test fixtures
