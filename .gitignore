@@ -15,7 +15,7 @@ secrets*.json
 
 # Client work: comps, client copy and media, worked examples built from real client designs.
 # This repo is public; client material stays local (or in a private repo).
-Examples/
+/Examples/
 Automation/examples/*
 !Automation/examples/demo-homepage.json
 media-staging/
