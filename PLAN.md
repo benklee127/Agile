@@ -182,6 +182,21 @@ Most modules get their comp-specific layout locally (overlaps, glass cards, rail
 - **R12 CTA defaults:** empty the shared `cta.json` default ("Learn more", `#`). Add link `$defaults` to the Hero primary CTA, add `$defaults` to Rich Section, then run `compose-fields --check`. Add a section background image via the style-tab `backgroundimage` type.
 - **R14 Colour slots:** `surface_alt` + `on_surface_alt`, `ink` and `accent_hover`. A `shadows.color` built with `color-mix()`; raise the shadow opacity cap from 30 to 60. Footer text opacity (needs `show_opacity` and the colour's css output).
 
+- **R16 Scroll areas and rails:**
+  - **Tokens:** `--agile-scrollbar-thumb`, `-track` and `-size`, defaulted from existing colour tokens. No editor fields to start.
+  - **One rule:** `:where(.agile-scroll)` sets `scrollbar-color` and `scrollbar-width`, with a `::-webkit-scrollbar` fallback for Safari. It applies to inner scroll areas: rails, wide tables, the mobile nav panel and long disclosure boxes. The page's own scrollbar is left alone.
+  - **A shared `[data-agile-rail]` in `main.js`:**
+    - scroll-snap;
+    - prev/next buttons that disable at the ends;
+    - an optional progress bar;
+    - a focusable track (`tabindex="0"`, `role="region"`, an `aria-label` from a text field);
+    - reduced-motion-safe scrolling.
+
+    No carousel library. Madison's rail (M13, D13) built all of this inside one module.
+  - **Module overrides** re-point the tokens on the module root, and the R8 context classes re-point them on dark grounds.
+  - **Contract rule:** a module may hide the scrollbar only if it shows its own controls.
+  - **Editor-facing option:** only a Card Grid `layout: grid | rail` choice.
+
 **P3:** **R15** Footer grid and heading tokens: two template tokens, because Agile nests its link columns.
 
 **Decided not to do:**

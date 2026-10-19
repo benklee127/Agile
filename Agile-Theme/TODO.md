@@ -79,6 +79,7 @@ Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4,
 - [ ] R10 Header scroll state, `height_mobile`, `header_sticky_override`
 - [ ] R12 Empty `cta.json` defaults, plus `$defaults` for Hero and Rich Section; section background image
 - [ ] R14 Colour slots `surface_alt`/`on_surface_alt`, `ink`, `accent_hover`; shadow colour; footer text opacity
+- [ ] R16 Scroll tokens and `:where(.agile-scroll)`; shared `[data-agile-rail]` (snap, prev/next, progress, focusable track); Card Grid `rail` layout; contract rule "no hidden scrollbar without controls"
 - [ ] R15 (P3) Footer grid and heading tokens
 
 ## Milestone 2: Global header and footer
