@@ -44,19 +44,19 @@ Milestones 1–3 can partly overlap. Milestone 4 needs 1–3 done. Milestone 6 i
 | **T1. Macro import in modules** | Can a module's `module.html` `{% import %}` a theme macro file by relative path? | Put the macros in a partial pulled in with `{% include %}`, or keep them inline in each module | **Confirmed at upload-validation level (demo, 2026-10-13).** It works, but the theme root from a module is `../../`, not `../` (`HUBSPOT-PLATFORM.md` › Paths). All modules updated. **Render confirmed 2026-10-13:** the renderer accepts both `../` and `../../`, but upload accepts only `../../`, so `../../` is the rule |
 | ~~T2. `fields.js`~~ | **Dropped.** Shared field groups are composed locally by our own script (see 1.2), so we don't rely on HubSpot's `fields.js` conversion | — | Dropped |
 | **T3. Seeded global partial defaults** | When a global partial's `dnd_area` is renamed, do the new seeded `dnd_module` defaults appear in the global content editor? | Document the manual step needed to reset global content | Open |
-| **T4. Pages API with Agile modules** | Does a page created through the CMS Pages API with a `layoutSections` payload render Agile modules with the given field values? | Find the payload shape HubSpot accepts and document it | Open (the demo CLI key has read-only page scopes) |
+| **T4. Pages API with Agile modules** | Does a page created through the CMS Pages API with a `layoutSections` payload render Agile modules with the given field values? | Find the payload shape HubSpot accepts and document it | **Payload confirmed; Agile render still to check.** On demo (2026-10-15), the GK3 Agile Page Builder app token created a draft and a full `layoutSections` PATCH stored every Agile module with its values (`HUBSPOT-PLATFORM.md` › Pages API). The Madison build (2026-10-16) showed that API-stored layouts render in a real preview. Remaining: open an Agile draft on demo in the editor, or publish one, and check it renders |
 | **T5. Version stamp** | Does `theme.json` accept a `version` key without upload errors? | Record the version in a separate `AGILE-VERSION` file instead | **Confirmed (demo):** accepted and stored as written (`HUBSPOT-PLATFORM.md` › CLI / Validation) |
-| **T6. Push route** | Which route is better for creating pages: a script using a private app token, or the HubSpot connector tools (`manage_website_page`, `manage_landing_page`)? | Pick the one that handles `layoutSections` reliably | Open |
+| **T6. Push route** | Which route is better for creating pages: a script using a private app token, or the HubSpot connector tools (`manage_website_page`, `manage_landing_page`)? | Pick the one that handles `layoutSections` reliably | **Decided (2026-10-16):** a script using the project-based **GK3 Agile Page Builder** app token (`content` scope), stored per portal in `Automation/.env.<portal>`. The script is `utilities/page-build.js`: it reads the page spec, builds the layout from module defaults plus overrides, creates the draft, PATCHes it and reads it back. It was used for the Madison home draft. Its `--apply` path still needs a first real run (see Milestone 5) |
 | **DnD on demo** | Does the `demo` sandbox accept DnD templates? | Use another portal | **Confirmed:** yes. The earlier failures came from misspelled `enddnd_*` closers (`HUBSPOT-PLATFORM.md` › DnD) |
 
 ### Housekeeping
 
-- [ ] Update the upload path in the workspace `CLAUDE.md` to `"Agile/Agile-Theme" "Agile"` (and the account to `demo`).
+- [x] Update the upload path in the workspace `CLAUDE.md` to `"Agile/Agile-Theme" "Agile"` (and the account to `demo`).
 - [x] Remove the placeholder `"module_id": 1000000001` from `Page Controls.module/meta.json`.
 - [x] Add a version stamp to the theme (`theme.json` `"version": "0.1.0"`, per T5).
 - [x] Write `docs/EDITING-LEVELS.md`. It lists every current setting with its level (Theme / Global / Page / Module) and its override, if any. New settings get added here when they're created.
 
-**Done when:** T1 and T3–T6 have results recorded in `HUBSPOT-PLATFORM.md`, and the housekeeping items are merged.
+**Done when:** T1 and T3–T6 have results recorded in `HUBSPOT-PLATFORM.md`, and the housekeeping items are merged. Status: T1, T5 and T6 are done; T4 needs only the render check; T3 is open.
 
 ---
 
@@ -111,6 +111,147 @@ Rebuild Hero, Rich Section, the heading-band section module (now Section Header,
 - **Per-module scoped CSS field:** dropped. Scoped CSS lives at page level only (Page Controls `page_css`); module overrides are emitted inline as CSS custom properties by `section_attrs` (see `Agile-Theme/docs/SCOPED-CSS.md`).
 
 **Done when:** all five modules use the macros and shared groups, render correctly on demo, and each module's `module.html` is mostly its own markup rather than wrapper code.
+
+---
+
+## Milestone 1.5: Theme revisions from the Madison review (2026-10-19)
+
+A multi-agent review compared Agile with what the Madison × Trust build needed (`MadisonCapital/DESIGN-DECISIONS.md` M0–M39, D1–D36). Adversarial verifiers then checked each proposal. **Verdict:** keep Agile's structure and add a small amount of shared behaviour. The issues found:
+- **Structure:**
+  - Agile is standalone, with zero `inherited_value`.
+  - One token path: `fields.json` → `_tokens.css` → `var(--agile-*)`.
+  - Context colour works by re-pointing custom properties, with no `*` recolouring.
+  - Per-instance values are passed as inline custom properties.
+
+  These avoid most of what made Madison expensive.
+- **Missing behaviour:** reveal, count-up, scroll state, a media frame and disclosure in every footer mode. Madison wrote about 255 lines of shared CSS/JS plus a `base.html` override; Agile's `js/main.js` has 5 lines.
+- **Hard-coded visuals:** some visual constants are fixed in CSS that a comp will need to change.
+- **Scoping by convention only:** no `:where()` anywhere, so a few base rules sit above one class.
+
+Most modules get their comp-specific layout locally (overlaps, glass cards, rails). Promote a module or option to the theme only when a second client needs it.
+
+**P1 (before the next comp-driven build):**
+- **R1 Zero-specificity base rules.** Wrap the rules above one class in `:where()`:
+  - `a:hover` (`css/elements/_typography.css:28-31`);
+  - `.agile-richtext h*` (`:58-65`);
+  - the footer descendant link rules (`css/components/_footer.css:23-31`; switch to longhand `text-decoration-line`);
+  - the `.agile-section` defaults (`css/base/_sections.css:11-19`).
+
+  Then delete the guard in `css/templates/_blog.css:30-36`. Bare `a`/`h*`/`img` are already (0,0,1), so leave them. Keep `img{display:block}`, and keep `_header.css:119-126`: that is the nav's own hover and active design, not a guard. Include HubSpot-injected CSS in the demo visual check.
+- **R2 Tokens for typography constants.** Replace the fixed heading line-height, clamp floors, h6 size and eyebrow (`_typography.css:6, 9-14, 39-46`) with tokens whose defaults are today's values. Add `.agile-lead`, `.agile-fineprint`, `.agile-num` and `.agile-richtext > :last-child { margin-bottom: 0 }`. Fluid sizes need unitless number companions emitted from HubL; CSS can't divide length by length. Editor fields: only an eyebrow group, `lead_size` and `small_size`.
+- **R3 Site layer.** Add an empty `css/site/_site.css`, included last from `css/main.css`, where Claude writes per-comp token overrides. Add an empty `templates/partials/head-extra.html` include for extra font links, such as Madison's `opsz` axis (D3). Rule: `_site.css` may override only tokens that **no** theme field backs; `module-check`/`lint-check` flag violations. Fix the font weights: `base.html:25` asks every Google family for 400–700, which can make the whole Google Fonts request fail (HTTP 400) when a family lacks a weight, and 800/900 are offered but never requested. Request only the weights in use. Change `load_external_fonts` only after the R13 check.
+- **R4 Shared reveal and count-up** (`js/main.js`, `css/utilities/_reveal.css`):
+  - `[data-agile-reveal]` runs on a one-shot CSS `@keyframes` animation (opacity + translate), with an `animation-delay` stagger. An animation, not a transition, so it can't collide with module hover transitions (M31).
+  - `[data-agile-countup]` keeps the final value in the HTML and jumps to the end under reduced motion.
+  - `html.agile-scrolled` comes from a passive scroll listener.
+  - An `agile-editor` class (`is_in_editor`) disables reveal and count-up in the editor.
+  - The hidden start state is gated on `html.agile-js:not(.agile-editor)`, with a failsafe that shows content if `main.js` never runs.
+  - Theme toggle `motion.reveal_sections` **defaults off**, and a Page Controls `reveal_override` sets a class on `.agile-page` in `base.html`, not in `section_attrs`.
+- **R7 Disclosure in every footer mode.** Today the disclaimer renders only in the native footer branch (`globals/Site Footer.module/module.html:149-152`), so minimal-footer landing pages lose it. Add a "show disclaimer in minimal mode" boolean (default on), plus a Page Controls `page_disclosure` richtext above the global disclaimer.
+- **R11 Write down the contracts** (`docs/MODULE-CONTRACT.md`):
+  - the JS pattern: IIFE, `-ready` guard, `readyState` check, root-scoped queries, values passed as `data-*` attributes, a reduced-motion check;
+  - per-instance values as inline custom properties;
+  - z and isolation rules, and site prefixes;
+  - a `module-check` rule against module roots re-declaring section padding or background.
+
+  The playbook gains: don't build comp review devices or comp cascade accidents (M22, M38).
+- **R13 Verify on demo first, and harden `page_css`:**
+  - (a) Does `widget_data.page_controls` reach DnD modules and the global header/footer on a live page? The existing header/footer overrides, and R4, R7 and R10, all depend on it (`HUBSPOT-PLATFORM.md` › Module fields).
+  - (b) `page_css` load order relative to `module.css`.
+  - (c) A two-column `dnd_row`.
+  - (d) `load_external_fonts` and the Google Fonts request for each candidate family.
+
+  `page_css` is printed raw inside `.agile-page { }` (`templates/layouts/base.html:51-59`), and `docs/SCOPED-CSS.md:25` allows nested rules, so guard against `</style` and unbalanced braces. Extend `page-build.js` to allow only `widgets.page_controls`, with its keys validated against Page Controls `fields.json`; `widgets` is on its denylist today.
+
+**P1/P2:**
+- **R5 Media layer.** Add `css/components/_media.css` (frame, `--cover` with `object-position: var(--agile-media-pos)`, and an overlay) and a `media()` macro around `image()`. It handles focal x/y, `fetchpriority` for the hero (no `loading=lazy` there), and an empty frame only when `show_empty` is set or in the editor. It also accepts a bare `src` string (the blog featured image). Add `field-groups/focal.json` (0–100). Make the card aspect a token with the current 16/9 default. Move the blog templates over only when they're next touched. No `<picture>` mobile image.
+- **R6 Button tokens.** Tokens for border width, font size, weight, tracking, transform and shadow (`css/elements/_buttons.css:23-30`). The form submit uses the same tokens (`_forms.css:284-303`). Add an `accent` variant and a full-strength `outline` that is distinct from `--ghost`. Add the new variants to `cta.json`, `style.json` and the allow-list in `agile.button`. Theme fields: `border_width` (step 0.5), `font_weight`, `text_transform`.
+- **R8 Context classes:**
+  - `section_attrs` emits a neutral `agile-ctx` class, plus `--dark`/`--light` from an explicit `on_custom_tone` choice (HubL can't compute luminance). That replaces the `[style*="--agile-section-text"]` selector (`_sections.css:64`).
+  - Keep the forced underline wherever the link colour equals the text colour (WCAG 1.4.1).
+  - Add `.agile-on-dark` as the mirror of `.agile-reset-colors`, and a `--agile-muted-mix` token.
+  - Re-declare the token aliases in `:where(:root, .agile-page)`, placed before the background presets, so `page_css` brand overrides reach buttons and links.
+
+**P2:**
+- **R9 Layout tokens**, split into separate items:
+  - container narrow and wide (as fields with their own bounds) plus gutter tokens, and z tokens;
+  - mobile custom padding in `spacing.json`, emitted with a media rule;
+  - a breakpoint ladder of 1199 / 1023 / 767 / 479, replacing the "767 only" rule (`MODULE-CONTRACT.md:172`; Card Grid and Logo Bar already break it);
+  - `--agile-space-scale`, which defaults to 1, multiplies density, and never overrides exact custom px.
+- **R10 Header:** scroll-state tokens under `html.agile-scrolled`, `height_mobile`, and a Page Controls `header_sticky_override`. A transparent sticky header is a follow-up that needs the scrolled background. The logo crossfade, utility nav item and second CTA wait for a second client.
+- **R12 CTA defaults:** empty the shared `cta.json` default ("Learn more", `#`). Add link `$defaults` to the Hero primary CTA, add `$defaults` to Rich Section, then run `compose-fields --check`. Add a section background image via the style-tab `backgroundimage` type.
+- **R14 Colour slots:** `surface_alt` + `on_surface_alt`, `ink` and `accent_hover`. A `shadows.color` built with `color-mix()`; raise the shadow opacity cap from 30 to 60. Footer text opacity (needs `show_opacity` and the colour's css output).
+
+- **R16 Scroll areas and rails:**
+  - **Tokens:** `--agile-scrollbar-thumb`, `-track` and `-size`, defaulted from existing colour tokens. No editor fields to start.
+  - **One rule:** `:where(.agile-scroll)` sets `scrollbar-color` and `scrollbar-width`, with a `::-webkit-scrollbar` fallback for Safari. It applies to inner scroll areas: rails, wide tables, the mobile nav panel and long disclosure boxes. The page's own scrollbar is left alone.
+  - **A shared `[data-agile-rail]` in `main.js`:**
+    - scroll-snap;
+    - prev/next buttons that disable at the ends;
+    - an optional progress bar;
+    - a focusable track (`tabindex="0"`, `role="region"`, an `aria-label` from a text field);
+    - reduced-motion-safe scrolling.
+
+    No carousel library. Madison's rail (M13, D13) built all of this inside one module.
+  - **Module overrides** re-point the tokens on the module root, and the R8 context classes re-point them on dark grounds.
+  - **Contract rule:** a module may hide the scrollbar only if it shows its own controls.
+  - **Editor-facing option:** only a Card Grid `layout: grid | rail` choice.
+
+**P3:** **R15** Footer grid and heading tokens: two template tokens, because Agile nests its link columns.
+
+**Decided not to do:**
+- copy Trust's breadth (its 9,338-line `fields.json`) or its global opinions;
+- 40–60 new editor fields for per-level type;
+- comp-specific theme modules (proof boxes, glass cards, rail, flow);
+- `@layer` (load order on HubSpot is unverified);
+- per-module CSS fields;
+- a leaving-site interstitial, the `positive`/`negative` colours, a divider choice and `mobile_img` (no comp has needed them yet).
+
+### Test result: the Madison comp built on Agile (2026-10-19)
+
+The Madison homepage comp was rebuilt on a client copy of Agile. That copy is uploaded to demo as `Agile-Madison`, with draft page `224845212223` built through `page-build.js`. The base theme was not changed. Every gap was solved in the client copy as a recorded extension shaped like the matching R-item. The full report is `Examples/madison/AGILE-GAPS.md`, which is local only: `Examples/` is git-ignored because it holds client material.
+
+- **Verdict: the structure held up.** No module needed a cascade guard, a recolouring rule or a copy of a parent `fields.json`. Module CSS was about the same size as on Trust (1,408 lines against 1,424). The configuration saving is large: 6 new theme fields and an 83-line `fields.json` diff, against a 7,182-line full copy on Trust. The shared CSS/JS layer is bigger on Agile (about 616 lines against 294), because it is built as reusable mechanisms that map onto R2–R6, R9 and R16. Only 111 lines (`_site.css`) hold Madison-specific values.
+- **R-items:**
+  - 14 confirmed; R8 supported but not built; R13 still open.
+  - 8 amended:
+    - **R2:** tracking defaults to `normal`. Plain min/fluid tokens in `clamp()` were enough.
+    - **R3:** the font loop needs a skip list for families that head-extra loads. Context-dependent site aliases are declared on `:where(.agile-section)`.
+    - **R4:** gate hidden states inside `prefers-reduced-motion: no-preference`. Count-ups outside a reveal need their own observer. The Page Controls override wasn't needed.
+    - **R5:** a stacked-overlay angle token. `image()` gains `attrs` and `responsive=false`.
+    - **R6:** add button line-height and a separate background transition duration.
+    - **R10:** this grows. It needs a solid sticky option, a scroll-padding token, one collapse breakpoint shared by CSS and JS, and nav metric tokens. The logo crossfade is part of the scroll state, not a "second client" item.
+    - **R12:** ship the empty default and the stock `$defaults` in one change.
+    - **R14:** footer text opacity is lower priority.
+  - 4 extended:
+    - **R1:** add the footer `ul` reset.
+    - **R7:** move the footer ground off the root so a disclosure band can have its own.
+    - **R11:** add the root-scoping rule and gate.
+    - **R15:** add a heading font/transform token.
+- **New gaps:**
+  - **N1:** `heading()` has no id or attrs, and `section_attrs` can't emit `aria-labelledby`. Proposed as a new R-item: heading ids.
+  - **N2:** `layout.text_align` reaches split layouts that can't use it.
+  - **N3:** the header collapse breakpoint is three literals across CSS and JS.
+  - **N4:** the sticky header is always translucent.
+  - **N5:** nav metrics are literals, and there is no per-item style.
+  - **N6:** a link click doesn't close the mobile panel.
+  - **N7:** Site Header uses about 18 unprefixed HubL locals.
+  - **N8:** footer: legal items without a URL are dropped, there's no brand-logo fallback, and the `ul` reset hits richtext lists.
+  - **N9:** `new_tab_sr()` runs even when the link has no usable href.
+  - **N10:** there's no list-of-text field group.
+  - **N11 (tooling):** `module-check` can't see a root class printed by `section_attrs`.
+  - **N12 (tooling):** `lint-check` can't render a theme before its first upload. It needs `--inline-imports` and `--stub-assets`.
+  - **N13 (tooling):** `render-check` reports box sizes only. `--styles` is proposed.
+  - **N14:** theme-asset images have no safe srcset.
+- **Recommended order for base Agile:**
+  1. R1, R2, R3, R6 and R12, with the amendments; every section needed them.
+  2. R4, R5 and R16, plus the Card Grid rail layout.
+  3. R10 rewritten to cover N3–N6 and the crossfade, plus N7. R7 + R15 + N8 as one footer change.
+  4. N1 and N2.
+  5. The tooling gaps N11 and N12, before the next client build.
+  6. The R13 checks on demo, using the Agile-Madison draft.
+
+**Open decision:** see the table at the end. R2/R3 put exact comp values in git-versioned tokens that only Claude sets, not in editor fields. That conflicts with `manifesto.md:41` ("Never hardcode what should be configurable") and `:102` ("a token-rich theme editor").
 
 ---
 
@@ -177,7 +318,25 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 
 **Goal:** everything Claude needs to turn a design into an Agile site consistently.
 
-- **`docs/GENERATING-A-SITE.md`**: the step-by-step process:
+**Since the Madison build (2026-10-16):** the theme-agnostic process now lives in the root [HUBSPOT-SITE-BUILD-PLAYBOOK.md](../HUBSPOT-SITE-BUILD-PLAYBOOK.md), with its scripts in [utilities/](../utilities/utils.md). `GENERATING-A-SITE.md` is therefore a **short Agile supplement** to the playbook, not a second playbook. It covers only what is specific to Agile: tokens, the macros, the shared groups, the `page_sections` area, Page Controls and the module template. It links to the playbook for everything else. These parts of the Madison process carry over:
+- **The priority order, stated in the first prompt:** fidelity to the comp first, Agile's architecture second, and one recorded extension per gap.
+- **One decisions log per client build**, with three parts:
+  - Agile canon, cited by file and line;
+  - client extensions, one approved way per gap;
+  - a deviations register.
+
+  Builders propose entries and one owner merges them. A consistency reviewer checks every module against the log. Madison's `DESIGN-DECISIONS.md` is the model to follow.
+- **A build plan with a blockers and questions list for the user before any build work starts.** It covers approvals, existing pages, media, legal text, links and the slug. Adversarial critiques review the plan, and the outcome of each point is recorded.
+- **Safe upload order:**
+  - shared CSS/JS first;
+  - then modules (both do nothing until they're placed);
+  - then the site-wide files (theme `fields.json`, partials, layout), last and behind approval.
+
+  Every upload is appended to an `UPLOAD-MANIFEST.txt`, and the plan includes a rollback table.
+- **A "Before" record of theme-editor values ahead of any theme-settings change**, because editor-saved values beat `fields.json` defaults.
+- **The comp's copy lives once, in module `fields.json` defaults.** Page specs carry only per-section overrides: spacing, anchor, surface, images. `page-build.js` merges the two.
+
+- **`docs/GENERATING-A-SITE.md`**: the Agile-specific steps, in playbook order:
   1. Read the design and list its sections and repeated patterns
   2. Extract design tokens into a token sheet
   3. Map each section to an existing reference module, or decide to build a new one
@@ -189,7 +348,7 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
   9. Visually compare against the design and fix differences
 - **Token sheet** (`docs/TOKEN-SHEET.md` plus a JSON template): how to read colours, fonts, type scale, spacing and radius from a design, and where each value goes in `fields.json`.
 - **Module template** (`module-template/`): a starter module folder already wired to the macros and shared field groups. New modules start as a copy of it.
-- **Page JSON reference** (`docs/PAGE-JSON.md`): the `layoutSections` structure with a commented example using Agile modules (based on T4).
+- **Page JSON reference** (`docs/PAGE-JSON.md`): an Agile page spec for `utilities/page-build.js` (area `page_sections`, module paths `../modules/<Name>.module`, override keys from the shared groups), with a commented example. The general `layoutSections` structure is in playbook 6.3; link to it rather than repeat it.
 - **Decision rules** in the guide:
   - Each design section becomes one Section module, with repeaters for repeated items.
   - Reuse a reference module only when it matches the design without bending it.
@@ -202,14 +361,16 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 
 ## Milestone 5: Automation
 
-**Goal:** scripts for the repeatable steps, in `Automation/`.
+**Goal:** scripts for the repeatable steps. Theme-agnostic steps belong in the workspace [utilities/](../utilities/utils.md) and follow its binding conventions: dry run by default, `--apply` to write, `--allow-prefix` for uploads, gk3capital refused. Only Agile-specific scripts live in `Automation/`. Check `utils.md` before writing any script.
 
-| Script | What it does |
-|---|---|
-| `new-site` | Copies `Agile-Theme/` into a client folder, sets the theme label, stamps the Agile version |
-| `validate` | Checks a generated site against the contract (see below) |
-| `push-pages` | Creates or updates pages from page JSON files through the HubSpot API (route from T6) |
-| `compose-fields` | Builds each module's `fields.json` from its field source plus the shared field groups (built in Milestone 1) |
+| Script | What it does | Status |
+|---|---|---|
+| `new-site` | Copies `Agile-Theme/` into a client folder, sets the theme label, stamps the Agile version | To do (Agile-specific, `Automation/`) |
+| `validate` | Checks a generated site against the contract (see below) | Mostly covered: extend `utilities/module-check.js` (static rules) and use `utilities/lint-check.js` (lint and render with theme and module mocks). Add Agile rules to `module-check.js` rather than writing a second validator |
+| `push-pages` | Creates or updates pages from page JSON files through the HubSpot API (route from T6) | **Built:** `utilities/page-build.js`. It was checked read-only against the Madison draft (`--compare-page`: MATCH). Its `--apply` path has not been run yet. Make the first real run a throwaway Agile draft on demo |
+| `compose-fields` | Builds each module's `fields.json` from its field source plus the shared field groups (built in Milestone 1) | Done |
+| upload | Uploads with fetch-back comparison and an upload manifest | **Built:** `utilities/hs-upload.js` |
+| render check | Screenshots the comp and the page side by side at 1440 / 1024 / 768 / 375, whole page and per section | **Built:** `utilities/render-check.js` (`--sections <map>`) |
 
 **The validator checks:**
 
@@ -221,7 +382,14 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 - each page JSON references modules that exist and field names those modules define
 - each page JSON uses the standard `dnd_area` name
 
-**Done when:** the validator runs on the reference modules with no errors, and `push-pages` creates a test page on demo.
+**More checks from the Madison build** (worth adding to `module-check.js`):
+
+- every repeater's `default` array has exactly `occurrence.default` items
+- no `href=""` or `aria-label=""` is printed (check the render output)
+- inline JS contains no `{{`, `{%` or `{#`
+- each module is rendered twice under different `name` values, so duplicated ids show up
+
+**Done when:** the validator runs on the reference modules with no errors, and `page-build.js --apply` creates a test page on demo that renders.
 
 ---
 
@@ -240,7 +408,7 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 - **Example 2:** a design in a clearly different style, built from the updated kit. This tests whether the output is consistent across very different designs.
 - The examples become test fixtures for the validator.
 
-**Decision needed:** which designs to use. A real recent client design is the most useful test.
+**Decision needed:** which designs to use. A real recent client design is the most useful test. **Recommendation:** make Example 1 the Madison homepage comp (`MadisonCapital/madison-homepage-comp-r3.html`), rebuilt on Agile. It already has a finished Trust build to compare against, a section map for `render-check.js --sections` (`MadisonCapital/pages/home.sections.json`), extracted media and a decisions log. That makes it a direct measure of how much Agile saves. Many Madison extensions (M24, M30, M35, M24.9) existed only to work around Trust's CSS cascade.
 
 **Done when:** Example 2 needed no changes to the shared foundations, only new modules.
 
@@ -260,7 +428,7 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 ## Suggested first slice
 
 1. ~~Choose a test portal, then run platform tests T1 and T5 there.~~ Done: `demo`. T1 and T5 confirmed.
-2. ~~Housekeeping.~~ Done, except the workspace `CLAUDE.md` upload path.
+2. ~~Housekeeping.~~ Done.
 3. ~~Macros (1.1) and shared field groups (1.2), then rebuild Hero as the first reference module.~~ Done.
 4. Lint (`hs cms lint <path> --account demo`, then parse the output), upload to demo (`--account demo`) and check it in the editor.
 
@@ -271,6 +439,7 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 | ~~**Test portal**~~ (`gk3capital` is off limits) | **Decided:** the `demo` sandbox (51425289), always with `--account demo` | Any upload or platform test |
 | ~~Keep per-module scoped CSS field?~~ | **Decided:** dropped; page-level `page_css` only (see `Agile-Theme/docs/SCOPED-CSS.md`) | Milestone 1.2 |
 | ~~Header scope for v1~~ | **Decided and built:** logo, menu with one dropdown level, CTA, mobile menu | Milestone 2 |
-| Page push route | Decide after T6 | Milestone 5 |
+| ~~Page push route~~ | **Decided (T6):** `utilities/page-build.js` with the GK3 Agile Page Builder app token | Milestone 5 |
 | ~~Blank Section~~ | **Decided (option A):** replaced by Section Header; repeated layouts are Section modules with a repeater (Card Grid) | Milestone 2 |
-| Designs for the worked examples | A recent real client design, then a contrasting one | Milestone 6 |
+| Exact comp values: editor fields or site tokens? (Milestone 1.5) | Site tokens in `css/site/_site.css`, versioned in git and set by Claude. Editor fields only for choices an editor really makes. Promote a token to a field when a second client needs editor control. Amend `manifesto.md:41, :102` to match | Milestone 1.5 (R2, R3) |
+| Designs for the worked examples | The Madison homepage comp rebuilt on Agile (it has a Trust baseline to compare with), then a contrasting design | Milestone 6 |

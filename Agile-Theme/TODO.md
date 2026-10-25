@@ -28,11 +28,12 @@ This is the checklist for [../PLAN.md](../PLAN.md). The plan explains the why an
 - [x] DnD templates upload and validate on demo (closing tags are `end_dnd_*`; see `HUBSPOT-PLATFORM.md` › DnD)
 - [x] ~~T2. `fields.js`~~: dropped in favour of the local composer script
 - [ ] T3. Seeded defaults appear after renaming a global partial's `dnd_area` (partials renamed to `header_area` / `footer_area`; full upload done; check in the global content editor)
-- [ ] T4. Pages API `layoutSections` payload renders Agile modules with field values
+- [x] T4a. Pages API `layoutSections` payload is stored with Agile module values (demo, 2026-10-15; `HUBSPOT-PLATFORM.md` › Pages API)
+- [ ] T4b. An API-built Agile draft renders on demo (open it in the editor or publish it). API-stored layouts are known to render from the Madison build (2026-10-16)
 - [x] T5. `theme.json` accepts a `version` key: confirmed on demo (accepted and stored as written; whether HubSpot shows it is unchecked)
-- [ ] T6. Choose the page push route (script with private app token vs HubSpot connector tools)
-- [ ] Record T1 and T3–T6 results in `HUBSPOT-PLATFORM.md` (T1 and T5 recorded; T3, T4, T6 open)
-- [ ] Fix the upload path in the workspace `CLAUDE.md` (`"Agile/Agile-Theme" "Agile"`)
+- [x] T6. Page push route: `utilities/page-build.js` with the GK3 Agile Page Builder app token (`content` scope, `Automation/.env.<portal>`)
+- [ ] Record T1 and T3–T6 results in `HUBSPOT-PLATFORM.md` (T1, T4a, T5 and T6 recorded; T3 and T4b open)
+- [x] Fix the upload path in the workspace `CLAUDE.md` (`"Agile/Agile-Theme" "Agile"`)
 - [x] Remove placeholder `module_id` from `Page Controls.module/meta.json`
 - [x] Add the Agile version stamp (`theme.json` `"version": "0.1.0"`)
 - [x] Write `docs/EDITING-LEVELS.md`
@@ -57,6 +58,37 @@ This is the checklist for [../PLAN.md](../PLAN.md). The plan explains the why an
 - [x] Rebuild Card Item
 - [x] Upload to demo (`--account demo`, after `hs cms lint`)
 - [ ] Check the Milestone 1 modules in the editor
+
+## Milestone 1.5: Theme revisions from the Madison review
+
+Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4, R7 and R10 depend on it.
+
+- [ ] R13 Demo checks: `widget_data.page_controls` reaches DnD modules and the global header/footer on a live page; `page_css` load order; a two-column `dnd_row`; `load_external_fonts` and the Google Fonts weights. Log each result in `HUBSPOT-PLATFORM.md`
+- [ ] R13 Harden `page_css` (`</style`, unbalanced braces); add `widgets.page_controls` support to `utilities/page-build.js`
+- [ ] Decide: exact comp values as site tokens vs editor fields, and amend `manifesto.md` to match
+- [ ] R1 `:where()` on `a:hover`, `.agile-richtext h*`, the footer link rules and the `.agile-section` defaults; remove the `_blog.css` guard
+- [ ] R2 Typography constants as tokens; `.agile-lead`, `.agile-fineprint`, `.agile-num`; eyebrow, lead and small fields
+- [ ] R3 `css/site/_site.css` and `templates/partials/head-extra.html`; the "no override of field-backed tokens" check; fix the font weights request
+- [ ] R4 Shared reveal (CSS keyframes) and count-up, `agile-scrolled`, `agile-editor`; `motion.reveal_sections` off by default; Page Controls `reveal_override`
+- [ ] R7 Footer disclaimer in minimal mode (boolean, default on); Page Controls `page_disclosure`
+- [ ] R11 JS, per-instance, z and prefix contracts in `MODULE-CONTRACT.md`; the "no review devices, no cascade accidents" rule in the playbook
+- [ ] R5 `_media.css`, the `media()` macro, `focal.json`, card aspect token
+- [ ] R6 Button tokens shared with the form submit; `accent` and `outline` variants
+- [ ] R8 Context classes and `on_custom_tone`; `.agile-on-dark`; alias re-declaration in `:where(:root, .agile-page)`
+- [ ] R9 Layout tokens, mobile custom padding, breakpoint ladder, `--agile-space-scale` (default 1), as separate items
+- [ ] R10 Header scroll state, `height_mobile`, `header_sticky_override`
+- [ ] R12 Empty `cta.json` defaults, plus `$defaults` for Hero and Rich Section; section background image
+- [ ] R14 Colour slots `surface_alt`/`on_surface_alt`, `ink`, `accent_hover`; shadow colour; footer text opacity
+- [ ] R16 Scroll tokens and `:where(.agile-scroll)`; shared `[data-agile-rail]` (snap, prev/next, progress, focusable track); Card Grid `rail` layout; contract rule "no hidden scrollbar without controls"
+- [ ] R15 (P3) Footer grid and heading tokens
+- [ ] Apply the amendments from the Madison test (PLAN Milestone 1.5 › Test result) to R1–R7, R10–R12, R14 and R15 before implementing them
+- [ ] N1 Heading ids: `heading()` id/attrs, a `heading_id()` helper, `aria-labelledby` on `section_attrs`
+- [ ] N2 Keep `layout.text_align` out of split layouts (or document `$omit`)
+- [ ] N6 Close the mobile panel when a link inside it is clicked; N7 prefix the Site Header HubL locals (`hdr_`)
+- [ ] N8 Footer: keep legal items without a URL, add a brand-logo fallback, scope the `ul` reset; N9 guard `new_tab_sr()` on a usable href
+- [ ] N10 List-of-text field group
+- [ ] N11 `module-check` detects the root printed by `section_attrs`/`component_attrs`; N12 `lint-check --inline-imports --stub-assets` for themes that aren't uploaded yet; N13 `render-check --styles`
+- [ ] N14 Safe srcset for theme-asset images (check `resize_image_url` on theme asset URLs)
 
 ## Milestone 2: Global header and footer
 
@@ -89,24 +121,25 @@ This is the checklist for [../PLAN.md](../PLAN.md). The plan explains the why an
 
 ## Milestone 4: Generation kit
 
-- [ ] `docs/GENERATING-A-SITE.md`
+- [ ] `docs/GENERATING-A-SITE.md`: a short Agile supplement to the root `HUBSPOT-SITE-BUILD-PLAYBOOK.md`, not a second playbook (see PLAN Milestone 4)
+- [ ] Decisions-log template for client builds (Agile canon / client extensions / deviations register), modelled on `MadisonCapital/DESIGN-DECISIONS.md`
 - [ ] `docs/TOKEN-SHEET.md` and token sheet JSON template
 - [ ] `module-template/` starter module folder
-- [ ] `docs/PAGE-JSON.md` with a commented `layoutSections` example
+- [ ] `docs/PAGE-JSON.md`: an Agile page spec for `utilities/page-build.js` (area `page_sections`), linking to playbook 6.3 for the `layoutSections` structure
 - [ ] Bring `MODULE-CONTRACT.md`, `ARCHITECTURE.md`, `SCOPED-CSS.md` and `manifesto.md` in line with the README
 
 ## Milestone 5: Automation
 
 - [ ] `Automation/new-site`
-- [ ] `Automation/validate`
-- [ ] `Automation/push-pages`
+- [ ] Validator: add Agile rules to `utilities/module-check.js`, plus the Madison checks (repeater `default` length matches `occurrence.default`, no `href=""` / `aria-label=""`, no HubL tokens in JS, two renders with different `name`s); lint and render with `utilities/lint-check.js`
+- [x] Page push script: `utilities/page-build.js` (built 2026-10-16; checked read-only against the Madison draft)
 - [ ] Validator passes on the reference modules
-- [ ] `push-pages` creates a test page on demo (the demo CLI key currently has read-only page scopes)
+- [x] First real `page-build.js --apply` run: draft `224845212223` on demo (Agile-Madison), read-back OK (2026-10-19). Its rendering is still to be checked under Example 1
 
 ## Milestone 6: Worked examples
 
-- [ ] Choose the two example designs
-- [ ] Example 1 built end to end and checked into `Agile/Examples/`
+- [ ] Choose the two example designs (recommended: the Madison homepage comp rebuilt on Agile, compared with the Trust build, then a contrasting design)
+- [ ] Example 1 built end to end and checked into `Agile/Examples/`. **In progress (2026-10-19):** the Madison comp is built in `Examples/madison/` (git-ignored, client material), uploaded to demo as `Agile-Madison`, and draft page `224845212223` exists. Still to do: the render check against the comp, which needs an editor preview saved as HTML or approval to publish on demo, and the design calls listed in its README
 - [ ] Fix the issues Example 1 uncovered
 - [ ] Example 2 built from the updated kit
 - [ ] Examples added as validator test fixtures

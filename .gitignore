@@ -3,6 +3,34 @@
 .env.*
 !.env.example
 
+# HubSpot CLI and other credentials (personal access keys, app secrets)
+hubspot.config.yml
+*.hubspot.config.yml
+.hscli/
+*.pem
+*.key
+*.p12
+credentials*.json
+secrets*.json
+
+# Client work: comps, client copy and media, worked examples built from real client designs.
+# This repo is public; client material stays local (or in a private repo).
+/Examples/
+Automation/examples/*
+!Automation/examples/demo-homepage.json
+media-staging/
+*.mp4
+*.mov
+*.webm
+
+# Saved client pages, render checks, fetch-backs and upload manifests
+*-comp*.html
+*.stripped.html
+fetchback/
+render-check*/
+UPLOAD-MANIFEST.txt
+created-pages.json
+
 # Third-party reference themes (licensed marketplace code; kept locally only)
 References/
 
