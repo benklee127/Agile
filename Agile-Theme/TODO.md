@@ -90,6 +90,17 @@ Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4,
 - [ ] N11 `module-check` detects the root printed by `section_attrs`/`component_attrs`; N12 `lint-check --inline-imports --stub-assets` for themes that aren't uploaded yet; N13 `render-check --styles`
 - [ ] N14 Safe srcset for theme-asset images (check `resize_image_url` on theme asset URLs)
 
+Multi-page learnings (PLAN Milestone 1.5 › A1–A7):
+
+- [ ] **A1 (high)** Explicit page content: write the rule into `docs/MODULE-CONTRACT.md` and `docs/PAGE-JSON.md`; page specs set every copy, link and media field; QA fails a page whose rendered media is a theme fallback
+- [ ] **A2 (high)** Hover and pointer-motion contract in `docs/MODULE-CONTRACT.md` (stable wrapper, `translate` lift, rAF-throttled pointer motion on the wrapper); browser-check the button and form-submit hover lift (`_buttons.css:42`, `_forms.css:311`) and change it only if it flickers
+- [ ] **A3 (high)** "Variants, not per-page options" rule in `docs/MODULE-CONTRACT.md` and the module template
+- [ ] A4 Form Section module (HubSpot form field, editor placeholder, token styling, "(optional)" labels); replaces the Milestone 3 Form Section item
+- [ ] A5 Header current-page state (path or page id, ignore `#` links, `aria-current`), with R10
+- [ ] A6 Recurring components, one at a time when a second site needs it: Stats variants, page-header Hero, compact CTA, statement list, offering/status tiles, people cards with bio drawer, quote band, notice line, steps/cycle
+- [ ] A7 Draft-assets convention in the generation flow (File Manager page media, theme fallbacks only, pre-launch draft-reference list)
+- [ ] Fix the stock-module warnings from `verify-modules --preset agile` (2026-10-27): locals `content` (Hero, Card Item) and `logo` (Logo Bar) shadow HubL globals; Logo Bar `content.logos` repeater default isn't an array; Site Footer prints `aria-label` even when empty (module.html:137)
+
 ## Milestone 2: Global header and footer
 
 - [x] `globals/Site Header.module`: logo (theme fallback), menu with one dropdown level, CTA, mobile menu, mode handling
@@ -117,11 +128,13 @@ Details and amendments are in PLAN Milestone 1.5. Start with R13(a), because R4,
 - [ ] Blog listing: featured post, grid, pagination, topic filter
 - [ ] Blog post: author, date, reading time, tags, related posts, CTA area
 - [ ] Global HubSpot form styling
-- [ ] Form Section reference module
+- [ ] Form Section reference module (see A4)
 
 ## Milestone 4: Generation kit
 
 - [ ] `docs/GENERATING-A-SITE.md`: a short Agile supplement to the root `HUBSPOT-SITE-BUILD-PLAYBOOK.md`, not a second playbook (see PLAN Milestone 4)
+- [x] Link the toolkit from `README.MD` and PLAN (north star, `BUILD-BRIEF-TEMPLATE.md`, playbook, definition of done); keep them linked, never copied (2026-10-27)
+- [ ] `dd-index.js` in the decisions-log template's instructions
 - [ ] Decisions-log template for client builds (Agile canon / client extensions / deviations register), modelled on `MadisonCapital/DESIGN-DECISIONS.md`
 - [ ] `docs/TOKEN-SHEET.md` and token sheet JSON template
 - [ ] `module-template/` starter module folder

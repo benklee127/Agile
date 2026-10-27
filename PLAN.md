@@ -4,6 +4,21 @@ This plan builds Agile into the base theme described in [README.MD](README.MD): 
 
 Progress is tracked in [Agile-Theme/TODO.md](Agile-Theme/TODO.md), which follows the same milestones.
 
+**North star (binding):** designed HTML → production-ready HubSpot. When speed and fidelity conflict, fidelity wins. A script PASS means valid code, never "matches the comp".
+
+**Process documents live in the GK3 HubSpot toolkit, not in this repo.** Agile links to them rather than copying them; the two playbook copies already drifted once.
+- [HUBSPOT-SITE-BUILD-PLAYBOOK.md](../HUBSPOT-SITE-BUILD-PLAYBOOK.md) is the single build workflow.
+- [BUILD-BRIEF-TEMPLATE.md](../BUILD-BRIEF-TEMPLATE.md) is filled in and settled with the user before any build workflow starts.
+- [HUBSPOT-PLATFORM.md](../HUBSPOT-PLATFORM.md) holds the confirmed platform facts.
+- [utilities/](../utilities/utils.md) holds the scripts. Agile presets: `utilities/presets/agile.json` (`verify-modules.js`) and `utilities/presets/agile-prelude.hubl` (lint prelude).
+
+**Definition of done** (playbook 7.3) for any site built on Agile:
+- a render check against the comp at every breakpoint;
+- a human preview;
+- the production-readiness list: forms wired, real links, licensed media, approved compliance copy, nothing publish-blocking.
+
+**Toolkit dependency (until the migration is done):** the utilities and these documents sit at the workspace root (`Hubspot Themes/`), which isn't in Git yet. The utilities also depend on a file in this repo, `Automation/hubspot-api.js`: it holds the token check and `.env` loading. So a clone of this repo alone has neither the utilities nor the playbook. The toolkit migration plan moves `hubspot-api.js` and the page-builder app into the toolkit repo's `page-builder/`, so that Agile depends on the toolkit and not the other way round.
+
 ---
 
 ## Guiding priorities
@@ -251,6 +266,49 @@ The Madison homepage comp was rebuilt on a client copy of Agile. That copy is up
   5. The tooling gaps N11 and N12, before the next client build.
   6. The R13 checks on demo, using the Agile-Madison draft.
 
+### Multi-page learnings: A1–A7 (2026-10-27)
+
+These come from the four-page Madison build on Trust and the toolkit work since. They are new; R1–R16 and N1–N14 above still stand. The Madison references (M63, M77, D37) are in `MadisonCapital/DESIGN-DECISIONS.md`.
+
+**High priority:**
+- **A1. Explicit page content in the generator contract.** Generated page JSON sets every field: all copy, links, CTAs and media (`src`, `alt`, `width`, `height`, `loading`; video `href`), even where a value equals the module default. A slot the comp leaves empty is set explicitly empty. Module defaults and theme fallbacks serve only an editor's new instances; no page's fidelity may depend on them. Why: modules shared across pages can't match every page through defaults (Madison M63). This sits at the core of Agile's generation workflow:
+  - it goes into `docs/MODULE-CONTRACT.md` and `docs/PAGE-JSON.md`;
+  - page specs for `utilities/page-build.js` carry full params, not overrides of defaults;
+  - QA fails a page whose rendered media is a theme fallback.
+- **A2. Hover and pointer-motion contract** in `docs/MODULE-CONTRACT.md` (Madison M77):
+  - the hover target is a stable wrapper that never moves (`.wrap:hover .card`, plus `:focus-within`);
+  - lift uses the individual `translate` property with its own transition; rotate and scale stay separate; never switch a transition's timing mid-move;
+  - pointer motion (tilt, parallax) listens on the wrapper, measures the wrapper's rect, is throttled per frame with `requestAnimationFrame`, writes custom properties only, and is skipped under reduced motion or `(hover: none)`.
+
+  **Audit (2026-10-27):** eight Agile files use `:hover`. Only `css/elements/_buttons.css:42` and `css/elements/_forms.css:311` move the hovered element itself (`--agile-button-hover-transform`). Nothing uses pointer-tracked motion. Per the M77 scope rule, fix an existing file only when it shows the problem; buttons are small, so check them in a browser before changing anything. R4 reveal and R16 rail follow the contract from the start.
+- **A3. Variants, not per-page options.** A design variant (layout, size, motion) is a choice field. A field whose only job is to say which page a module is on, or to pick per-page placeholder content, is never built. Madison withdrew its `placeholder_set` field (D37) in favour of explicit page params (A1). Add this to `docs/MODULE-CONTRACT.md` and to the module-template notes.
+
+**Medium priority:**
+- **A4. Form Section module.** It has:
+  - a HubSpot form field (v2/v4 embeds);
+  - an editor-only placeholder when no form is chosen;
+  - form styling from the R6/1.3 tokens;
+  - "(optional)" labels on fields that aren't required.
+
+  Milestone 3.4 lists forms but has no module yet; the Madison Contact page needed one.
+- **A5. Header current-page state.** Match by path or page id, ignore `#` links, set `aria-current="page"`. Madison's reviewer had to fix this. Fold it into R10.
+- **A6. Components that recurred across pages, staged.** Madison needed 12 new and 4 extended modules for four pages, while Agile has 7. Candidates:
+  - Stats with size variants;
+  - a page-header Hero variant;
+  - a compact CTA;
+  - a statement list;
+  - offering/status tiles;
+  - people cards with a bio drawer;
+  - a quote band;
+  - a notice line;
+  - steps/cycle.
+
+  Promote one only when a second site needs it, which is the rule from Milestone 1.5. Each is built to A1–A3.
+- **A7. The draft-assets convention in the generation flow:**
+  - page media go to File Manager (`fm-upload.js`) and are set explicitly in the page params (A1);
+  - theme `images/` hold only fallbacks;
+  - a pre-launch list of draft references comes from `grep -rn draft-assets`, plus the QA check in A1.
+
 **Open decision:** see the table at the end. R2/R3 put exact comp values in git-versioned tokens that only Claude sets, not in editor fields. That conflicts with `manifesto.md:41` ("Never hardcode what should be configurable") and `:102` ("a token-rich theme editor").
 
 ---
@@ -308,7 +366,7 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
 ### 3.4 Forms
 
 - Global form styling driven by the form tokens from 1.3, covering HubSpot's form markup (including checkbox/radio, multi-column, error messages, submit button).
-- A **Form Section** reference module (heading, intro, form, optional side content).
+- A **Form Section** reference module (heading, intro, form, optional side content), to the A4 spec in Milestone 1.5.
 
 **Done when:** a page can be created through the API on either thin template; system pages, blog listing, blog post and a form all render correctly with token styling.
 
@@ -325,7 +383,9 @@ Also decided during this milestone: **Blank Section is retired.** A heading band
   - client extensions, one approved way per gap;
   - a deviations register.
 
-  Builders propose entries and one owner merges them. A consistency reviewer checks every module against the log. Madison's `DESIGN-DECISIONS.md` is the model to follow.
+  Builders propose entries and one owner merges them. A consistency reviewer checks every module against the log. Madison's `DESIGN-DECISIONS.md` is the model to follow. `utilities/dd-index.js` generates its index: which rules each module cites, rules cited nowhere, and stale citations.
+- **A settled build brief first.** Copy `BUILD-BRIEF-TEMPLATE.md` (toolkit) to the client folder and settle it with the user before launching any build workflow. Agile adds nothing to it except the theme name and the `page_sections` area.
+- **Definition of done:** render check at every breakpoint, human preview, production-readiness list (see the top of this plan).
 - **A build plan with a blockers and questions list for the user before any build work starts.** It covers approvals, existing pages, media, legal text, links and the slug. Adversarial critiques review the plan, and the outcome of each point is recorded.
 - **Safe upload order:**
   - shared CSS/JS first;
