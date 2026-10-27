@@ -36,10 +36,30 @@ Designs are not limited to what a prebuilt theme can do. Agile makes sure that w
 2. **Generate.** The design and a fresh copy of Agile go to Claude. Claude produces:
    - **Theme tokens:** the design's colours, fonts, type scale, spacing, radius and so on, written as the defaults in the theme's `fields.json`.
    - **Modules:** every module needed to reproduce the design, built to the Agile module contract.
-   - **Page layouts:** each page as HubSpot DnD JSON (sections → columns → rows → modules, with field values).
+   - **Page layouts:** each page as HubSpot DnD JSON (sections → columns → rows → modules). Every page sets all of its own copy, links and media explicitly. Module defaults are only for an editor's new instances (PLAN A1).
    - **Global content:** header and footer content, seeded into the global partials.
    - **Blog templates:** blog listing and blog post templates, where the site needs them.
 3. **Deliver.** The theme is uploaded to the client portal with the HubSpot CLI. Pages, landing pages and blog content are created through the HubSpot APIs.
+
+**North star:** designed HTML → production-ready HubSpot. When speed and fidelity conflict, fidelity wins.
+
+**Done** means three things:
+- a render check against the design at every breakpoint;
+- a human preview;
+- the production-readiness list: forms wired, real links, licensed media, approved compliance copy, nothing that blocks publishing.
+
+### Process and toolkit (required)
+
+Agile is the theme. The build process and the scripts live in the **GK3 HubSpot toolkit**, and Agile links to them rather than keeping copies:
+
+| Document | Use |
+|---|---|
+| [HUBSPOT-SITE-BUILD-PLAYBOOK.md](../HUBSPOT-SITE-BUILD-PLAYBOOK.md) | The single build workflow, phase by phase |
+| [BUILD-BRIEF-TEMPLATE.md](../BUILD-BRIEF-TEMPLATE.md) | Filled in and settled with the client owner before any build starts |
+| [HUBSPOT-PLATFORM.md](../HUBSPOT-PLATFORM.md) | Confirmed HubSpot platform facts |
+| [utilities/utils.md](../utilities/utils.md) | Scripts for every repeatable step. Agile presets: `presets/agile.json`, `presets/agile-prelude.hubl` |
+
+**Until the toolkit migration is done:** the toolkit is the parent workspace folder (`Hubspot Themes/`), which isn't in Git yet. The scripts there also load `Automation/hubspot-api.js` from this repo. A clone of this repo on its own therefore has neither the scripts nor the playbook. The migration moves `hubspot-api.js` and the page-builder app into the toolkit, so that Agile depends on the toolkit and not the other way round.
 
 ---
 
@@ -189,3 +209,4 @@ Running the upload from `c:\workspace\Hubspot Themes` (or anywhere outside `Agil
 - [Agile-Theme/docs/ARCHITECTURE.md](Agile-Theme/docs/ARCHITECTURE.md): how the theme is put together
 - [Agile-Theme/docs/MODULE-CONTRACT.md](Agile-Theme/docs/MODULE-CONTRACT.md): rules every module follows
 - [../HUBSPOT-PLATFORM.md](../HUBSPOT-PLATFORM.md): confirmed HubSpot platform constraints
+- [../HUBSPOT-SITE-BUILD-PLAYBOOK.md](../HUBSPOT-SITE-BUILD-PLAYBOOK.md) and [../BUILD-BRIEF-TEMPLATE.md](../BUILD-BRIEF-TEMPLATE.md): the build process (toolkit)
